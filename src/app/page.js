@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useAppState } from '@/context/AppContext';
 
 export default function Home() {
-  const { t, campaigns, defaultFloors, homeBanner } = useAppState();
+  const { t, campaigns, defaultFloors, homeBanner, language } = useAppState();
   const [activeFloor, setActiveFloor] = useState('6');
   const [activeJourneyStep, setActiveJourneyStep] = useState(0);
   const [timers, setTimers] = useState({});
@@ -61,11 +61,15 @@ export default function Home() {
       {/* Hero Banner */}
       <div className="hero-banner" style={heroStyle}>
         <div className="hero-text-content">
-          <div style={{ height: '65px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px', filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.6))' }}>
+          <div style={{ height: '65px', display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginBottom: '20px', filter: 'drop-shadow(0 3px 6px rgba(0, 0, 0, 0.25))' }}>
             <img src="/logo.png" alt="Emgrand Spa Logo" style={{ height: '65px', width: 'auto', objectFit: 'contain' }} />
           </div>
-          <h1 className="hero-title">{homeBanner?.title || t('hero_title')}</h1>
-          <p className="hero-subtitle">{homeBanner?.subtitle || t('hero_subtitle')}</p>
+          <h1 className="hero-title">
+            {language === 'zh' ? (homeBanner?.title_zh || homeBanner?.title) : (language === 'ko' ? (homeBanner?.title_ko || homeBanner?.title) : (homeBanner?.title_en || homeBanner?.title || t('hero_title')))}
+          </h1>
+          <p className="hero-subtitle">
+            {language === 'zh' ? (homeBanner?.subtitle_zh || homeBanner?.subtitle) : (language === 'ko' ? (homeBanner?.subtitle_ko || homeBanner?.subtitle) : (homeBanner?.subtitle_en || homeBanner?.subtitle || t('hero_subtitle')))}
+          </p>
           <div className="hero-cta-buttons">
             <Link href="/bookings" className="btn btn-primary">{t('hero_btn_book')}</Link>
             <Link href="/services" className="btn btn-secondary">{t('hero_btn_calc')}</Link>
@@ -98,6 +102,16 @@ export default function Home() {
           <div>
             <h4>{t('quick_buffet_title')}</h4>
             <p>{t('quick_buffet_desc')}</p>
+          </div>
+        </div>
+        <div className="info-item">
+          <i className="fa-solid fa-star" style={{ color: 'var(--accent-gold)' }}></i>
+          <div>
+            <h4>{language === 'zh' ? '宾客好评' : (language === 'ko' ? '고객 평점' : 'Guest Rating')}</h4>
+            <p style={{ color: 'var(--accent-gold)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ color: 'var(--text-primary)', fontWeight: 'bold' }}>4.9 / 5.0</span>
+              <span style={{ letterSpacing: '1px' }}>★★★★★</span>
+            </p>
           </div>
         </div>
       </div>
@@ -238,8 +252,12 @@ export default function Home() {
             const time = timers[camp.id];
             return (
               <div key={camp.id} className="countdown-card glass-panel">
-                <h3 style={{ color: 'var(--accent-gold)', marginBottom: '8px', fontSize: '1.25rem' }}>{t(camp.title)}</h3>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{t(camp.desc)}</p>
+                <h3 style={{ color: 'var(--accent-gold)', marginBottom: '8px', fontSize: '1.25rem' }}>
+                  {language === 'zh' ? (camp.title_zh || t(camp.title)) : (language === 'ko' ? (camp.title_ko || t(camp.title)) : (camp.title_en || t(camp.title)))}
+                </h3>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  {language === 'zh' ? (camp.desc_zh || t(camp.desc)) : (language === 'ko' ? (camp.desc_ko || t(camp.desc)) : (camp.desc_en || t(camp.desc)))}
+                </p>
                 
                 {time ? (
                   time.expired ? (

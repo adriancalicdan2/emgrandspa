@@ -55,7 +55,15 @@ export default function Admin() {
     addChatbotKeyPoint,
     deleteChatbotKeyPoint,
     chatbotInstructions,
-    updateChatbotInstructions
+    updateChatbotInstructions,
+    userAccounts,
+    addUserAccount,
+    updateUserRole,
+    deleteUserAccount,
+    
+    // Localization
+    t,
+    language
   } = useAppState();
 
   const [adminTab, setAdminTab] = useState('adminServices');
@@ -64,6 +72,8 @@ export default function Admin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [toastMsg, setToastMsg] = useState('');
+  const [newUserEmail, setNewUserEmail] = useState('');
+  const [newUserRole, setNewUserRole] = useState('admin');
 
   // Service Edit Form States
   const [isServiceModalOpen, setIsServiceModalOpen] = useState(false);
@@ -79,8 +89,12 @@ export default function Admin() {
 
   // Campaign Form Modal States
   const [isCampaignModalOpen, setIsCampaignModalOpen] = useState(false);
-  const [campaignTitle, setCampaignTitle] = useState('');
-  const [campaignDesc, setCampaignDesc] = useState('');
+  const [campaignTitleEN, setCampaignTitleEN] = useState('');
+  const [campaignTitleZH, setCampaignTitleZH] = useState('');
+  const [campaignTitleKO, setCampaignTitleKO] = useState('');
+  const [campaignDescEN, setCampaignDescEN] = useState('');
+  const [campaignDescZH, setCampaignDescZH] = useState('');
+  const [campaignDescKO, setCampaignDescKO] = useState('');
   const [campaignEndDate, setCampaignEndDate] = useState('');
 
   // Setup Config Forms
@@ -99,18 +113,26 @@ export default function Admin() {
   const [seoKeywords, setSeoKeywords] = useState('');
 
   // 2. Home Page Banners
-  const [bannerTitle, setBannerTitle] = useState('');
-  const [bannerSubtitle, setBannerSubtitle] = useState('');
+  const [bannerTitleEN, setBannerTitleEN] = useState('');
+  const [bannerTitleZH, setBannerTitleZH] = useState('');
+  const [bannerTitleKO, setBannerTitleKO] = useState('');
+  const [bannerSubtitleEN, setBannerSubtitleEN] = useState('');
+  const [bannerSubtitleZH, setBannerSubtitleZH] = useState('');
+  const [bannerSubtitleKO, setBannerSubtitleKO] = useState('');
   const [bannerImage, setBannerImage] = useState('');
 
   // 3. Service Packages Modal
   const [isPackageModalOpen, setIsPackageModalOpen] = useState(false);
   const [packageModalMode, setPackageModalMode] = useState('new');
   const [packageId, setPackageId] = useState('');
-  const [packageTitle, setPackageTitle] = useState('');
+  const [packageTitleEN, setPackageTitleEN] = useState('');
+  const [packageTitleZH, setPackageTitleZH] = useState('');
+  const [packageTitleKO, setPackageTitleKO] = useState('');
   const [packageRate, setPackageRate] = useState(2000);
   const [packageSavings, setPackageSavings] = useState(500);
-  const [packageInclusions, setPackageInclusions] = useState('');
+  const [packageInclusionsEN, setPackageInclusionsEN] = useState('');
+  const [packageInclusionsZH, setPackageInclusionsZH] = useState('');
+  const [packageInclusionsKO, setPackageInclusionsKO] = useState('');
 
   // 4. Gallery Photos Form
   const [galleryPhotoUrl, setGalleryPhotoUrl] = useState('');
@@ -131,9 +153,13 @@ export default function Admin() {
   const [isPerkModalOpen, setIsPerkModalOpen] = useState(false);
   const [perkModalMode, setPerkModalMode] = useState('new');
   const [perkId, setPerkId] = useState('');
-  const [perkTitle, setPerkTitle] = useState('');
+  const [perkTitleEN, setPerkTitleEN] = useState('');
+  const [perkTitleZH, setPerkTitleZH] = useState('');
+  const [perkTitleKO, setPerkTitleKO] = useState('');
   const [perkIcon, setPerkIcon] = useState('fa-star');
-  const [perkDesc, setPerkDesc] = useState('');
+  const [perkDescEN, setPerkDescEN] = useState('');
+  const [perkDescZH, setPerkDescZH] = useState('');
+  const [perkDescKO, setPerkDescKO] = useState('');
 
   // 8. Chatbot FAQ Form
   const [faqQuestion, setFaqQuestion] = useState('');
@@ -158,8 +184,12 @@ export default function Admin() {
 
   useEffect(() => {
     if (homeBanner) {
-      setBannerTitle(homeBanner.title || '');
-      setBannerSubtitle(homeBanner.subtitle || '');
+      setBannerTitleEN(homeBanner.title_en || homeBanner.title || '');
+      setBannerTitleZH(homeBanner.title_zh || '');
+      setBannerTitleKO(homeBanner.title_ko || '');
+      setBannerSubtitleEN(homeBanner.subtitle_en || homeBanner.subtitle || '');
+      setBannerSubtitleZH(homeBanner.subtitle_zh || '');
+      setBannerSubtitleKO(homeBanner.subtitle_ko || '');
       setBannerImage(homeBanner.image || '');
     }
   }, [homeBanner]);
@@ -264,14 +294,24 @@ export default function Admin() {
   const handleCampaignSave = async (e) => {
     e.preventDefault();
     const data = {
-      title: campaignTitle,
-      desc: campaignDesc,
+      title: campaignTitleEN, // Fallback
+      title_en: campaignTitleEN,
+      title_zh: campaignTitleZH,
+      title_ko: campaignTitleKO,
+      desc: campaignDescEN, // Fallback
+      desc_en: campaignDescEN,
+      desc_zh: campaignDescZH,
+      desc_ko: campaignDescKO,
       end_date: campaignEndDate
     };
     try {
       await addCampaign(data);
-      setCampaignTitle('');
-      setCampaignDesc('');
+      setCampaignTitleEN('');
+      setCampaignTitleZH('');
+      setCampaignTitleKO('');
+      setCampaignDescEN('');
+      setCampaignDescZH('');
+      setCampaignDescKO('');
       setCampaignEndDate('');
       setIsCampaignModalOpen(false);
       triggerToast("🎉 Countdown Campaign Added!");
@@ -298,16 +338,24 @@ export default function Admin() {
     setPackageModalMode(mode);
     if (mode === 'edit' && item) {
       setPackageId(item.id);
-      setPackageTitle(item.title);
+      setPackageTitleEN(item.title_en || item.title || '');
+      setPackageTitleZH(item.title_zh || '');
+      setPackageTitleKO(item.title_ko || '');
       setPackageRate(item.rate);
       setPackageSavings(item.savings);
-      setPackageInclusions(item.inclusions);
+      setPackageInclusionsEN(item.inclusions_en || item.inclusions || '');
+      setPackageInclusionsZH(item.inclusions_zh || '');
+      setPackageInclusionsKO(item.inclusions_ko || '');
     } else {
       setPackageId('');
-      setPackageTitle('');
+      setPackageTitleEN('');
+      setPackageTitleZH('');
+      setPackageTitleKO('');
       setPackageRate(2880);
       setPackageSavings(1704);
-      setPackageInclusions('');
+      setPackageInclusionsEN('');
+      setPackageInclusionsZH('');
+      setPackageInclusionsKO('');
     }
     setIsPackageModalOpen(true);
   };
@@ -315,10 +363,16 @@ export default function Admin() {
   const handlePackageSave = async (e) => {
     e.preventDefault();
     const pkgData = {
-      title: packageTitle,
+      title: packageTitleEN, // Fallback
+      title_en: packageTitleEN,
+      title_zh: packageTitleZH,
+      title_ko: packageTitleKO,
       rate: Number(packageRate),
       savings: Number(packageSavings),
-      inclusions: packageInclusions
+      inclusions: packageInclusionsEN, // Fallback
+      inclusions_en: packageInclusionsEN,
+      inclusions_zh: packageInclusionsZH,
+      inclusions_ko: packageInclusionsKO
     };
 
     try {
@@ -446,14 +500,22 @@ export default function Admin() {
     setPerkModalMode(mode);
     if (mode === 'edit' && item) {
       setPerkId(item.id);
-      setPerkTitle(item.title);
+      setPerkTitleEN(item.title_en || item.title || '');
+      setPerkTitleZH(item.title_zh || '');
+      setPerkTitleKO(item.title_ko || '');
       setPerkIcon(item.icon || 'fa-star');
-      setPerkDesc(item.desc);
+      setPerkDescEN(item.desc_en || item.desc || '');
+      setPerkDescZH(item.desc_zh || '');
+      setPerkDescKO(item.desc_ko || '');
     } else {
       setPerkId('');
-      setPerkTitle('');
+      setPerkTitleEN('');
+      setPerkTitleZH('');
+      setPerkTitleKO('');
       setPerkIcon('fa-beer-mug-empty');
-      setPerkDesc('');
+      setPerkDescEN('');
+      setPerkDescZH('');
+      setPerkDescKO('');
     }
     setIsPerkModalOpen(true);
   };
@@ -461,9 +523,15 @@ export default function Admin() {
   const handlePerkSave = async (e) => {
     e.preventDefault();
     const perkData = {
-      title: perkTitle,
+      title: perkTitleEN, // Fallback
+      title_en: perkTitleEN,
+      title_zh: perkTitleZH,
+      title_ko: perkTitleKO,
       icon: perkIcon,
-      desc: perkDesc
+      desc: perkDescEN, // Fallback
+      desc_en: perkDescEN,
+      desc_zh: perkDescZH,
+      desc_ko: perkDescKO
     };
 
     try {
@@ -614,21 +682,23 @@ export default function Admin() {
       <div className="admin-container">
         <div className="section-title-wrap">
           <h2 className="section-main-title">
-            <span className="gold-text"><i className="fa-solid fa-user-shield"></i> Administration Console</span>
+            <span className="gold-text"><i className="fa-solid fa-user-shield"></i> {language === 'zh' ? '管理控制台' : (language === 'ko' ? '관리 콘솔' : 'Administration Console')}</span>
           </h2>
-          <p className="section-sub-title">Configure spa settings, review bookings, analyze feedback, and view database updates.</p>
+          <p className="section-sub-title">
+            {language === 'zh' ? '配置水疗设置、审核预订、分析反馈并查看数据库更新。' : (language === 'ko' ? '스파 설정 구성, 예약 검토, 피드백 분석 및 데이터베이스 업데이트 보기를 진행합니다.' : 'Configure spa settings, review bookings, analyze feedback, and view database updates.')}
+          </p>
         </div>
 
         {/* NOT LOGGED IN ACCESS PANEL */}
         {!adminUser ? (
           <div className="admin-login-card glass-panel">
             <div className="login-header">
-              <h3>Administrative Access</h3>
-              <p>Log in with your administrator account credentials to modify dynamic contents.</p>
+              <h3>{language === 'zh' ? '管理权限登录' : (language === 'ko' ? '관리자 권한 로그인' : 'Administrative Access')}</h3>
+              <p>{language === 'zh' ? '使用您的管理员账户凭据登录以修改动态内容。' : (language === 'ko' ? '동적 콘텐츠를 수정하려면 관리자 계정 자격 증명으로 로그인하십시오.' : 'Log in with your administrator account credentials to modify dynamic contents.')}</p>
             </div>
             <form onSubmit={handleLogin}>
               <div className="form-group">
-                <label>Email Address</label>
+                <label>{t('adm_lbl_email')}</label>
                 <input 
                   type="email" 
                   value={email}
@@ -639,7 +709,7 @@ export default function Admin() {
                 />
               </div>
               <div className="form-group">
-                <label>Password</label>
+                <label>{language === 'zh' ? '密码' : (language === 'ko' ? '비밀번호' : 'Password')}</label>
                 <input 
                   type="password" 
                   value={password}
@@ -650,7 +720,7 @@ export default function Admin() {
                 />
               </div>
               <div className="auth-buttons-row">
-                <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Log In</button>
+                <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>{language === 'zh' ? '登录' : (language === 'ko' ? '로그인' : 'Log In')}</button>
               </div>
             </form>
             
@@ -658,8 +728,10 @@ export default function Admin() {
               <div className="local-database-fallback">
                 <i className="fa-solid fa-triangle-exclamation"></i>
                 <div>
-                  <strong>Local Mock Database Mode Active</strong>
-                  <p>Firebase configuration is not active. Using mock in-memory localStorage db for instant testing. Feel free to use any username/password above to log in instantly!</p>
+                  <strong>{language === 'zh' ? '本地模拟数据库模式处于活动状态' : (language === 'ko' ? '로컬 모의 데이터베이스 모드 활성화됨' : 'Local Mock Database Mode Active')}</strong>
+                  <p>
+                    {language === 'zh' ? 'Firebase 配置未激活。正在使用本地 localStorage 模拟数据库进行即时测试。您可以使用上方的任何用户名/密码立即登录！' : (language === 'ko' ? 'Firebase 구성이 활성화되어 있지 않습니다. 즉석 테스트를 위해 로컬 localStorage 모의 DB를 사용합니다. 위의 아무 사용자 이름/비밀번호를 사용하여 바로 로그인하십시오!' : 'Firebase configuration is not active. Using mock in-memory localStorage db for instant testing. Feel free to use any username/password above to log in instantly!')}
+                  </p>
                 </div>
               </div>
             )}
@@ -674,88 +746,94 @@ export default function Admin() {
                 className={`admin-tab-btn ${adminTab === 'adminServices' ? 'active' : ''}`}
                 onClick={() => setAdminTab('adminServices')}
               >
-                <i className="fa-solid fa-clipboard-list"></i> Services Catalog
+                <i className="fa-solid fa-clipboard-list"></i> {t('adm_sidebar_services')}
               </button>
               <button 
                 className={`admin-tab-btn ${adminTab === 'adminPackages' ? 'active' : ''}`}
                 onClick={() => setAdminTab('adminPackages')}
               >
-                <i className="fa-solid fa-box-archive"></i> Service Packages
+                <i className="fa-solid fa-box-archive"></i> {t('adm_sidebar_packages')}
               </button>
               <button 
                 className={`admin-tab-btn ${adminTab === 'adminBookings' ? 'active' : ''}`}
                 onClick={() => setAdminTab('adminBookings')}
               >
-                <i className="fa-solid fa-calendar-check"></i> Bookings Manager
+                <i className="fa-solid fa-calendar-check"></i> {t('adm_sidebar_bookings')}
               </button>
               <button 
                 className={`admin-tab-btn ${adminTab === 'adminCampaigns' ? 'active' : ''}`}
                 onClick={() => setAdminTab('adminCampaigns')}
               >
-                <i className="fa-solid fa-bullhorn"></i> Events & Campaigns
+                <i className="fa-solid fa-bullhorn"></i> {t('adm_sidebar_campaigns')}
               </button>
               <button 
                 className={`admin-tab-btn ${adminTab === 'adminSEO' ? 'active' : ''}`}
                 onClick={() => setAdminTab('adminSEO')}
               >
-                <i className="fa-solid fa-search"></i> SEO Settings
+                <i className="fa-solid fa-search"></i> {t('adm_sidebar_seo')}
               </button>
               <button 
                 className={`admin-tab-btn ${adminTab === 'adminBanners' ? 'active' : ''}`}
                 onClick={() => setAdminTab('adminBanners')}
               >
-                <i className="fa-solid fa-image"></i> Home Banners
+                <i className="fa-solid fa-image"></i> {t('adm_sidebar_banners')}
               </button>
               <button 
                 className={`admin-tab-btn ${adminTab === 'adminGallery' ? 'active' : ''}`}
                 onClick={() => setAdminTab('adminGallery')}
               >
-                <i className="fa-solid fa-images"></i> Gallery Photos
+                <i className="fa-solid fa-images"></i> {t('adm_sidebar_gallery')}
               </button>
               <button 
                 className={`admin-tab-btn ${adminTab === 'adminVideos' ? 'active' : ''}`}
                 onClick={() => setAdminTab('adminVideos')}
               >
-                <i className="fa-solid fa-circle-play"></i> Videos
+                <i className="fa-solid fa-circle-play"></i> {t('adm_sidebar_videos')}
               </button>
               <button 
                 className={`admin-tab-btn ${adminTab === 'adminSocial' ? 'active' : ''}`}
                 onClick={() => setAdminTab('adminSocial')}
               >
-                <i className="fa-solid fa-share-nodes"></i> Social Posts
+                <i className="fa-solid fa-share-nodes"></i> {t('adm_sidebar_socials')}
               </button>
               <button 
                 className={`admin-tab-btn ${adminTab === 'adminMemberships' ? 'active' : ''}`}
                 onClick={() => setAdminTab('adminMemberships')}
               >
-                <i className="fa-solid fa-id-card"></i> Memberships
+                <i className="fa-solid fa-id-card"></i> {t('adm_sidebar_perks')}
               </button>
               <button 
                 className={`admin-tab-btn ${adminTab === 'adminChatbot' ? 'active' : ''}`}
                 onClick={() => setAdminTab('adminChatbot')}
               >
-                <i className="fa-solid fa-robot"></i> Chatbot Training
+                <i className="fa-solid fa-robot"></i> {t('adm_sidebar_chatbot')}
               </button>
               <button 
                 className={`admin-tab-btn ${adminTab === 'adminFeedback' ? 'active' : ''}`}
                 onClick={() => setAdminTab('adminFeedback')}
               >
-                <i className="fa-solid fa-comments"></i> Guest Feedback
+                <i className="fa-solid fa-comments"></i> {t('adm_sidebar_feedback')}
               </button>
               <button 
                 className={`admin-tab-btn ${adminTab === 'adminAnalytics' ? 'active' : ''}`}
                 onClick={() => setAdminTab('adminAnalytics')}
               >
-                <i className="fa-solid fa-chart-pie"></i> Analytics & Logs
+                <i className="fa-solid fa-chart-pie"></i> {t('adm_sidebar_analytics')}
               </button>
               <button 
                 className={`admin-tab-btn ${adminTab === 'adminSettings' ? 'active' : ''}`}
                 onClick={() => setAdminTab('adminSettings')}
               >
-                <i className="fa-solid fa-gears"></i> App Settings & Keys
+                <i className="fa-solid fa-gears"></i> {t('adm_sidebar_settings')}
+              </button>
+              <button 
+                className={`admin-tab-btn ${adminTab === 'adminAccounts' ? 'active' : ''}`}
+                onClick={() => setAdminTab('adminAccounts')}
+              >
+                <i className="fa-solid fa-users-gear"></i> {t('adm_sidebar_accounts')}
               </button>
               <button className="admin-tab-btn logout-tab" onClick={handleLogout}>
-                <i className="fa-solid fa-right-from-bracket"></i> Log Out
+                <i className="fa-solid fa-right-from-bracket"></i> {t('adm_sidebar_logout')}
               </button>
             </div>
 
@@ -763,9 +841,9 @@ export default function Admin() {
             {adminTab === 'adminServices' && (
               <div className="admin-tab-content active">
                 <div className="admin-section-header">
-                  <h4>Manage Services Catalog</h4>
+                  <h4>{t('adm_title_services')}</h4>
                   <button className="btn btn-primary btn-sm" onClick={() => openServiceModal('new')}>
-                    <i className="fa-solid fa-plus"></i> Add Service
+                    <i className="fa-solid fa-plus"></i> {t('adm_btn_add')}
                   </button>
                 </div>
                 
@@ -773,13 +851,13 @@ export default function Admin() {
                   <table className="admin-table">
                     <thead>
                       <tr>
-                        <th>Category</th>
-                        <th>Name (EN)</th>
-                        <th>Name (ZH)</th>
-                        <th>Name (KO)</th>
-                        <th>Price</th>
-                        <th>Tip Option</th>
-                        <th>Actions</th>
+                        <th>{t('adm_th_category')}</th>
+                        <th>{t('adm_th_name')} (EN)</th>
+                        <th>{t('adm_th_name')} (ZH)</th>
+                        <th>{t('adm_th_name')} (KO)</th>
+                        <th>{t('adm_th_price')}</th>
+                        <th>{t('adm_th_tips')}</th>
+                        <th>{t('adm_th_actions')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -790,20 +868,20 @@ export default function Admin() {
                           <td>{item.name_zh}</td>
                           <td>{item.name_ko}</td>
                           <td>Php {item.rate}</td>
-                          <td>{item.tip === 'none' ? 'None' : 'Variable'}</td>
+                          <td>{item.tip === 'none' ? (language === 'zh' ? '无' : (language === 'ko' ? '없음' : 'None')) : (language === 'zh' ? '可变' : (language === 'ko' ? '가변적' : 'Variable'))}</td>
                           <td>
                             <button 
                               className="btn btn-primary btn-xs" 
                               onClick={() => openServiceModal('edit', item)}
                               style={{ marginRight: '5px' }}
                             >
-                              Edit
+                              {t('adm_btn_edit')}
                             </button>
                             <button 
                               className="btn btn-danger btn-xs" 
                               onClick={() => handleServiceDelete(item.id, item.name_en)}
                             >
-                              Delete
+                              {t('adm_btn_delete')}
                             </button>
                           </td>
                         </tr>
@@ -818,32 +896,34 @@ export default function Admin() {
             {adminTab === 'adminPackages' && (
               <div className="admin-tab-content active">
                 <div className="admin-section-header">
-                  <h4>Weekday Massage Packages</h4>
+                  <h4>{t('adm_title_packages')}</h4>
                   <button className="btn btn-primary btn-sm" onClick={() => openPackageModal('new')}>
-                    <i className="fa-solid fa-plus"></i> Add Package
+                    <i className="fa-solid fa-plus"></i> {t('adm_btn_add')}
                   </button>
                 </div>
                 <div className="table-wrapper">
                   <table className="admin-table">
                     <thead>
                       <tr>
-                        <th>Title</th>
-                        <th>Rate (Php)</th>
-                        <th>Savings (Php)</th>
-                        <th>Inclusions</th>
-                        <th>Actions</th>
+                        <th>{t('adm_th_title')}</th>
+                        <th>{t('adm_lbl_rate')}</th>
+                        <th>{t('adm_lbl_savings')}</th>
+                        <th>{t('adm_lbl_inclusions_en').split(' ')[0]}</th>
+                        <th>{t('adm_th_actions')}</th>
                       </tr>
                     </thead>
                     <tbody>
                       {servicePackages && servicePackages.map(pkg => (
                         <tr key={pkg.id}>
-                          <td style={{ fontWeight: 'bold' }}>{pkg.title}</td>
+                          <td style={{ fontWeight: 'bold' }}>{language === 'zh' ? (pkg.title_zh || pkg.title) : (language === 'ko' ? (pkg.title_ko || pkg.title) : (pkg.title_en || pkg.title))}</td>
                           <td>Php {pkg.rate}</td>
                           <td>Php {pkg.savings}</td>
-                          <td style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{pkg.inclusions}</td>
+                          <td style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                            {language === 'zh' ? (pkg.inclusions_zh || pkg.inclusions) : (language === 'ko' ? (pkg.inclusions_ko || pkg.inclusions) : (pkg.inclusions_en || pkg.inclusions))}
+                          </td>
                           <td>
-                            <button className="btn btn-primary btn-xs" style={{ marginRight: '5px' }} onClick={() => openPackageModal('edit', pkg)}>Edit</button>
-                            <button className="btn btn-danger btn-xs" onClick={() => handlePackageDelete(pkg.id, pkg.title)}>Delete</button>
+                            <button className="btn btn-primary btn-xs" style={{ marginRight: '5px' }} onClick={() => openPackageModal('edit', pkg)}>{t('adm_btn_edit')}</button>
+                            <button className="btn btn-danger btn-xs" onClick={() => handlePackageDelete(pkg.id, pkg.title)}>{t('adm_btn_delete')}</button>
                           </td>
                         </tr>
                       ))}
@@ -857,20 +937,20 @@ export default function Admin() {
             {adminTab === 'adminBookings' && (
               <div className="admin-tab-content active">
                 <div className="admin-section-header">
-                  <h4>Guest Reservations Manager</h4>
+                  <h4>{t('adm_title_bookings')}</h4>
                 </div>
                 
                 <div className="table-wrapper">
                   <table className="admin-table">
                     <thead>
                       <tr>
-                        <th>Guest</th>
-                        <th>Contact / Viber</th>
-                        <th>Date & Time</th>
-                        <th>Item/Facility</th>
-                        <th>Duration</th>
-                        <th>Guests</th>
-                        <th>Actions</th>
+                        <th>{language === 'zh' ? '宾客' : (language === 'ko' ? '고객' : 'Guest')}</th>
+                        <th>{language === 'zh' ? '联系方式 / Viber' : (language === 'ko' ? '연락처 / Viber' : 'Contact / Viber')}</th>
+                        <th>{language === 'zh' ? '日期与时间' : (language === 'ko' ? '날짜 및 시간' : 'Date & Time')}</th>
+                        <th>{language === 'zh' ? '项目/设施' : (language === 'ko' ? '항목/시설' : 'Item/Facility')}</th>
+                        <th>{language === 'zh' ? '时长' : (language === 'ko' ? '기간' : 'Duration')}</th>
+                        <th>{language === 'zh' ? '人数' : (language === 'ko' ? '인원' : 'Guests')}</th>
+                        <th>{t('adm_th_actions')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -888,7 +968,7 @@ export default function Admin() {
                                 className="btn btn-danger btn-xs" 
                                 onClick={() => removeBooking(book.id)}
                               >
-                                Cancel Booking
+                                {language === 'zh' ? '取消预订' : (language === 'ko' ? '예약 취소' : 'Cancel Booking')}
                               </button>
                             </td>
                           </tr>
@@ -896,7 +976,7 @@ export default function Admin() {
                       ) : (
                         <tr>
                           <td colSpan="7" style={{ textAlign: 'center', padding: '30px', color: 'var(--text-secondary)' }}>
-                            No active reservations found in Firestore.
+                            {language === 'zh' ? '未在数据库中找到有效的预订。' : (language === 'ko' ? '데이터베이스에 활성화된 예약이 없습니다.' : 'No active reservations found in database.')}
                           </td>
                         </tr>
                       )}
@@ -910,24 +990,24 @@ export default function Admin() {
             {adminTab === 'adminCampaigns' && (
               <div className="admin-tab-content active">
                 <div className="admin-section-header">
-                  <h4>Dynamic Countdown Event Banners</h4>
+                  <h4>{t('adm_title_campaigns')}</h4>
                   <button className="btn btn-primary btn-sm" onClick={() => setIsCampaignModalOpen(true)}>
-                    <i className="fa-solid fa-plus"></i> Add Campaign
+                    <i className="fa-solid fa-plus"></i> {t('adm_btn_add')}
                   </button>
                 </div>
                 
                 <div className="campaigns-list-admin">
                   {campaigns.map(camp => (
                     <div key={camp.id} className="campaign-admin-card glass-panel">
-                      <h5>{camp.title}</h5>
-                      <p>{camp.desc}</p>
+                      <h5>{language === 'zh' ? (camp.title_zh || camp.title) : (language === 'ko' ? (camp.title_ko || camp.title) : (camp.title_en || camp.title))}</h5>
+                      <p>{language === 'zh' ? (camp.desc_zh || camp.desc) : (language === 'ko' ? (camp.desc_ko || camp.desc) : (camp.desc_en || camp.desc))}</p>
                       <div className="campaign-admin-footer">
-                        <span>Ends: {new Date(camp.end_date).toLocaleString()}</span>
+                        <span>{language === 'zh' ? '结束时间' : (language === 'ko' ? '종료 시간' : 'Ends')}: {new Date(camp.end_date).toLocaleString()}</span>
                         <button 
                           className="btn btn-danger btn-xs"
                           onClick={() => handleCampaignDelete(camp.id, camp.title)}
                         >
-                          Delete Event
+                          {t('adm_btn_delete')}
                         </button>
                       </div>
                     </div>
@@ -940,7 +1020,7 @@ export default function Admin() {
             {adminTab === 'adminSEO' && (
               <div className="admin-tab-content active">
                 <div className="admin-section-header">
-                  <h4>SEO Configurations</h4>
+                  <h4>{t('adm_title_seo')}</h4>
                 </div>
                 <div className="settings-card glass-panel" style={{ maxWidth: '600px', width: '100%' }}>
                   <form onSubmit={(e) => {
@@ -949,7 +1029,7 @@ export default function Admin() {
                     triggerToast("🎉 SEO Settings updated successfully!");
                   }}>
                     <div className="form-group">
-                      <label>Meta Title</label>
+                      <label>{language === 'zh' ? '元标题' : (language === 'ko' ? '메타 제목' : 'Meta Title')}</label>
                       <input 
                         type="text" 
                         value={seoTitle} 
@@ -959,7 +1039,7 @@ export default function Admin() {
                       />
                     </div>
                     <div className="form-group">
-                      <label>Meta Description</label>
+                      <label>{language === 'zh' ? '元描述' : (language === 'ko' ? '메타 설명' : 'Meta Description')}</label>
                       <textarea 
                         value={seoDesc} 
                         onChange={(e) => setSeoDesc(e.target.value)} 
@@ -969,7 +1049,7 @@ export default function Admin() {
                       />
                     </div>
                     <div className="form-group">
-                      <label>Meta Keywords (Comma separated)</label>
+                      <label>{language === 'zh' ? '元关键字（以逗号分隔）' : (language === 'ko' ? '메타 키워드 (쉼표로 구분)' : 'Meta Keywords (Comma separated)')}</label>
                       <input 
                         type="text" 
                         value={seoKeywords} 
@@ -978,7 +1058,7 @@ export default function Admin() {
                         required 
                       />
                     </div>
-                    <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>Save SEO Settings</button>
+                    <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>{t('adm_btn_save')}</button>
                   </form>
                 </div>
               </div>
@@ -988,36 +1068,82 @@ export default function Admin() {
             {adminTab === 'adminBanners' && (
               <div className="admin-tab-content active">
                 <div className="admin-section-header">
-                  <h4>Home Hero Banner Settings</h4>
+                  <h4>{t('adm_title_banners')}</h4>
                 </div>
                 <div className="settings-card glass-panel" style={{ maxWidth: '600px', width: '100%' }}>
                   <form onSubmit={(e) => {
                     e.preventDefault();
-                    updateHomeBanner({ title: bannerTitle, subtitle: bannerSubtitle, image: bannerImage });
+                    updateHomeBanner({ 
+                      title: bannerTitleEN, 
+                      title_en: bannerTitleEN, 
+                      title_zh: bannerTitleZH, 
+                      title_ko: bannerTitleKO, 
+                      subtitle: bannerSubtitleEN, 
+                      subtitle_en: bannerSubtitleEN, 
+                      subtitle_zh: bannerSubtitleZH, 
+                      subtitle_ko: bannerSubtitleKO, 
+                      image: bannerImage 
+                    });
                     triggerToast("🎉 Home hero banner updated!");
                   }}>
                     <div className="form-group">
-                      <label>Hero Title</label>
+                      <label>{language === 'zh' ? '横幅标题 (EN)' : (language === 'ko' ? '배너 제목 (EN)' : 'Banner Title (EN)')}</label>
                       <input 
                         type="text" 
-                        value={bannerTitle} 
-                        onChange={(e) => setBannerTitle(e.target.value)} 
+                        value={bannerTitleEN} 
+                        onChange={(e) => setBannerTitleEN(e.target.value)} 
                         className="form-control" 
                         required 
                       />
                     </div>
                     <div className="form-group">
-                      <label>Hero Subtitle</label>
+                      <label>{language === 'zh' ? '横幅标题 (ZH)' : (language === 'ko' ? '배너 제목 (ZH)' : 'Banner Title (ZH)')}</label>
                       <input 
                         type="text" 
-                        value={bannerSubtitle} 
-                        onChange={(e) => setBannerSubtitle(e.target.value)} 
+                        value={bannerTitleZH} 
+                        onChange={(e) => setBannerTitleZH(e.target.value)} 
+                        className="form-control" 
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>{language === 'zh' ? '横幅标题 (KO)' : (language === 'ko' ? '배너 제목 (KO)' : 'Banner Title (KO)')}</label>
+                      <input 
+                        type="text" 
+                        value={bannerTitleKO} 
+                        onChange={(e) => setBannerTitleKO(e.target.value)} 
+                        className="form-control" 
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>{language === 'zh' ? '横幅副标题 (EN)' : (language === 'ko' ? '배너 부제목 (EN)' : 'Banner Subtitle (EN)')}</label>
+                      <input 
+                        type="text" 
+                        value={bannerSubtitleEN} 
+                        onChange={(e) => setBannerSubtitleEN(e.target.value)} 
                         className="form-control" 
                         required 
                       />
                     </div>
                     <div className="form-group">
-                      <label>Background Image URL</label>
+                      <label>{language === 'zh' ? '横幅副标题 (ZH)' : (language === 'ko' ? '배너 부제목 (ZH)' : 'Banner Subtitle (ZH)')}</label>
+                      <input 
+                        type="text" 
+                        value={bannerSubtitleZH} 
+                        onChange={(e) => setBannerSubtitleZH(e.target.value)} 
+                        className="form-control" 
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>{language === 'zh' ? '横幅副标题 (KO)' : (language === 'ko' ? '배너 부제목 (KO)' : 'Banner Subtitle (KO)')}</label>
+                      <input 
+                        type="text" 
+                        value={bannerSubtitleKO} 
+                        onChange={(e) => setBannerSubtitleKO(e.target.value)} 
+                        className="form-control" 
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>{language === 'zh' ? '背景图片链接' : (language === 'ko' ? '배경 이미지 URL' : 'Background Image URL')}</label>
                       <input 
                         type="text" 
                         value={bannerImage} 
@@ -1031,7 +1157,7 @@ export default function Admin() {
                         </div>
                       )}
                     </div>
-                    <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>Save Banner Settings</button>
+                    <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>{t('adm_btn_save')}</button>
                   </form>
                 </div>
               </div>
@@ -1041,15 +1167,15 @@ export default function Admin() {
             {adminTab === 'adminGallery' && (
               <div className="admin-tab-content active" style={{ width: '100%' }}>
                 <div className="admin-section-header">
-                  <h4>Virtual Tour Gallery Photos</h4>
+                  <h4>{t('adm_title_gallery')}</h4>
                 </div>
                 
                 {/* Inline Add Photo Form */}
                 <div className="glass-panel" style={{ padding: '20px', marginBottom: '25px', width: '100%' }}>
-                  <h5 style={{ color: 'var(--accent-gold)', marginBottom: '15px' }}>Add Facility Image</h5>
+                  <h5 style={{ color: 'var(--accent-gold)', marginBottom: '15px' }}>{language === 'zh' ? '添加设施图片' : (language === 'ko' ? '시설 이미지 추가' : 'Add Facility Image')}</h5>
                   <form onSubmit={handleGalleryAdd} style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', alignItems: 'flex-end' }}>
                     <div className="form-group" style={{ flex: '1 1 300px' }}>
-                      <label>Image URL</label>
+                      <label>{language === 'zh' ? '图片 URL' : (language === 'ko' ? '이미지 URL' : 'Image URL')}</label>
                       <input 
                         type="text" 
                         value={galleryPhotoUrl} 
@@ -1060,7 +1186,7 @@ export default function Admin() {
                       />
                     </div>
                     <div className="form-group" style={{ flex: '1 1 300px' }}>
-                      <label>Caption / Location Label</label>
+                      <label>{language === 'zh' ? '说明 / 位置标签' : (language === 'ko' ? '설명 / 위치 라벨' : 'Caption / Location Label')}</label>
                       <input 
                         type="text" 
                         value={galleryCaption} 
@@ -1070,7 +1196,7 @@ export default function Admin() {
                         required 
                       />
                     </div>
-                    <button type="submit" className="btn btn-primary" style={{ padding: '12px 25px' }}>Add Photo</button>
+                    <button type="submit" className="btn btn-primary" style={{ padding: '12px 25px' }}>{language === 'zh' ? '添加照片' : (language === 'ko' ? '사진 추가' : 'Add Photo')}</button>
                   </form>
                 </div>
 
@@ -1079,8 +1205,10 @@ export default function Admin() {
                     <div key={photo.id} className="photo-card glass-panel" style={{ display: 'flex', flexDirection: 'column', height: '225px', padding: 0, overflow: 'hidden' }}>
                       <img src={photo.src} alt={photo.caption} style={{ width: '100%', height: '120px', objectFit: 'cover' }} />
                       <div style={{ padding: '10px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                        <p style={{ fontSize: '0.8rem', fontWeight: '500', color: 'var(--text-primary)', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>{photo.caption}</p>
-                        <button className="btn btn-danger btn-xs" style={{ marginTop: 'auto', width: '100%' }} onClick={() => handleGalleryDelete(photo.id, photo.caption)}>Delete Photo</button>
+                        <p style={{ fontSize: '0.8rem', fontWeight: '500', color: 'var(--text-primary)', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden' }}>
+                          {photo.caption.startsWith('gallery_') ? t(photo.caption) : photo.caption}
+                        </p>
+                        <button className="btn btn-danger btn-xs" style={{ marginTop: 'auto', width: '100%' }} onClick={() => handleGalleryDelete(photo.id, photo.caption)}>{t('adm_btn_delete')}</button>
                       </div>
                     </div>
                   ))}
@@ -1092,15 +1220,15 @@ export default function Admin() {
             {adminTab === 'adminVideos' && (
               <div className="admin-tab-content active">
                 <div className="admin-section-header">
-                  <h4>Walkthrough Tour Videos</h4>
+                  <h4>{t('adm_title_videos')}</h4>
                 </div>
                 
                 {/* Inline Add Video Form */}
                 <div className="glass-panel" style={{ padding: '20px', marginBottom: '25px', width: '100%' }}>
-                  <h5 style={{ color: 'var(--accent-gold)', marginBottom: '15px' }}>Add Walkthrough Video Link</h5>
+                  <h5 style={{ color: 'var(--accent-gold)', marginBottom: '15px' }}>{language === 'zh' ? '添加导览视频链接' : (language === 'ko' ? '둘러보기 비디오 링크 추가' : 'Add Walkthrough Video Link')}</h5>
                   <form onSubmit={handleVideoAdd} style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', alignItems: 'flex-end' }}>
                     <div className="form-group" style={{ flex: '1 1 200px' }}>
-                      <label>Video Title</label>
+                      <label>{language === 'zh' ? '视频标题' : (language === 'ko' ? '비디오 제목' : 'Video Title')}</label>
                       <input 
                         type="text" 
                         value={videoTitle} 
@@ -1111,7 +1239,7 @@ export default function Admin() {
                       />
                     </div>
                     <div className="form-group" style={{ flex: '1 1 350px' }}>
-                      <label>Video URL (MP4, YouTube, or Facebook)</label>
+                      <label>{language === 'zh' ? '视频 URL (MP4、YouTube 或 Facebook)' : (language === 'ko' ? '비디오 URL (MP4, YouTube 또는 Facebook)' : 'Video URL (MP4, YouTube, or Facebook)')}</label>
                       <input 
                         type="text" 
                         value={videoUrl} 
@@ -1121,11 +1249,15 @@ export default function Admin() {
                         required 
                       />
                       <small style={{ display: 'block', marginTop: '4px', fontSize: '0.72rem', color: 'var(--text-secondary)' }}>
-                        Use clean links (e.g. <code>/reel/ID</code> or <code>/watch/?v=ID</code>) to play inside the app. Avoid share/redirect short links.
+                        {language === 'zh' 
+                          ? '使用直接链接（如 /reel/ID 或 /watch/?v=ID）在应用内播放。避免使用分享/重定向的短链接。' 
+                          : (language === 'ko' 
+                            ? '앱 내에서 재생하려면 클린 링크(/reel/ID 또는 /watch/?v=ID 등)를 사용하세요. 공유/리디렉션 단축 링크는 피하십시오.' 
+                            : 'Use clean links (e.g. /reel/ID or /watch/?v=ID) to play inside the app. Avoid share/redirect short links.')}
                       </small>
                     </div>
                     <div className="form-group" style={{ flex: '1 1 250px' }}>
-                      <label>Short Description</label>
+                      <label>{language === 'zh' ? '简短描述' : (language === 'ko' ? '짧은 설명' : 'Short Description')}</label>
                       <input 
                         type="text" 
                         value={videoDesc} 
@@ -1135,7 +1267,7 @@ export default function Admin() {
                         required 
                       />
                     </div>
-                    <button type="submit" className="btn btn-primary" style={{ padding: '12px 25px' }}>Add Video</button>
+                    <button type="submit" className="btn btn-primary" style={{ padding: '12px 25px' }}>{language === 'zh' ? '添加视频' : (language === 'ko' ? '비디오 추가' : 'Add Video')}</button>
                   </form>
                 </div>
 
@@ -1143,20 +1275,20 @@ export default function Admin() {
                   <table className="admin-table">
                     <thead>
                       <tr>
-                        <th>Title</th>
+                        <th>{t('adm_th_title')}</th>
                         <th>URL</th>
-                        <th>Description</th>
-                        <th>Actions</th>
+                        <th>{language === 'zh' ? '描述' : (language === 'ko' ? '설명' : 'Description')}</th>
+                        <th>{t('adm_th_actions')}</th>
                       </tr>
                     </thead>
                     <tbody>
                       {promoVideos && promoVideos.map(vid => (
                         <tr key={vid.id}>
-                          <td style={{ fontWeight: 'bold' }}>{vid.title}</td>
+                          <td style={{ fontWeight: 'bold' }}>{vid.title.startsWith('vid') ? t(vid.title) : vid.title}</td>
                           <td style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{vid.url}</td>
-                          <td>{vid.desc}</td>
+                          <td>{vid.desc.startsWith('vid') ? t(vid.desc) : vid.desc}</td>
                           <td>
-                            <button className="btn btn-danger btn-xs" onClick={() => handleVideoDelete(vid.id, vid.title)}>Delete</button>
+                            <button className="btn btn-danger btn-xs" onClick={() => handleVideoDelete(vid.id, vid.title)}>{t('adm_btn_delete')}</button>
                           </td>
                         </tr>
                       ))}
@@ -1170,15 +1302,15 @@ export default function Admin() {
             {adminTab === 'adminSocial' && (
               <div className="admin-tab-content active">
                 <div className="admin-section-header">
-                  <h4>Mock Social Photo Board Posts</h4>
+                  <h4>{t('adm_title_socials')}</h4>
                 </div>
                 
                 {/* Inline Add Social Post Form */}
                 <div className="glass-panel" style={{ padding: '20px', marginBottom: '25px', width: '100%' }}>
-                  <h5 style={{ color: 'var(--accent-gold)', marginBottom: '15px' }}>Add New Guest Social Card</h5>
+                  <h5 style={{ color: 'var(--accent-gold)', marginBottom: '15px' }}>{language === 'zh' ? '添加新宾客社交卡片' : (language === 'ko' ? '새로운 고객 소셜 카드 추가' : 'Add New Guest Social Card')}</h5>
                   <form onSubmit={handleSocialAdd} style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', alignItems: 'flex-end' }}>
                     <div className="form-group" style={{ flex: '1 1 150px' }}>
-                      <label>Username</label>
+                      <label>{language === 'zh' ? '用户名' : (language === 'ko' ? '사용자 이름' : 'Username')}</label>
                       <input 
                         type="text" 
                         value={socialUser} 
@@ -1189,7 +1321,7 @@ export default function Admin() {
                       />
                     </div>
                     <div className="form-group" style={{ flex: '1 1 250px' }}>
-                      <label>Image URL</label>
+                      <label>{language === 'zh' ? '图片 URL' : (language === 'ko' ? '이미지 URL' : 'Image URL')}</label>
                       <input 
                         type="text" 
                         value={socialImg} 
@@ -1200,7 +1332,7 @@ export default function Admin() {
                       />
                     </div>
                     <div className="form-group" style={{ flex: '1 1 100px' }}>
-                      <label>Mock Likes</label>
+                      <label>{language === 'zh' ? '模拟点赞数' : (language === 'ko' ? '모의 좋아요 수' : 'Mock Likes')}</label>
                       <input 
                         type="number" 
                         value={socialLikes} 
@@ -1211,7 +1343,7 @@ export default function Admin() {
                       />
                     </div>
                     <div className="form-group" style={{ flex: '1 1 300px' }}>
-                      <label>Message Content</label>
+                      <label>{language === 'zh' ? '留言内容' : (language === 'ko' ? '메시지 내용' : 'Message Content')}</label>
                       <input 
                         type="text" 
                         value={socialMsg} 
@@ -1221,7 +1353,7 @@ export default function Admin() {
                         required 
                       />
                     </div>
-                    <button type="submit" className="btn btn-primary" style={{ padding: '12px 25px' }}>Add Post</button>
+                    <button type="submit" className="btn btn-primary" style={{ padding: '12px 25px' }}>{language === 'zh' ? '添加帖子' : (language === 'ko' ? '게시물 추가' : 'Add Post')}</button>
                   </form>
                 </div>
 
@@ -1229,11 +1361,11 @@ export default function Admin() {
                   <table className="admin-table">
                     <thead>
                       <tr>
-                        <th>Username</th>
-                        <th>Image URL</th>
-                        <th>Likes</th>
-                        <th>Message</th>
-                        <th>Actions</th>
+                        <th>{language === 'zh' ? '用户名' : (language === 'ko' ? '사용자 이름' : 'Username')}</th>
+                        <th>{language === 'zh' ? '图片 URL' : (language === 'ko' ? '이미지 URL' : 'Image URL')}</th>
+                        <th>{language === 'zh' ? '点赞数' : (language === 'ko' ? '좋아요' : 'Likes')}</th>
+                        <th>{language === 'zh' ? '留言' : (language === 'ko' ? '메시지' : 'Message')}</th>
+                        <th>{t('adm_th_actions')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -1242,9 +1374,9 @@ export default function Admin() {
                           <td style={{ fontWeight: 'bold' }}>@{post.username}</td>
                           <td style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{post.img}</td>
                           <td>❤️ {post.likes}</td>
-                          <td>{post.message}</td>
+                          <td>{post.message.startsWith('mock_social_') ? t(post.message) : post.message}</td>
                           <td>
-                            <button className="btn btn-danger btn-xs" onClick={() => handleSocialDelete(post.id, post.username)}>Delete</button>
+                            <button className="btn btn-danger btn-xs" onClick={() => handleSocialDelete(post.id, post.username)}>{t('adm_btn_delete')}</button>
                           </td>
                         </tr>
                       ))}
@@ -1258,9 +1390,9 @@ export default function Admin() {
             {adminTab === 'adminMemberships' && (
               <div className="admin-tab-content active">
                 <div className="admin-section-header">
-                  <h4>Starlight Membership Loyalty Perks</h4>
+                  <h4>{t('adm_title_perks')}</h4>
                   <button className="btn btn-primary btn-sm" onClick={() => openPerkModal('new')}>
-                    <i className="fa-solid fa-plus"></i> Add Perk
+                    <i className="fa-solid fa-plus"></i> {t('adm_btn_add')}
                   </button>
                 </div>
 
@@ -1268,21 +1400,21 @@ export default function Admin() {
                   <table className="admin-table">
                     <thead>
                       <tr>
-                        <th>Title</th>
-                        <th>Icon Class</th>
-                        <th>Description</th>
-                        <th>Actions</th>
+                        <th>{t('adm_th_title')}</th>
+                        <th>{language === 'zh' ? '图标类名' : (language === 'ko' ? '아이콘 클래스' : 'Icon Class')}</th>
+                        <th>{language === 'zh' ? '描述' : (language === 'ko' ? '설명' : 'Description')}</th>
+                        <th>{t('adm_th_actions')}</th>
                       </tr>
                     </thead>
                     <tbody>
                       {membershipPerks && membershipPerks.map(perk => (
                         <tr key={perk.id}>
-                          <td style={{ fontWeight: 'bold' }}><i className={`fa-solid ${perk.icon || 'fa-award'}`} style={{ marginRight: '8px', color: 'var(--accent-gold)' }}></i>{perk.title}</td>
+                          <td style={{ fontWeight: 'bold' }}><i className={`fa-solid ${perk.icon || 'fa-award'}`} style={{ marginRight: '8px', color: 'var(--accent-gold)' }}></i>{language === 'zh' ? (perk.title_zh || perk.title) : (language === 'ko' ? (perk.title_ko || perk.title) : (perk.title_en || perk.title))}</td>
                           <td><code>{perk.icon || 'fa-award'}</code></td>
-                          <td>{perk.desc}</td>
+                          <td>{language === 'zh' ? (perk.desc_zh || perk.desc) : (language === 'ko' ? (perk.desc_ko || perk.desc) : (perk.desc_en || perk.desc))}</td>
                           <td>
-                            <button className="btn btn-primary btn-xs" style={{ marginRight: '5px' }} onClick={() => openPerkModal('edit', perk)}>Edit</button>
-                            <button className="btn btn-danger btn-xs" onClick={() => handlePerkDelete(perk.id, perk.title)}>Delete</button>
+                            <button className="btn btn-primary btn-xs" style={{ marginRight: '5px' }} onClick={() => openPerkModal('edit', perk)}>{t('adm_btn_edit')}</button>
+                            <button className="btn btn-danger btn-xs" onClick={() => handlePerkDelete(perk.id, perk.title)}>{t('adm_btn_delete')}</button>
                           </td>
                         </tr>
                       ))}
@@ -1296,21 +1428,25 @@ export default function Admin() {
             {adminTab === 'adminChatbot' && (
               <div className="admin-tab-content active">
                 <div className="admin-section-header">
-                  <h4>Concierge AI Chatbot Training & Instructions</h4>
+                  <h4>{t('adm_title_chatbot')}</h4>
                 </div>
 
                 {/* Global Master Prompt Instructions */}
                 <div className="glass-panel" style={{ padding: '20px', marginBottom: '25px', width: '100%', boxSizing: 'border-box' }}>
                   <h5 style={{ color: 'var(--accent-gold)', marginBottom: '10px' }}>
-                    <i className="fa-solid fa-brain" style={{ marginRight: '8px' }}></i> Master AI Concierge System Instructions
+                    <i className="fa-solid fa-brain" style={{ marginRight: '8px' }}></i> {language === 'zh' ? '主 AI 客服系统指令' : (language === 'ko' ? '마스터 AI 컨시어지 시스템 지침' : 'Master AI Concierge System Instructions')}
                   </h5>
                   <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '15px' }}>
-                    Configure the primary personality, operational rules, layout details, and guardrails of the AI brand ambassador. This paragraph is loaded directly as the LLM's system persona.
+                    {language === 'zh' 
+                      ? '配置 AI 品牌大使的核心个性、运营规则、布局细节和防线。此段内容直接作为大模型的系统设定加载。' 
+                      : (language === 'ko' 
+                        ? 'AI 브랜드 앰버서더의 주요 성격, 운영 규칙, 레이아웃 세부 정보 및 가드레일을 구성합니다. 이 단락은 LLM의 시스템 페르소나로 직접 로드됩니다.' 
+                        : 'Configure the primary personality, operational rules, layout details, and guardrails of the AI brand ambassador. This paragraph is loaded directly as the LLM\'s system persona.')}
                   </p>
                   <form onSubmit={async (e) => {
                     e.preventDefault();
                     await updateChatbotInstructions(tempInstructions);
-                    triggerToast("🎉 AI System Instructions updated successfully!");
+                    triggerToast("🎉 " + (language === 'zh' ? 'AI 系统指令更新成功！' : (language === 'ko' ? 'AI 시스템 지침이 성공적으로 업데이트되었습니다!' : 'AI System Instructions updated successfully!')));
                   }}>
                     <textarea 
                       value={tempInstructions} 
@@ -1332,7 +1468,7 @@ export default function Admin() {
                       }}
                     />
                     <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '12px' }}>
-                      <button type="submit" className="btn btn-primary btn-sm">Save System Instructions</button>
+                      <button type="submit" className="btn btn-primary btn-sm">{language === 'zh' ? '保存系统指令' : (language === 'ko' ? '시스템 지침 저장' : 'Save System Instructions')}</button>
                     </div>
                   </form>
                 </div>
@@ -1342,9 +1478,13 @@ export default function Admin() {
                   {/* LEFT COLUMN: GUIDELINES & KEY POINTS */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                     <div className="glass-panel" style={{ padding: '20px', width: '100%' }}>
-                      <h5 style={{ color: 'var(--accent-gold)', marginBottom: '15px' }}><i className="fa-solid fa-list-check" style={{ marginRight: '8px' }}></i> Add Key Point / Rule</h5>
+                      <h5 style={{ color: 'var(--accent-gold)', marginBottom: '15px' }}><i className="fa-solid fa-list-check" style={{ marginRight: '8px' }}></i> {language === 'zh' ? '添加核心要点/规则' : (language === 'ko' ? '핵심 사항 / 규칙 추가' : 'Add Key Point / Rule')}</h5>
                       <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '12px' }}>
-                        Define general answering instructions, operational guidelines, or brand tone rules that the AI should follow when generating responses.
+                        {language === 'zh' 
+                          ? '定义 AI 在生成回复时应遵循的通用回答说明、运营指南或品牌基调规则。' 
+                          : (language === 'ko' 
+                            ? '응답을 생성할 때 AI가 준수해야 하는 일반적인 답변 지침, 운영 가이드라인 또는 브랜드 톤 규칙을 정의합니다.' 
+                            : 'Define general answering instructions, operational guidelines, or brand tone rules that the AI should follow when generating responses.')}
                       </p>
                       <form onSubmit={handleKeyPointAdd} style={{ display: 'flex', gap: '10px' }}>
                         <input 
@@ -1352,22 +1492,22 @@ export default function Admin() {
                           value={keyPointText} 
                           onChange={(e) => setKeyPointText(e.target.value)} 
                           className="form-control" 
-                          placeholder="e.g. Keep answers friendly, short, and under 3 sentences." 
+                          placeholder={language === 'zh' ? '例如：回答要友好、简短，控制在3句话以内。' : (language === 'ko' ? '예: 답변은 친절하고 짧게, 3문장 이내로 작성하세요.' : 'e.g. Keep answers friendly, short, and under 3 sentences.')}
                           required 
                           style={{ flexGrow: 1 }}
                         />
-                        <button type="submit" className="btn btn-primary" style={{ padding: '10px 20px', whiteSpace: 'nowrap' }}>Add Rule</button>
+                        <button type="submit" className="btn btn-primary" style={{ padding: '10px 20px', whiteSpace: 'nowrap' }}>{language === 'zh' ? '添加规则' : (language === 'ko' ? '규칙 추가' : 'Add Rule')}</button>
                       </form>
                     </div>
 
                     <div className="glass-panel" style={{ padding: '20px', width: '100%' }}>
-                      <h5 style={{ color: 'var(--accent-gold)', marginBottom: '15px' }}>Active Answering Instructions</h5>
+                      <h5 style={{ color: 'var(--accent-gold)', marginBottom: '15px' }}>{language === 'zh' ? '活跃的回答说明' : (language === 'ko' ? '활성 답변 지침' : 'Active Answering Instructions')}</h5>
                       <div className="table-wrapper">
                         <table className="admin-table">
                           <thead>
                             <tr>
-                              <th>Guideline / Key Point</th>
-                              <th style={{ width: '80px' }}>Actions</th>
+                              <th>{language === 'zh' ? '指南 / 核心要点' : (language === 'ko' ? '가이드라인 / 핵심 사항' : 'Guideline / Key Point')}</th>
+                              <th style={{ width: '80px' }}>{t('adm_th_actions')}</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -1375,7 +1515,7 @@ export default function Admin() {
                               <tr key={kp.id}>
                                 <td style={{ fontSize: '0.85rem' }}>{kp.text}</td>
                                 <td>
-                                  <button className="btn btn-danger btn-xs" onClick={() => handleKeyPointDelete(kp.id, kp.text)}>Delete</button>
+                                  <button className="btn btn-danger btn-xs" onClick={() => handleKeyPointDelete(kp.id, kp.text)}>{t('adm_btn_delete')}</button>
                                 </td>
                               </tr>
                             ))}
@@ -1388,13 +1528,17 @@ export default function Admin() {
                   {/* RIGHT COLUMN: Q&A PAIRS (FAQS) */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                     <div className="glass-panel" style={{ padding: '20px', width: '100%' }}>
-                      <h5 style={{ color: 'var(--accent-gold)', marginBottom: '15px' }}><i className="fa-solid fa-comments" style={{ marginRight: '8px' }}></i> Train New FAQ Pair</h5>
+                      <h5 style={{ color: 'var(--accent-gold)', marginBottom: '15px' }}><i className="fa-solid fa-comments" style={{ marginRight: '8px' }}></i> {language === 'zh' ? '训练新常见问题对 (FAQ)' : (language === 'ko' ? '새 FAQ 쌍 훈련' : 'Train New FAQ Pair')}</h5>
                       <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '12px' }}>
-                        Set up specific Q&A matches for questions that visitors frequently ask.
+                        {language === 'zh' 
+                          ? '为访客经常提出的问题设置特定的问答匹配。' 
+                          : (language === 'ko' 
+                            ? '방문자가 자주 질문하는 질문에 대해 구체적인 Q&A 일치를 설정합니다.' 
+                            : 'Set up specific Q&A matches for questions that visitors frequently ask.')}
                       </p>
                       <form onSubmit={handleFAQAdd} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                         <div className="form-group">
-                          <label>FAQ Question</label>
+                          <label>{language === 'zh' ? '常见问题' : (language === 'ko' ? 'FAQ 질문' : 'FAQ Question')}</label>
                           <input 
                             type="text" 
                             value={faqQuestion} 
@@ -1405,7 +1549,7 @@ export default function Admin() {
                           />
                         </div>
                         <div className="form-group">
-                          <label>AI Answer Response</label>
+                          <label>{language === 'zh' ? 'AI 回答响应' : (language === 'ko' ? 'AI 답변 응답' : 'AI Answer Response')}</label>
                           <textarea 
                             value={faqAnswer} 
                             onChange={(e) => setFaqAnswer(e.target.value)} 
@@ -1415,19 +1559,19 @@ export default function Admin() {
                             required 
                           />
                         </div>
-                        <button type="submit" className="btn btn-primary" style={{ alignSelf: 'flex-end', padding: '10px 20px' }}>Add FAQ Pair</button>
+                        <button type="submit" className="btn btn-primary" style={{ alignSelf: 'flex-end', padding: '10px 20px' }}>{language === 'zh' ? '添加问答对' : (language === 'ko' ? 'FAQ 쌍 추가' : 'Add FAQ Pair')}</button>
                       </form>
                     </div>
 
                     <div className="glass-panel" style={{ padding: '20px', width: '100%' }}>
-                      <h5 style={{ color: 'var(--accent-gold)', marginBottom: '15px' }}>Active Q&A Pairs (FAQ)</h5>
+                      <h5 style={{ color: 'var(--accent-gold)', marginBottom: '15px' }}>{language === 'zh' ? '当前有效的问答对 (FAQ)' : (language === 'ko' ? '활성 Q&A 쌍 (FAQ)' : 'Active Q&A Pairs (FAQ)')}</h5>
                       <div className="table-wrapper">
                         <table className="admin-table">
                           <thead>
                             <tr>
-                              <th>Question</th>
-                              <th>Answer Response</th>
-                              <th style={{ width: '80px' }}>Actions</th>
+                              <th>{language === 'zh' ? '问题' : (language === 'ko' ? '질문' : 'Question')}</th>
+                              <th>{language === 'zh' ? '回答响应' : (language === 'ko' ? '답변 응답' : 'Answer Response')}</th>
+                              <th style={{ width: '80px' }}>{t('adm_th_actions')}</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -1436,7 +1580,7 @@ export default function Admin() {
                                 <td style={{ fontWeight: 'bold', fontSize: '0.85rem' }}>{faq.question}</td>
                                 <td style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{faq.answer}</td>
                                 <td>
-                                  <button className="btn btn-danger btn-xs" onClick={() => handleFAQDelete(faq.id, faq.question)}>Delete</button>
+                                  <button className="btn btn-danger btn-xs" onClick={() => handleFAQDelete(faq.id, faq.question)}>{t('adm_btn_delete')}</button>
                                 </td>
                               </tr>
                             ))}
@@ -1454,7 +1598,7 @@ export default function Admin() {
             {adminTab === 'adminFeedback' && (
               <div className="admin-tab-content active">
                 <div className="admin-section-header">
-                  <h4>Guest Feedback Submissions</h4>
+                  <h4>{t('adm_title_feedback')}</h4>
                 </div>
                 
                 <div className="feedback-grid-admin">
@@ -1468,14 +1612,14 @@ export default function Admin() {
                               {'⭐'.repeat(fb.rating)}
                             </span>
                           </div>
-                          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Contact: {fb.contact}</p>
+                          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{language === 'zh' ? '联系方式' : (language === 'ko' ? '연락처' : 'Contact')}: {fb.contact}</p>
                           <p style={{ marginTop: '10px', fontSize: '0.9rem' }}>&ldquo;{fb.message}&rdquo;</p>
                         </div>
-                        <span className="feedback-date">Received: {fb.date}</span>
+                        <span className="feedback-date">{language === 'zh' ? '接收时间' : (language === 'ko' ? '수신 시간' : 'Received')}: {fb.date}</span>
                       </div>
                     ))
                   ) : (
-                    <p style={{ color: 'var(--text-secondary)' }}>No feedbacks logged yet.</p>
+                    <p style={{ color: 'var(--text-secondary)' }}>{language === 'zh' ? '暂无反馈记录。' : (language === 'ko' ? '기록된 피드백이 아직 없습니다.' : 'No feedbacks logged yet.')}</p>
                   )}
                 </div>
               </div>
@@ -1488,15 +1632,15 @@ export default function Admin() {
                   
                   <div className="metrics-row">
                     <div className="metric-card glass-panel">
-                      <h5>Total Inquiries (Chatbot Logs)</h5>
+                      <h5>{language === 'zh' ? '总咨询量（机器人日志）' : (language === 'ko' ? '총 문의수 (챗봇 로그)' : 'Total Inquiries (Chatbot Logs)')}</h5>
                       <p className="metric-value">{chatLogs.length}</p>
                     </div>
                     <div className="metric-card glass-panel">
-                      <h5>Active Reservations</h5>
+                      <h5>{language === 'zh' ? '活跃预订数' : (language === 'ko' ? '활성 예약 건수' : 'Active Reservations')}</h5>
                       <p className="metric-value">{activeBookingsCount}</p>
                     </div>
                     <div className="metric-card glass-panel">
-                      <h5>Feedback Average Rating</h5>
+                      <h5>{language === 'zh' ? '宾客平均评分' : (language === 'ko' ? '피드백 평균 평점' : 'Feedback Average Rating')}</h5>
                       <p className="metric-value">{avgRating} ⭐</p>
                     </div>
                   </div>
@@ -1504,7 +1648,7 @@ export default function Admin() {
                   <div className="analytics-details-grid">
                     {/* Chat Query log */}
                     <div className="analytics-card glass-panel">
-                      <h5 style={{ color: 'var(--accent-gold)', marginBottom: '15px' }}>Chatbot Inquiry History Logs</h5>
+                      <h5 style={{ color: 'var(--accent-gold)', marginBottom: '15px' }}>{language === 'zh' ? '智能客服咨询历史日志' : (language === 'ko' ? '챗봇 문의 내역 로그' : 'Chatbot Inquiry History Logs')}</h5>
                       <div className="logged-queries-list">
                         {chatLogs.length > 0 ? (
                           chatLogs.map(log => (
@@ -1515,14 +1659,14 @@ export default function Admin() {
                             </div>
                           ))
                         ) : (
-                          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>No chatbot interactions logged yet.</p>
+                          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{language === 'zh' ? '暂无智能客服交互日志。' : (language === 'ko' ? '기록된 챗봇 상호작용이 아직 없습니다.' : 'No chatbot interactions logged yet.')}</p>
                         )}
                       </div>
                     </div>
 
                     {/* Audit Trail */}
                     <div className="analytics-card glass-panel">
-                      <h5 style={{ color: 'var(--accent-gold)', marginBottom: '15px' }}>Admin Audit Trails</h5>
+                      <h5 style={{ color: 'var(--accent-gold)', marginBottom: '15px' }}>{language === 'zh' ? '管理员审计跟踪日志' : (language === 'ko' ? '관리자 감사 추적 로그' : 'Admin Audit Trails')}</h5>
                       <div className="audit-log-list">
                         {auditLogs.map(log => (
                           <div key={log.id} className="audit-log-item">
@@ -1545,8 +1689,14 @@ export default function Admin() {
                   
                   {/* Firebase Config Form */}
                   <div className="settings-card glass-panel">
-                    <h5>Firebase Credentials Setup</h5>
-                    <p className="settings-desc">Provide your Firebase project configurations to activate real-time synchronization. If empty, the app falls back to Local Storage DB.</p>
+                    <h5>{language === 'zh' ? 'Firebase 凭据设置' : (language === 'ko' ? 'Firebase 자격 증명 설정' : 'Firebase Credentials Setup')}</h5>
+                    <p className="settings-desc">
+                      {language === 'zh' 
+                        ? '提供您的 Firebase 项目配置以启用实时同步。如果为空，应用将退回到本地 Local Storage 数据库。' 
+                        : (language === 'ko' 
+                          ? '실시간 동기화를 활성화하려면 Firebase 프로젝트 구성을 제공하십시오. 비어 있는 경우 앱은 로컬 스토리지 DB로 돌아갑니다.' 
+                          : 'Provide your Firebase project configurations to activate real-time synchronization. If empty, the app falls back to Local Storage DB.')}
+                    </p>
                     <form onSubmit={saveFirebaseSettings}>
                       <div className="form-group">
                         <label>Firebase API Key</label>
@@ -1589,16 +1739,22 @@ export default function Admin() {
                         />
                       </div>
                       <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-                        <button type="submit" className="btn btn-primary btn-sm">Save Config & Reload</button>
-                        <button type="button" className="btn btn-secondary btn-sm" onClick={clearFirebaseSettings}>Clear Config</button>
+                        <button type="submit" className="btn btn-primary btn-sm">{language === 'zh' ? '保存配置并重新加载' : (language === 'ko' ? '구성 저장 및 새로고침' : 'Save Config & Reload')}</button>
+                        <button type="button" className="btn btn-secondary btn-sm" onClick={clearFirebaseSettings}>{language === 'zh' ? '清除配置' : (language === 'ko' ? '구성 지우기' : 'Clear Config')}</button>
                       </div>
                     </form>
                   </div>
 
                   {/* Groq Config Form */}
                   <div className="settings-card glass-panel">
-                    <h5>Groq Cloud AI Settings</h5>
-                    <p className="settings-desc">Provide a Groq API Key to power the floating AI Wellness Assistant with Llama-3 models. Check custom systems contexts below.</p>
+                    <h5>{language === 'zh' ? 'Groq 云端 AI 设置' : (language === 'ko' ? 'Groq 클라우드 AI 설정' : 'Groq Cloud AI Settings')}</h5>
+                    <p className="settings-desc">
+                      {language === 'zh' 
+                        ? '提供 Groq API 密钥，以使用 Llama-3 模型为漂浮的 AI 康养助手提供支持。请在下方检查自定义系统上下文。' 
+                        : (language === 'ko' 
+                          ? 'Llama-3 모델을 사용하여 플로팅 AI 웰니스 어시스턴트에 전원을 공급하려면 Groq API 키를 제공하십시오. 아래에서 맞춤형 시스템 컨텍스트를 확인하십시오.' 
+                          : 'Provide a Groq API Key to power the floating AI Wellness Assistant with Llama-3 models. Check custom systems contexts below.')}
+                    </p>
                     <form onSubmit={saveGroqSettings}>
                       <div className="form-group">
                         <label>Groq API Key</label>
@@ -1611,21 +1767,130 @@ export default function Admin() {
                         />
                       </div>
                       <div className="form-group">
-                        <label>Select Groq Model</label>
+                        <label>{language === 'zh' ? '选择 Groq 模型' : (language === 'ko' ? 'Groq 모델 선택' : 'Select Groq Model')}</label>
                         <select 
                           value={tempGroqModel}
                           onChange={(e) => setTempGroqModel(e.target.value)}
                           className="form-control"
                         >
-                          <option value="llama-3.1-8b-instant">Llama 3.1 8B Instant (llama-3.1-8b-instant) - Cheapest & Ultra-Fast</option>
-                          <option value="llama-3.3-70b-versatile">Llama 3.3 70B Versatile (llama-3.3-70b-versatile) - Highly Accurate</option>
-                          <option value="mixtral-8x7b-32768">Mixtral 8x7B (mixtral-8x7b-32768) - Comprehensive</option>
+                          <option value="llama-3.1-8b-instant">Llama 3.1 8B Instant (llama-3.1-8b-instant) - {language === 'zh' ? '最划算且极速' : (language === 'ko' ? '가장 저렴하고 초고속' : 'Cheapest & Ultra-Fast')}</option>
+                          <option value="llama-3.3-70b-versatile">Llama 3.3 70B Versatile (llama-3.3-70b-versatile) - {language === 'zh' ? '高度精准' : (language === 'ko' ? '높은 정확도' : 'Highly Accurate')}</option>
+                          <option value="mixtral-8x7b-32768">Mixtral 8x7B (mixtral-8x7b-32768) - {language === 'zh' ? '全面性' : (language === 'ko' ? '종합적' : 'Comprehensive')}</option>
                         </select>
                       </div>
-                      <button type="submit" className="btn btn-primary btn-sm" style={{ marginTop: '10px' }}>Save Groq Key</button>
+                      <button type="submit" className="btn btn-primary btn-sm" style={{ marginTop: '10px' }}>{language === 'zh' ? '保存 Groq 密钥' : (language === 'ko' ? 'Groq 키 저장' : 'Save Groq Key')}</button>
                     </form>
                   </div>
 
+                </div>
+              </div>
+            )}
+
+            {/* TAB 15: USER ACCOUNTS */}
+            {adminTab === 'adminAccounts' && (
+              <div className="admin-tab-content active">
+                <div className="admin-section-header">
+                  <h4>{t('adm_title_accounts')}</h4>
+                </div>
+                <div className="settings-grid">
+                  <div className="settings-card glass-panel" style={{ maxWidth: '600px', width: '100%' }}>
+                    <h5>{language === 'zh' ? '注册新管理员/员工账户' : (language === 'ko' ? '새 관리자/직원 계정 등록' : 'Register New Admin/Staff Account')}</h5>
+                    <form onSubmit={async (e) => {
+                      e.preventDefault();
+                      if (!newUserEmail.trim()) return;
+                      try {
+                        await addUserAccount(newUserEmail, newUserRole);
+                        setNewUserEmail('');
+                        triggerToast("🎉 " + (language === 'zh' ? '账户注册成功！' : (language === 'ko' ? '계정이 성공적으로 등록되었습니다!' : 'Account registered successfully!')));
+                      } catch (err) {
+                        console.error(err);
+                        triggerToast("❌ " + (language === 'zh' ? '注册账户时出错。' : (language === 'ko' ? '계정 등록 중 오류가 발생했습니다.' : 'Error registering account.')));
+                      }
+                    }}>
+                      <div className="form-group">
+                        <label>{t('adm_lbl_email')}</label>
+                        <input 
+                          type="email" 
+                          value={newUserEmail} 
+                          onChange={(e) => setNewUserEmail(e.target.value)} 
+                          className="form-control" 
+                          placeholder="staff@emgrandspa.com" 
+                          required 
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>{language === 'zh' ? '角色权限' : (language === 'ko' ? '역할' : 'Role')}</label>
+                        <select 
+                          value={newUserRole} 
+                          onChange={(e) => setNewUserRole(e.target.value)} 
+                          className="form-control"
+                        >
+                          <option value="admin">Admin</option>
+                          <option value="staff">Staff</option>
+                        </select>
+                      </div>
+                      <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>{language === 'zh' ? '添加账户' : (language === 'ko' ? '계정 추가' : 'Add Account')}</button>
+                    </form>
+                  </div>
+
+                  <div className="settings-card glass-panel">
+                    <h5>{language === 'zh' ? '系统授权用户列表' : (language === 'ko' ? '시스템 승인된 사용자 목록' : 'Authorized System Users')}</h5>
+                    <div className="table-wrapper">
+                      <table className="admin-table">
+                        <thead>
+                          <tr>
+                            <th>{t('adm_lbl_email')}</th>
+                            <th>{language === 'zh' ? '角色权限' : (language === 'ko' ? '역할' : 'Role')}</th>
+                            <th>{t('adm_th_actions')}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {userAccounts && userAccounts.map(acc => (
+                            <tr key={acc.id || acc.email}>
+                              <td>{acc.email}</td>
+                              <td>
+                                <select 
+                                  value={acc.role} 
+                                  onChange={async (e) => {
+                                    try {
+                                      await updateUserRole(acc.id || acc.email, e.target.value);
+                                      triggerToast("🎉 " + (language === 'zh' ? '角色更新成功！' : (language === 'ko' ? '역할이 성공적으로 업데이트되었습니다!' : 'Role updated successfully!')));
+                                    } catch (err) {
+                                      console.error(err);
+                                      triggerToast("❌ " + (language === 'zh' ? '更新角色时出错。' : (language === 'ko' ? '역할 업데이트 중 오류가 발생했습니다.' : 'Error updating role.')));
+                                    }
+                                  }}
+                                  className="form-control"
+                                  style={{ padding: '4px', fontSize: '0.8rem' }}
+                                >
+                                  <option value="admin">Admin</option>
+                                  <option value="staff">Staff</option>
+                                </select>
+                              </td>
+                              <td>
+                                <button 
+                                  className="btn btn-danger btn-xs" 
+                                  onClick={async () => {
+                                    if (confirm(`Delete account: ${acc.email}?`)) {
+                                      try {
+                                        await deleteUserAccount(acc.id || acc.email);
+                                        triggerToast("🎉 " + (language === 'zh' ? '账户删除成功！' : (language === 'ko' ? '계정이 성공적으로 삭제되었습니다!' : 'Account deleted successfully!')));
+                                      } catch (err) {
+                                        console.error(err);
+                                        triggerToast("❌ " + (language === 'zh' ? '删除账户时出错。' : (language === 'ko' ? '계정 삭제 중 오류가 발생했습니다.' : 'Error deleting account.')));
+                                      }
+                                    }
+                                  }}
+                                >
+                                  {t('adm_btn_delete')}
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
@@ -1639,27 +1904,27 @@ export default function Admin() {
       <div className={`modal ${isServiceModalOpen ? 'active' : ''}`}>
         <div className="modal-content glass-panel">
           <div className="modal-header">
-            <h3>{modalMode === 'new' ? 'Add Service' : 'Edit Service'}</h3>
+            <h3>{modalMode === 'new' ? (language === 'zh' ? '添加服务' : (language === 'ko' ? '서비스 추가' : 'Add Service')) : (language === 'zh' ? '编辑服务' : (language === 'ko' ? '서비스 수정' : 'Edit Service'))}</h3>
             <button className="modal-close-btn" onClick={() => setIsServiceModalOpen(false)}>&times;</button>
           </div>
           <div className="modal-body">
             <form onSubmit={handleServiceSave}>
               <div className="form-group">
-                <label>Category</label>
+                <label>{language === 'zh' ? '类别' : (language === 'ko' ? '카테고리' : 'Category')}</label>
                 <select 
                   value={serviceCategory} 
                   onChange={(e) => setServiceCategory(e.target.value)}
                   className="form-control" 
                   required
                 >
-                  <option value="massage">Massage Treatment</option>
-                  <option value="lodging">Private Suite Lodging</option>
-                  <option value="special">Specialized Therapy</option>
-                  <option value="tcm">TCM Orthopedics</option>
+                  <option value="massage">{language === 'zh' ? '按摩理疗' : (language === 'ko' ? '마사지 트리트먼트' : 'Massage Treatment')}</option>
+                  <option value="lodging">{language === 'zh' ? '私人套房住宿' : (language === 'ko' ? '프라이빗 스위트 숙박' : 'Private Suite Lodging')}</option>
+                  <option value="special">{language === 'zh' ? '特色理疗' : (language === 'ko' ? '특화 테라피' : 'Specialized Therapy')}</option>
+                  <option value="tcm">{language === 'zh' ? '中医正骨' : (language === 'ko' ? '한방 정골 요법' : 'TCM Orthopedics')}</option>
                 </select>
               </div>
               <div className="form-group">
-                <label>Service Name (English)</label>
+                <label>{language === 'zh' ? '服务名称 (英文)' : (language === 'ko' ? '서비스 이름 (영어)' : 'Service Name (English)')}</label>
                 <input 
                   type="text" 
                   value={nameEN} 
@@ -1669,7 +1934,7 @@ export default function Admin() {
                 />
               </div>
               <div className="form-group">
-                <label>Service Name (Chinese)</label>
+                <label>{language === 'zh' ? '服务名称 (中文)' : (language === 'ko' ? '서비스 이름 (중국어)' : 'Service Name (Chinese)')}</label>
                 <input 
                   type="text" 
                   value={nameZH} 
@@ -1679,7 +1944,7 @@ export default function Admin() {
                 />
               </div>
               <div className="form-group">
-                <label>Service Name (Korean)</label>
+                <label>{language === 'zh' ? '服务名称 (韩文)' : (language === 'ko' ? '서비스 이름 (한국어)' : 'Service Name (Korean)')}</label>
                 <input 
                   type="text" 
                   value={nameKO} 
@@ -1689,7 +1954,7 @@ export default function Admin() {
                 />
               </div>
               <div className="form-group">
-                <label>Base Price (Php)</label>
+                <label>{language === 'zh' ? '基础价格 (Php)' : (language === 'ko' ? '기본 요금 (Php)' : 'Base Price (Php)')}</label>
                 <input 
                   type="number" 
                   value={serviceRate} 
@@ -1700,18 +1965,18 @@ export default function Admin() {
                 />
               </div>
               <div className="form-group">
-                <label>Mandatory Therapist Tip Option</label>
+                <label>{language === 'zh' ? '强制理疗师小费选项' : (language === 'ko' ? '필수 테라피스트 팁 옵션' : 'Mandatory Therapist Tip Option')}</label>
                 <select 
                   value={serviceTip} 
                   onChange={(e) => setServiceTip(e.target.value)}
                   className="form-control"
                 >
-                  <option value="variable">Based on Therapist Selection (Php 200/500)</option>
-                  <option value="none">No Tip Required</option>
+                  <option value="variable">{language === 'zh' ? '根据理疗师选择 (Php 200/500)' : (language === 'ko' ? '테라피스트 선택에 따름 (Php 200/500)' : 'Based on Therapist Selection (Php 200/500)')}</option>
+                  <option value="none">{language === 'zh' ? '无需小费' : (language === 'ko' ? '팁 불필요' : 'No Tip Required')}</option>
                 </select>
               </div>
               <div className="form-group">
-                <label>Description</label>
+                <label>{language === 'zh' ? '描述' : (language === 'ko' ? '설명' : 'Description')}</label>
                 <textarea 
                   value={serviceDesc} 
                   onChange={(e) => setServiceDesc(e.target.value)}
@@ -1719,7 +1984,7 @@ export default function Admin() {
                   rows="2" 
                 />
               </div>
-              <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>Save Service</button>
+              <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>{language === 'zh' ? '保存服务' : (language === 'ko' ? '서비스 저장' : 'Save Service')}</button>
             </form>
           </div>
         </div>
@@ -1729,27 +1994,49 @@ export default function Admin() {
       <div className={`modal ${isCampaignModalOpen ? 'active' : ''}`}>
         <div className="modal-content glass-panel">
           <div className="modal-header">
-            <h3>Add Countdown Event Campaign</h3>
+            <h3>{language === 'zh' ? '添加倒计时活动推广' : (language === 'ko' ? '카운트다운 이벤트 캠페인 추가' : 'Add Countdown Event Campaign')}</h3>
             <button className="modal-close-btn" onClick={() => setIsCampaignModalOpen(false)}>&times;</button>
           </div>
           <div className="modal-body">
             <form onSubmit={handleCampaignSave}>
               <div className="form-group">
-                <label>Campaign Title (English)</label>
+                <label>{language === 'zh' ? '活动标题 (英文)' : (language === 'ko' ? '캠페인 제목 (영어)' : 'Campaign Title (English)')}</label>
                 <input 
                   type="text" 
-                  value={campaignTitle} 
-                  onChange={(e) => setCampaignTitle(e.target.value)}
+                  value={campaignTitleEN} 
+                  onChange={(e) => setCampaignTitleEN(e.target.value)}
                   className="form-control" 
                   required 
                   placeholder="Children's Day Painting Contest" 
                 />
               </div>
               <div className="form-group">
-                <label>Campaign Details</label>
+                <label>{language === 'zh' ? '活动标题 (中文)' : (language === 'ko' ? '캠페인 제목 (중국어)' : 'Campaign Title (Chinese)')}</label>
+                <input 
+                  type="text" 
+                  value={campaignTitleZH} 
+                  onChange={(e) => setCampaignTitleZH(e.target.value)}
+                  className="form-control" 
+                  required 
+                  placeholder="六一儿童节涂鸦大赛" 
+                />
+              </div>
+              <div className="form-group">
+                <label>{language === 'zh' ? '活动标题 (韩文)' : (language === 'ko' ? '캠페인 제목 (한국어)' : 'Campaign Title (Korean)')}</label>
+                <input 
+                  type="text" 
+                  value={campaignTitleKO} 
+                  onChange={(e) => setCampaignTitleKO(e.target.value)}
+                  className="form-control" 
+                  required 
+                  placeholder="어린이날 그림 그리기 대회" 
+                />
+              </div>
+              <div className="form-group">
+                <label>{language === 'zh' ? '活动详情 (英文)' : (language === 'ko' ? '캠페인 세부 정보 (영어)' : 'Campaign Details (English)')}</label>
                 <textarea 
-                  value={campaignDesc} 
-                  onChange={(e) => setCampaignDesc(e.target.value)}
+                  value={campaignDescEN} 
+                  onChange={(e) => setCampaignDescEN(e.target.value)}
                   className="form-control" 
                   rows="2" 
                   required 
@@ -1757,7 +2044,29 @@ export default function Admin() {
                 />
               </div>
               <div className="form-group">
-                <label>Target End Date & Time</label>
+                <label>{language === 'zh' ? '活动详情 (中文)' : (language === 'ko' ? '캠페인 세부 정보 (중국어)' : 'Campaign Details (Chinese)')}</label>
+                <textarea 
+                  value={campaignDescZH} 
+                  onChange={(e) => setCampaignDescZH(e.target.value)}
+                  className="form-control" 
+                  rows="2" 
+                  required 
+                  placeholder="活动日期、费用、所包含内容以及奖励的描述..." 
+                />
+              </div>
+              <div className="form-group">
+                <label>{language === 'zh' ? '活动详情 (韩文)' : (language === 'ko' ? '캠페인 세부 정보 (한국어)' : 'Campaign Details (Korean)')}</label>
+                <textarea 
+                  value={campaignDescKO} 
+                  onChange={(e) => setCampaignDescKO(e.target.value)}
+                  className="form-control" 
+                  rows="2" 
+                  required 
+                  placeholder="날짜, 요금, 포함 사항 및 혜택에 대한 설명..." 
+                />
+              </div>
+              <div className="form-group">
+                <label>{language === 'zh' ? '目标结束日期与时间' : (language === 'ko' ? '목표 종료 날짜 및 시간' : 'Target End Date & Time')}</label>
                 <input 
                   type="datetime-local" 
                   value={campaignEndDate} 
@@ -1766,7 +2075,7 @@ export default function Admin() {
                   required 
                 />
               </div>
-              <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>Add Event</button>
+              <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>{language === 'zh' ? '添加活动' : (language === 'ko' ? '이벤트 추가' : 'Add Event')}</button>
             </form>
           </div>
         </div>
@@ -1776,24 +2085,46 @@ export default function Admin() {
       <div className={`modal ${isPackageModalOpen ? 'active' : ''}`}>
         <div className="modal-content glass-panel">
           <div className="modal-header">
-            <h3>{packageModalMode === 'new' ? 'Add Weekday Package' : 'Edit Weekday Package'}</h3>
+            <h3>{packageModalMode === 'new' ? (language === 'zh' ? '添加周中按摩套餐' : (language === 'ko' ? '평일 마사지 패키지 추가' : 'Add Weekday Package')) : (language === 'zh' ? '编辑周中按摩套餐' : (language === 'ko' ? '평일 마사지 패키지 수정' : 'Edit Weekday Package'))}</h3>
             <button className="modal-close-btn" onClick={() => setIsPackageModalOpen(false)}>&times;</button>
           </div>
           <div className="modal-body">
             <form onSubmit={handlePackageSave}>
               <div className="form-group">
-                <label>Package Title</label>
+                <label>{language === 'zh' ? '套餐标题 (英文)' : (language === 'ko' ? '패키지 제목 (영어)' : 'Package Title (English)')}</label>
                 <input 
                   type="text" 
-                  value={packageTitle} 
-                  onChange={(e) => setPackageTitle(e.target.value)}
+                  value={packageTitleEN} 
+                  onChange={(e) => setPackageTitleEN(e.target.value)}
                   className="form-control" 
                   required 
                   placeholder="e.g. Package A" 
                 />
               </div>
               <div className="form-group">
-                <label>Package Cost Rate (Php)</label>
+                <label>{language === 'zh' ? '套餐标题 (中文)' : (language === 'ko' ? '패키지 제목 (중국어)' : 'Package Title (Chinese)')}</label>
+                <input 
+                  type="text" 
+                  value={packageTitleZH} 
+                  onChange={(e) => setPackageTitleZH(e.target.value)}
+                  className="form-control" 
+                  required 
+                  placeholder="例如：套餐 A" 
+                />
+              </div>
+              <div className="form-group">
+                <label>{language === 'zh' ? '套餐标题 (韩文)' : (language === 'ko' ? '패키지 제목 (한국어)' : 'Package Title (Korean)')}</label>
+                <input 
+                  type="text" 
+                  value={packageTitleKO} 
+                  onChange={(e) => setPackageTitleKO(e.target.value)}
+                  className="form-control" 
+                  required 
+                  placeholder="예: 패키지 A" 
+                />
+              </div>
+              <div className="form-group">
+                <label>{language === 'zh' ? '套餐收费标准 (Php)' : (language === 'ko' ? '패키지 요금 (Php)' : 'Package Cost Rate (Php)')}</label>
                 <input 
                   type="number" 
                   value={packageRate} 
@@ -1804,7 +2135,7 @@ export default function Admin() {
                 />
               </div>
               <div className="form-group">
-                <label>Estimated Savings (Php)</label>
+                <label>{language === 'zh' ? '预计可节省金额 (Php)' : (language === 'ko' ? '예상 절약 금액 (Php)' : 'Estimated Savings (Php)')}</label>
                 <input 
                   type="number" 
                   value={packageSavings} 
@@ -1815,17 +2146,39 @@ export default function Admin() {
                 />
               </div>
               <div className="form-group">
-                <label>Inclusions (Comma separated list)</label>
+                <label>{language === 'zh' ? '包含项目 (英文, 逗号分隔)' : (language === 'ko' ? '포함 사항 (영어, 쉼표로 구분)' : 'Inclusions (English, Comma separated)')}</label>
                 <textarea 
-                  value={packageInclusions} 
-                  onChange={(e) => setPackageInclusions(e.target.value)}
+                  value={packageInclusionsEN} 
+                  onChange={(e) => setPackageInclusionsEN(e.target.value)}
                   className="form-control" 
-                  rows="3" 
+                  rows="2" 
                   required
                   placeholder="Adult Admission (Php 1,699), Meridian Massage (Php 1,588), Unlimited Buffet (Php 1,997)"
                 />
               </div>
-              <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>Save Package</button>
+              <div className="form-group">
+                <label>{language === 'zh' ? '包含项目 (中文, 逗号分隔)' : (language === 'ko' ? '포함 사항 (중국어, 쉼표로 구분)' : 'Inclusions (Chinese, Comma separated)')}</label>
+                <textarea 
+                  value={packageInclusionsZH} 
+                  onChange={(e) => setPackageInclusionsZH(e.target.value)}
+                  className="form-control" 
+                  rows="2" 
+                  required
+                  placeholder="门票 (Php 1,699), 经络按摩 (Php 1,588), 无限量自助餐 (Php 1,997)"
+                />
+              </div>
+              <div className="form-group">
+                <label>{language === 'zh' ? '包含项目 (韩文, 逗号分隔)' : (language === 'ko' ? '포함 사항 (한국어, 쉼표로 구분)' : 'Inclusions (Korean, Comma separated)')}</label>
+                <textarea 
+                  value={packageInclusionsKO} 
+                  onChange={(e) => setPackageInclusionsKO(e.target.value)}
+                  className="form-control" 
+                  rows="2" 
+                  required
+                  placeholder="입장료 (Php 1,699), 경락 마사지 (Php 1,588), 무제한 뷔페 (Php 1,997)"
+                />
+              </div>
+              <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>{language === 'zh' ? '保存套餐' : (language === 'ko' ? '패키지 저장' : 'Save Package')}</button>
             </form>
           </div>
         </div>
@@ -1835,20 +2188,42 @@ export default function Admin() {
       <div className={`modal ${isPerkModalOpen ? 'active' : ''}`}>
         <div className="modal-content glass-panel">
           <div className="modal-header">
-            <h3>{perkModalMode === 'new' ? 'Add Membership Perk' : 'Edit Membership Perk'}</h3>
+            <h3>{perkModalMode === 'new' ? (language === 'zh' ? '添加会员特权' : (language === 'ko' ? '멤버십 혜택 추가' : 'Add Membership Perk')) : (language === 'zh' ? '编辑会员特权' : (language === 'ko' ? '멤버십 혜택 수정' : 'Edit Membership Perk'))}</h3>
             <button className="modal-close-btn" onClick={() => setIsPerkModalOpen(false)}>&times;</button>
           </div>
           <div className="modal-body">
             <form onSubmit={handlePerkSave}>
               <div className="form-group">
-                <label>Perk Title</label>
+                <label>{language === 'zh' ? '特权标题 (英文)' : (language === 'ko' ? '혜택 제목 (영어)' : 'Perk Title (English)')}</label>
                 <input 
                   type="text" 
-                  value={perkTitle} 
-                  onChange={(e) => setPerkTitle(e.target.value)}
+                  value={perkTitleEN} 
+                  onChange={(e) => setPerkTitleEN(e.target.value)}
                   className="form-control" 
                   required 
                   placeholder="Free Unlimited Beer" 
+                />
+              </div>
+              <div className="form-group">
+                <label>{language === 'zh' ? '特权标题 (中文)' : (language === 'ko' ? '혜택 제목 (중국어)' : 'Perk Title (Chinese)')}</label>
+                <input 
+                  type="text" 
+                  value={perkTitleZH} 
+                  onChange={(e) => setPerkTitleZH(e.target.value)}
+                  className="form-control" 
+                  required 
+                  placeholder="生啤酒免费畅饮" 
+                />
+              </div>
+              <div className="form-group">
+                <label>{language === 'zh' ? '特权标题 (韩文)' : (language === 'ko' ? '혜택 제목 (한국어)' : 'Perk Title (Korean)')}</label>
+                <input 
+                  type="text" 
+                  value={perkTitleKO} 
+                  onChange={(e) => setPerkTitleKO(e.target.value)}
+                  className="form-control" 
+                  required 
+                  placeholder="무료 생맥주 무제한" 
                 />
               </div>
               <div className="form-group">
@@ -1863,16 +2238,36 @@ export default function Admin() {
                 />
               </div>
               <div className="form-group">
-                <label>Description</label>
+                <label>{language === 'zh' ? '描述 (英文)' : (language === 'ko' ? '설명 (영어)' : 'Description (English)')}</label>
                 <textarea 
-                  value={perkDesc} 
-                  onChange={(e) => setPerkDesc(e.target.value)}
+                  value={perkDescEN} 
+                  onChange={(e) => setPerkDescEN(e.target.value)}
                   className="form-control" 
-                  rows="3" 
+                  rows="2" 
                   required
                 />
               </div>
-              <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>Save Perk</button>
+              <div className="form-group">
+                <label>{language === 'zh' ? '描述 (中文)' : (language === 'ko' ? '설명 (중국어)' : 'Description (Chinese)')}</label>
+                <textarea 
+                  value={perkDescZH} 
+                  onChange={(e) => setPerkDescZH(e.target.value)}
+                  className="form-control" 
+                  rows="2" 
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>{language === 'zh' ? '描述 (韩文)' : (language === 'ko' ? '설명 (한국어)' : 'Description (Korean)')}</label>
+                <textarea 
+                  value={perkDescKO} 
+                  onChange={(e) => setPerkDescKO(e.target.value)}
+                  className="form-control" 
+                  rows="2" 
+                  required
+                />
+              </div>
+              <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>{language === 'zh' ? '保存特权' : (language === 'ko' ? '혜택 저장' : 'Save Perk')}</button>
             </form>
           </div>
         </div>

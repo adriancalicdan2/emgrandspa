@@ -29,7 +29,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${cinzel.variable} ${inter.variable}`} data-theme="dark">
+    <html lang="en" className={`${cinzel.variable} ${inter.variable}`} data-theme="light">
       <head>
         <link rel="icon" href="/icon.png" type="image/png" />
         <link rel="shortcut icon" href="/icon.png" type="image/png" />

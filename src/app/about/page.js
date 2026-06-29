@@ -64,7 +64,7 @@ export default function About() {
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.5)',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
               transition: 'all 0.2s ease',
             }}
             className="fb-video-fallback-btn"

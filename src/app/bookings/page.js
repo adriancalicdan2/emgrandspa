@@ -102,7 +102,7 @@ export default function Bookings() {
               color: '#fff',
               padding: '15px 25px',
               borderRadius: '8px',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.5)',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
               fontWeight: '600',
               animation: 'fadeIn 0.3s ease forwards'
             }}

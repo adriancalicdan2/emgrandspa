@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useAppState } from '@/context/AppContext';
 
 export default function Contact() {
-  const { t, parkingSpots, submitFeedback, language } = useAppState();
+  const { t, parkingSpots, submitFeedback, language, setIsChatOpen } = useAppState();
 
   const [name, setName] = useState('');
   const [contactInfo, setContactInfo] = useState('');
@@ -55,7 +55,7 @@ export default function Contact() {
               color: '#fff',
               padding: '15px 25px',
               borderRadius: '8px',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.5)',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
               fontWeight: '600',
               animation: 'fadeIn 0.3s ease forwards'
             }}
@@ -70,6 +70,35 @@ export default function Contact() {
           <div className="contact-info glass-panel">
             <h3>{t('contact_header')}</h3>
             <p>{t('contact_desc')}</p>
+
+            {/* Chat Assistant CTA */}
+            <div className="contact-chat-cta" style={{
+              background: 'rgba(212, 175, 55, 0.06)',
+              border: '1px dashed var(--accent-gold)',
+              borderRadius: '8px',
+              padding: '16px',
+              margin: '20px 0',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              alignItems: 'flex-start'
+            }}>
+              <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-primary)', lineHeight: '1.5' }}>
+                {language === 'zh' 
+                  ? '或者，您也可以咨询我们的帝皇智能助手以获取即时支持......' 
+                  : (language === 'ko' 
+                    ? '또는 엠그란드 어시스턴트에게 실시간으로 문의하실 수 있습니다......' 
+                    : 'Alternatively, you may consult our Emgrand Assistant for immediate assistance.')}
+              </p>
+              <button 
+                type="button" 
+                onClick={() => setIsChatOpen(true)}
+                className="btn btn-primary btn-sm"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+              >
+                <i className="fa-solid fa-comments"></i> Chat...
+              </button>
+            </div>
             
             <ul className="contact-details-list">
               <li>
@@ -82,7 +111,7 @@ export default function Contact() {
               <li>
                 <i className="fa-solid fa-phone-volume"></i>
                 <div>
-                  <strong>{t('label_viber')}</strong>
+                  <strong>{t('label_vibe')}</strong>
                   <p>0992-1888-888 / 0992-1999-999</p>
                 </div>
               </li>
@@ -123,11 +152,11 @@ export default function Contact() {
           </div>
 
           {/* Feedback Form */}
-          <div className="contact-feedback glass-panel">
+          <div className="contact-feedback glass-panel" style={{ display: 'flex', flexDirection: 'column' }}>
             <h3>{t('feedback_form_header')}</h3>
             <p>{t('feedback_form_subheader')}</p>
             
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
               <div className="form-group">
                 <label>{t('feedback_label_name')}</label>
                 <input 
@@ -165,7 +194,7 @@ export default function Contact() {
                 </select>
               </div>
 
-              <div className="form-group">
+              <div className="form-group" style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
                 <label>{t('feedback_label_message')}</label>
                 <textarea 
                   value={message}
@@ -174,10 +203,11 @@ export default function Contact() {
                   rows="5" 
                   required 
                   placeholder={t('placeholder_feedback')}
+                  style={{ flexGrow: 1, minHeight: '150px', resize: 'vertical' }}
                 />
               </div>
 
-              <button type="submit" className="btn btn-primary full-width">
+              <button type="submit" className="btn btn-primary full-width" style={{ marginTop: '15px' }}>
                 {t('feedback_btn_submit')}
               </button>
             </form>
@@ -224,7 +254,7 @@ export default function Contact() {
                 padding: '18px 22px',
                 maxWidth: '380px',
                 zIndex: 10,
-                boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25)',
               }}>
                 <h4 style={{ color: 'var(--accent-gold)', marginBottom: '8px', fontSize: '1.05rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <i className="fa-solid fa-location-dot"></i> Emgrand Spa Manila

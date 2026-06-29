@@ -224,7 +224,13 @@ export default function Services() {
                           </span>
                           <span className="menu-item-price">Php {item.rate}</span>
                         </div>
-                        <p className="menu-item-desc">{language === 'zh' ? item.desc_zh : (language === 'ko' ? item.desc_ko : item.desc_en || item.desc)}</p>
+                        <p className="menu-item-desc">
+                          {language === 'zh' 
+                            ? (item.desc_zh || item.desc_en || item.desc) 
+                            : (language === 'ko' 
+                              ? (item.desc_ko || item.desc_en || item.desc) 
+                              : (item.desc_en || item.desc))}
+                        </p>
                         {item.tip === 'variable' && (
                           <div className="menu-item-tip">
                             <i className="fa-solid fa-hand-holding-dollar"></i> {t('calc_mand_tips')}: {t('calc_local')} Php 200 / {t('calc_chinese_spec')} Php 500
@@ -466,13 +472,22 @@ export default function Services() {
               {servicePackages && servicePackages.map(pkg => (
                 <div key={pkg.id} className="package-card glass-panel">
                   <div className="package-header">
-                    <h3 className="package-title">{pkg.title}</h3>
+                    <h3 className="package-title">{language === 'zh' ? (pkg.title_zh || pkg.title) : (language === 'ko' ? (pkg.title_ko || pkg.title) : (pkg.title_en || pkg.title))}</h3>
                     <div className="package-price">Php {pkg.rate}</div>
                     <span className="package-savings">{t('calc_save')} Php {pkg.savings}</span>
                   </div>
                   <ul className="package-inclusions">
-                    {pkg.inclusions.split(',').map((inc, i) => (
-                      <li key={i}><i className="fa-solid fa-circle-check"></i> {inc.trim()}</li>
+                    {(() => {
+                      const incsStr = language === 'zh' ? (pkg.inclusions_zh || pkg.inclusions) : (language === 'ko' ? (pkg.inclusions_ko || pkg.inclusions) : (pkg.inclusions_en || pkg.inclusions));
+                      return (incsStr || '').split('),').map((inc, i, arr) => {
+                        let item = inc.trim();
+                        if (i < arr.length - 1 && !item.endsWith(')')) {
+                          item += ')';
+                        }
+                        return item;
+                      });
+                    })().map((inc, i) => (
+                      <li key={i}><i className="fa-solid fa-circle-check"></i> {inc}</li>
                     ))}
                   </ul>
                   <Link href="/bookings" className="btn btn-primary full-width">{t('calc_book_pkg')} {pkg.title}</Link>

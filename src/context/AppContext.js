@@ -20,9 +20,46 @@ const defaultServices = [
 ];
 
 const defaultCampaigns = [
-  { id: 'camp1', title: "camp1_title", desc: "camp1_desc", end_date: "2026-06-30T18:00:00" },
-  { id: 'camp2', title: "camp2_title", desc: "camp2_desc", end_date: "2026-07-14T23:59:59" },
-  { id: 'camp3', title: "camp3_title", desc: "camp3_desc", end_date: "2026-08-15T18:00:00" }
+  { 
+    id: 'camp1', 
+    title_en: "Children's Day Painting Contest", 
+    title_zh: "六一儿童节涂鸦大赛", 
+    title_ko: "어린이날 그림 그리기 대회", 
+    desc_en: "Children get free admission & meals. Plaster painting contest features Php 10,000 cash prizes for 1st place!", 
+    desc_zh: "儿童免门票及餐食。石膏雕像涂鸦比赛第一名可获得10,000比索现金奖励！", 
+    desc_ko: "소인 무료 입장 및 식사 포함. 석고 피규어 페인팅 대회 1등에게는 Php 10,000의 상금이 수여됩니다!", 
+    end_date: "2026-06-30T18:00:00" 
+  },
+  { 
+    id: 'camp2', 
+    title_en: "Monthly Couples Promotion", 
+    title_zh: "每月情侣尊享活动", 
+    title_ko: "이달의 커플 프로모션", 
+    desc_en: "On the 14th, couples taking photos at our Photo Zone and posting on social media get a free 4-Hour stay voucher!", 
+    desc_zh: "每月14日，情侣在专属打卡区合影并发布社交媒体，即可获赠4小时免单客房体验券！", 
+    desc_ko: "매월 14일, 포토존에서 커플 사진 촬영 후 SNS 업로드 시 5층 객실 4시간 무료 이용권을 즉시 지급합니다!", 
+    end_date: "2026-07-14T23:59:59" 
+  },
+  { 
+    id: 'camp3', 
+    title_en: "You Spend, We Pay", 
+    title_zh: "您消费，我买单", 
+    title_ko: "유 스펜드, 위 페이", 
+    desc_en: "3 loyalty members randomly chosen daily at 6:00 PM get full cash reimbursements of their day's RFID spending!", 
+    desc_zh: "每日18:00随机抽取3位幸运会员，全额免除其今日的全部手环RFID消费金额！", 
+    desc_ko: "매일 오후 6시, 추첨을 통해 3명의 회원에게 오늘 이용하신 RFID 지출 금액을 전액 환불해 드립니다!", 
+    end_date: "2026-08-15T18:00:00" 
+  },
+  { 
+    id: 'camp4', 
+    title_en: "Exclusive Birthday Treat", 
+    title_zh: "生日专属宠爱", 
+    title_ko: "당신만을 위한 생일 이벤트", 
+    desc_en: "Get free entry during your birthday week (valid 3 days before/after) when you bring 3 or more friends! Plus get a complimentary birthday dessert with half a day advance reservation.", 
+    desc_zh: "生日日前后三天内，同行三人或以上即可享受本人免门票优惠！提前半天预订，更可免费赠送精美生日小蛋糕一个。", 
+    desc_ko: "생일 전후 3일 이내에 3명 이상의 동행인과 함께 방문 시 본인 입장료 무료! 반나절 전 사전 예약 시 아름다운 생일 케이크를 무료로 증정합니다.", 
+    end_date: "2027-12-31T23:59:59" 
+  }
 ];
 
 const defaultFeedbacks = [
@@ -41,15 +78,40 @@ const defaultSeoSettings = {
 };
 
 const defaultHomeBanner = {
-  title: "Elevate Your Wellness",
-  subtitle: "A 24-Hour Premium Luxury Spa & Bathhouse Oasis in Aseana City",
+  title_en: "Elevate Your Wellness",
+  title_zh: "提升您的身心健康",
+  title_ko: "몸과 마음의 웰니스를 승화시키세요",
+  subtitle_en: "A 24-Hour Premium Luxury Spa & Bathhouse Oasis in Aseana City",
+  subtitle_zh: "位于 Aseana City 的 24 小时高端奢华水疗与洗浴绿洲",
+  subtitle_ko: "Aseana City에 위치한 24시간 프리미엄 럭셔리 스파 & 목욕탕 오아시스",
   image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1500&q=80"
 };
 
 const defaultServicePackages = [
-  { id: 'pkg1', title: 'Package A', rate: 2880, savings: 2404, inclusions: 'Standard Adult Admission (Php 1,699), Meridian Treatment or Emperor\'s Foot Bath (Php 1,588), Three Buffet Selections (Php 1,997)' },
-  { id: 'pkg2', title: 'Package B', rate: 3180, savings: 2404, inclusions: 'Standard Adult Admission (Php 1,699), Pattaya Oil Massage (Php 1,888), Three Buffet Selections (Php 1,997)' },
-  { id: 'pkg3', title: 'Package C', rate: 3580, savings: 2704, inclusions: 'Standard Adult Admission (Php 1,699), Premium Aroma Detox or Thai Massage (Php 2,588), Three Buffet Selections (Php 1,997)' }
+  { 
+    id: 'pkg1', 
+    title_en: 'Package A', title_zh: '套餐 A', title_ko: '패키지 A',
+    rate: 2880, savings: 1704, 
+    inclusions_en: 'Entrance Fee (Php 999), Chinese Meridian or Foot Bath (Php 1,588) (Choose 1), Any 3 Meals (Php 1,997)',
+    inclusions_zh: '门票 (Php 999), 中式按摩或精油足疗 (Php 1,588) (2选1), 任意3餐 (Php 1,997)',
+    inclusions_ko: '입장료 (Php 999), 중식 마사지 또는 오일 발마사지 (Php 1,588) (둘 중 하나 선택), 세끼 식사 (Php 1,997)'
+  },
+  { 
+    id: 'pkg2', 
+    title_en: 'Package B', title_zh: '套餐 B', title_ko: '패키지 B',
+    rate: 3180, savings: 1704, 
+    inclusions_en: 'Entrance Fee (Php 999), Pattaya Oil Massage (Php 1,888), Any 3 Meals (Php 1,997)',
+    inclusions_zh: '门票 (Php 999), 芭提雅精油按摩 (Php 1,888), 任意3餐 (Php 1,997)',
+    inclusions_ko: '입장료 (Php 999), 파타야 오일 마사지 (Php 1,888), 세끼 식사 (Php 1,997)'
+  },
+  { 
+    id: 'pkg3', 
+    title_en: 'Package C', title_zh: '套餐 C', title_ko: '패키지 C',
+    rate: 3580, savings: 2004, 
+    inclusions_en: 'Entrance Fee (Php 999), Aroma Detox or Thai Style (Php 2,588) (Choose 1), Any 3 Meals (Php 1,997)',
+    inclusions_zh: '门票 (Php 999), 香薰排毒或泰式松骨 (Php 2,588) (2选1), 任意3餐 (Php 1,997)',
+    inclusions_ko: '입장료 (Php 999), 아로마 디톡스 또는 태식 마사지 (Php 2,588) (둘 중 하나 선택), 세끼 식사 (Php 1,997)'
+  }
 ];
 
 const defaultGalleryPhotos = [
@@ -72,9 +134,34 @@ const defaultSocialPosts = [
 ];
 
 const defaultMembershipPerks = [
-  { id: 'prk1', title: 'starlight_perk1_title', icon: 'fa-beer-mug-empty', desc: 'starlight_perk1_desc' },
-  { id: 'prk2', title: 'starlight_perk2_title', icon: 'fa-award', desc: 'starlight_perk2_desc' },
-  { id: 'prk3', title: 'starlight_perk3_title', icon: 'fa-gift', desc: 'starlight_perk3_desc' }
+  { 
+    id: 'prk1', icon: 'fa-user-plus',
+    title_en: "Join for Only Php 1", title_zh: "1比索加入会员", title_ko: "1페소 회원 가입",
+    desc_en: "Get 1 FREE Massage worth Php 888 upon registration.",
+    desc_zh: "1p即可开通星光会员，即送价值888p按摩免费一次。",
+    desc_ko: "1페소(1p)로 스타라이트 회원을 개통할 수 있으며, 가입 시 888p 마사지 1회 무료 혜택을 제공합니다."
+  },
+  { 
+    id: 'prk2', icon: 'fa-beer-mug-empty',
+    title_en: "Free Beer at 2F Dining", title_zh: "2楼生啤酒免费畅饮", title_ko: "2층 무료 맥주 무제한 제공",
+    desc_en: "Enjoy free unlimited beer at the 2F dining hall from 01:00 AM to 05:00 AM.",
+    desc_zh: "星光会员从半夜 1:00 到半夜 5:00 可以在 2 楼餐厅享受生啤酒免费畅饮。",
+    desc_ko: "스타라이트 회원은 새벽 1시부터 새벽 5시까지 2층 뷔페 레스토랑에서 맥주를 무제한으로 무료 제공받으실 수 있습니다."
+  },
+  { 
+    id: 'prk3', icon: 'fa-car',
+    title_en: "Free Car Wash", title_zh: "免费洗车服务", title_ko: "무료 세차 서비스",
+    desc_en: "Get a free car wash during your stay from 12:00 PM to 12:00 AM.",
+    desc_zh: "免费洗车（开放时间：中午12:00 - 半夜00:00）。",
+    desc_ko: "스파 이용 및 투숙 고객을 위해 무료 세차 혜택을 제공합니다 (이용 가능 시간: 점심 12:00 - 자정 00:00)."
+  },
+  { 
+    id: 'prk4', icon: 'fa-hashtag',
+    title_en: "Follow for Free Massage", title_zh: "关注平台送免费按摩", title_ko: "SNS 팔로우 무료 마사지",
+    desc_en: "Follow Facebook, TikTok, or Instagram to receive one free 888p massage per platform.",
+    desc_zh: "关注 Facebook / TikTok / Instagram 官方社媒账号，每关注一个平台即可免费做一次价值888p的按摩。",
+    desc_ko: "공식 SNS 채널(Facebook/TikTok/Instagram)을 팔로우하실 때마다, 계정당 888p 무료 마사지 1회 이용권을 드립니다."
+  }
 ];
 
 const defaultChatbotFAQs = [
@@ -91,7 +178,7 @@ const defaultChatbotKeyPoints = [
   { id: 'kp4', text: 'Remind guests that mobile phones are prohibited in the 3F wet area locker rooms and pools.' }
 ];
 
-const defaultChatbotInstructions = `You are the Emgrand Spa Concierge, a highly professional, warm, and attentive virtual brand ambassador for Emgrand Spa Manila, a premium 24-hour urban wellness destination located at Lot 3, Block 5, Bradco Avenue, Aseana City, Parañaque City. Your core objective is to guide guests through inquiries, bookings, and facility layouts using an official, unchanging knowledge base while maintaining a polite, hospitable tone that blends local Filipino warmth with high-end international service standards. You must always operate within strict guardrails: never invent prices or packages, and politely direct guests to the official hotlines (0992-1888-888 or 0992-1999-999) or email (emgrandspa.official@gmail.com) for real-time room availability or live booking confirmations. In your interactions, you will seamlessly explain the facility's vertical layout, noting that the Ground Level handles registration and exchanges outdoor shoes for sanitized slippers; the Second Floor houses a continuous, 4-tier unlimited buffet balancing regional Chinese specialties like dim sum and medicinal soups with local Filipino flavors during designated windows (Breakfast 7–9 AM, Lunch 11 AM–1 PM, Dinner 6–9 PM, Midnight Snack 11 PM–1 AM); the Third Floor contains strictly gender-segregated wet areas with zero-phone policies, hot/cold hydrotherapy pools, and complimentary premium grooming toiletries; the Fifth Floor offers private massage therapies and room rentals; and the Sixth Floor acts as a social hub featuring an arcade, golf simulator, billiards, private karaoke, and a dedicated quiet sleeping area with individual pods. Economically, you must explain that the standard 12-hour adult admission is Php 1,699 (Php 899 for children between 80 cm and 119 cm), which covers the wet areas, lounges, and unlimited buffet, while secondary purchases, private suites, and therapies are logged via an RFID tracking wristband distributed at check-in. When guests ask about therapies, outline options like the 30-minute Dry Pinch Massage (Php 888–Php 988), 60-minute Standard Oil Massage (starting at Php 1,588), or TCM Orthopedics (Php 1,500), and always transparently mention that a mandatory therapist tip is auto-billed at Php 200 for local therapists or Php 500 for specialized Chinese therapists. For weekday visitors from Monday to Thursday, proactively market the high-value Weekday Massage Packages: Package A at Php 2,880 (includes admission, 3 buffet selections, and a Meridian Treatment or Emperor's Foot Bath), Package B at Php 3,180 (includes admission, 3 buffet selections, and a Pattaya Massage), and Package C at Php 3,580 (includes admission, 3 buffet selections, and an Aroma Detox or Thai Massage). You will also handle promotional inquiries by detailing the Starlight Membership program, which offers exclusive perks like free unlimited draft beer during major live broadcasts like the FIFA World Cup 2026, the monthly Couples Promotion on the 14th awarding free 4-hour room vouchers for social media check-ins, and the annual Children’s Day event from May 31 to June 1 featuring free admission for kids and a plaster painting contest with cash prizes up to Php 10,000. If guests mention past negative feedback regarding noise or crowding, actively validate their concerns with empathy, reassuring them that the spa strictly enforces quiet-hour protocols between 12:00 AM and 6:00 AM in the sleeping zones, implements careful asset management for high-demand areas like the cinema, and actively enforces a waste penalty at the buffet to ensure high-quality food sustainability.`;
+const defaultChatbotInstructions = `You are the Emgrand Spa Concierge, a highly professional, warm, and attentive virtual brand ambassador for Emgrand Spa Manila, a premium 24-hour urban wellness destination located at Lot 3, Block 5, Bradco Avenue, Aseana City, Parañaque City. Your core objective is to guide guests through inquiries, bookings, and facility layouts using an official, unchanging knowledge base while maintaining a polite, hospitable tone that blends local Filipino warmth with high-end international service standards. You must always operate within strict guardrails: never invent prices or packages, and politely direct guests to the official hotlines (0992-1888-888 or 0992-1999-999) or email (emgrandspa.official@gmail.com) for real-time room availability or live booking confirmations. In your interactions, you will seamlessly explain the facility's vertical layout, noting that the Ground Level handles registration and exchanges outdoor shoes for sanitized slippers; the Second Floor houses a continuous, 4-tier unlimited buffet balancing regional Chinese specialties like dim sum and medicinal soups with local Filipino flavors during designated windows (Breakfast 7–9 AM, Lunch 11 AM–1 PM, Dinner 6–9 PM, Midnight Snack 11 PM–1 AM); the Third Floor contains strictly gender-segregated wet areas with zero-phone policies, hot/cold hydrotherapy pools, and complimentary premium grooming toiletries; the Fifth Floor offers private massage therapies and room rentals; and the Sixth Floor acts as a social hub featuring an arcade, golf simulator, billiards, private karaoke, and a dedicated quiet sleeping area with individual pods. Economically, you must explain that the standard 12-hour adult admission is Php 1,699 (Php 899 for children between 80 cm and 119 cm), which covers the wet areas, lounges, and unlimited buffet, while secondary purchases, private suites, and therapies are logged via an RFID tracking wristband distributed at check-in. When guests ask about therapies, outline options like the 30-minute Dry Pinch Massage (Php 888–Php 988), 60-minute Standard Oil Massage (starting at Php 1,588), or TCM Orthopedics (Php 1,500), and always transparently mention that a mandatory therapist tip is auto-billed at Php 200 for local therapists or Php 500 for specialized Chinese therapists. For weekday visitors from Monday to Thursday, proactively market the high-value Weekday Massage Packages: Package A at Php 2,880 (includes entrance fee, any 3 meals, and a choice between Chinese Meridian or Foot Bath), Package B at Php 3,180 (includes entrance fee, any 3 meals, and a Pattaya Massage), and Package C at Php 3,580 (includes entrance fee, any 3 meals, and a choice between Aroma Detox or Thai Style). You will also handle promotional inquiries by detailing the Starlight Membership program, which offers exclusive perks like joining the membership for only Php 1 (which includes one free massage worth Php 888), free unlimited draft beer at the 2F dining hall from 1:00 AM to 5:00 AM, free car wash during the stay (from 12:00 PM to 12:00 AM), and one free 888p massage for every official social media channel followed (Facebook, TikTok, Instagram). Explain that birthdays are celebrated with the Exclusive Birthday Treat, which offers free admission if the birthday guest brings 3 or more friends (valid 3 days before and after the birthday) and a complimentary birthday dessert with a half-day advance reservation. Mention that the monthly Couples Promotion is held on the 14th, and the annual Children's Day event is from May 31 to June 1. If guests mention past negative feedback regarding noise or crowding, actively validate their concerns with empathy, reassuring them that the spa strictly enforces quiet-hour protocols between 12:00 AM and 6:00 AM in the sleeping zones, implements careful asset management for high-demand areas like the cinema, and actively enforces a waste penalty at the buffet to ensure high-quality food sustainability.`;
 
 const translations = {
   en: {
@@ -182,12 +269,14 @@ const translations = {
     booking_btn_submit: "Submit Reservation",
     starlight_title: "STARLIGHT LOYALTY PROGRAM",
     starlight_subtitle: "Gain access to premium membership privileges",
-    starlight_perk1_title: "Free Unlimited Beer",
-    starlight_perk1_desc: "Enjoy free draught beer on the second floor during live broadcasts of major sporting matches (FIFA World Cup 2026).",
-    starlight_perk2_title: "World Cup Predictions",
-    starlight_perk2_desc: "Predict match scores correctly to receive premium spa massage vouchers, drawing evening crowds during tournaments.",
-    starlight_perk3_title: "Anniversary Reimbursements",
-    starlight_perk3_desc: "Participate in the 'You Spend, We Pay' draw. 3 members are randomly selected daily at 6:00 PM to get full cash refunds on their day's RFID spending.",
+    starlight_perk1_title: "Join for Only Php 1",
+    starlight_perk1_desc: "Get 1 FREE Massage worth Php 888 upon registration.",
+    starlight_perk2_title: "Free Beer at 2F Dining",
+    starlight_perk2_desc: "Enjoy free unlimited beer at the 2F dining hall from 01:00 AM to 05:00 AM.",
+    starlight_perk3_title: "Free Car Wash",
+    starlight_perk3_desc: "Get a free car wash during your stay from 12:00 PM to 12:00 AM.",
+    starlight_perk4_title: "Follow for Free Massage",
+    starlight_perk4_desc: "Follow Facebook, TikTok, or Instagram to receive one free 888p massage per platform.",
     photoboard_title: "Emgrand Moments Photo Board",
     photoboard_subtitle: "Snap photos in our designated Couples Photo Zones on the 14th of each month for free 4-Hour stay vouchers!",
     contact_header: "Get In Touch",
@@ -281,6 +370,8 @@ const translations = {
     camp2_desc: "On the 14th, couples taking photos at our Photo Zone and posting on social media get a free 4-Hour stay voucher!",
     camp3_title: "You Spend, We Pay",
     camp3_desc: "3 loyalty members randomly chosen daily at 6:00 PM get full cash reimbursements of their day's RFID spending!",
+    camp4_title: "Exclusive Birthday Treat",
+    camp4_desc: "Get free entry during your birthday week (valid 3 days before/after) when you bring 3 or more friends! Plus get a complimentary birthday dessert with half a day advance reservation.",
     days: "Days",
     hours_short: "Hrs",
     minutes_short: "Min",
@@ -410,7 +501,66 @@ const translations = {
     calc_unlimited_buffet_seafood: "Fresh Seafood & Premium Meat Selections",
     calc_unlimited_buffet_cuisine: "Asian & International Cuisine",
     calc_unlimited_buffet_desserts: "Desserts, Pastries & Seasonal Favorites",
-    calc_buffet_schedule_sessions: "Buffet Schedule Sessions:"
+    calc_buffet_schedule_sessions: "Buffet Schedule Sessions:",
+    adm_sidebar_services: "Services Catalog",
+    adm_sidebar_packages: "Service Packages",
+    adm_sidebar_bookings: "Bookings Manager",
+    adm_sidebar_campaigns: "Events & Campaigns",
+    adm_sidebar_seo: "SEO Settings",
+    adm_sidebar_banners: "Home Banners",
+    adm_sidebar_gallery: "Gallery Photos",
+    adm_sidebar_videos: "Videos",
+    adm_sidebar_socials: "Social Posts",
+    adm_sidebar_perks: "Memberships",
+    adm_sidebar_chatbot: "Chatbot Training",
+    adm_sidebar_feedback: "Guest Feedback",
+    adm_sidebar_analytics: "Analytics & Logs",
+    adm_sidebar_settings: "App Settings & Keys",
+    adm_sidebar_accounts: "User Accounts",
+    adm_sidebar_logout: "Log Out",
+    adm_title_services: "Manage Services Catalog",
+    adm_title_packages: "Weekday Massage Packages",
+    adm_title_bookings: "Guest Reservations Manager",
+    adm_title_campaigns: "Dynamic Countdown Event Banners",
+    adm_title_seo: "SEO Configurations",
+    adm_title_banners: "Home Hero Banner Settings",
+    adm_title_gallery: "Virtual Tour Gallery Photos",
+    adm_title_videos: "Walkthrough Tour Videos",
+    adm_title_socials: "Mock Social Photo Board Posts",
+    adm_title_perks: "Starlight Membership Loyalty Perks",
+    adm_title_chatbot: "Concierge AI Chatbot Training & Instructions",
+    adm_title_feedback: "Guest Feedback Submissions",
+    adm_title_analytics: "Analytics & System Logs",
+    adm_title_settings: "App Settings & API Keys",
+    adm_title_accounts: "Manage User Accounts & Roles",
+    adm_btn_add: "Add New",
+    adm_btn_save: "Save",
+    adm_btn_delete: "Delete",
+    adm_btn_edit: "Edit",
+    adm_th_title: "Title",
+    adm_th_category: "Category",
+    adm_th_price: "Price (Php)",
+    adm_th_tips: "Tips",
+    adm_th_actions: "Actions",
+    adm_th_name: "Name",
+    adm_lbl_title_en: "Title (English)",
+    adm_lbl_title_zh: "Title (Chinese)",
+    adm_lbl_title_ko: "Title (Korean)",
+    adm_lbl_desc_en: "Description (English)",
+    adm_lbl_desc_zh: "Description (Chinese)",
+    adm_lbl_desc_ko: "Description (Korean)",
+    adm_lbl_inclusions_en: "Inclusions (English - Comma separated)",
+    adm_lbl_inclusions_zh: "Inclusions (Chinese - Comma separated)",
+    adm_lbl_inclusions_ko: "Inclusions (Korean - Comma separated)",
+    adm_lbl_rate: "Rate / Cost (Php)",
+    adm_lbl_savings: "Estimated Savings (Php)",
+    adm_lbl_image: "Image URL",
+    adm_lbl_url: "URL / Link",
+    adm_lbl_likes: "Likes Count",
+    adm_lbl_username: "Username",
+    adm_lbl_message: "Message / Content",
+    adm_lbl_email: "Email Address",
+    adm_lbl_role: "Role / Level"
   },
   zh: {
     nav_home: "首页",
@@ -500,12 +650,14 @@ const translations = {
     booking_btn_submit: "确认提交预约",
     starlight_title: "星光尊客会 (STARLIGHT LOYALTY)",
     starlight_subtitle: "获取至高尊荣的会籍特权",
-    starlight_perk1_title: "无限生啤免费畅饮",
-    starlight_perk1_desc: "在转播大型国际赛事（如 2026 国际足联世界杯）期间，会员在二层餐厅可享无限免费生啤。",
-    starlight_perk2_title: "世界杯比分竞猜",
-    starlight_perk2_desc: "猜中赛事比分的会员可获赠高端按摩理疗券，在比赛期间为您点燃尊享激情。",
-    starlight_perk3_title: "周年消费免单大奖",
-    starlight_perk3_desc: "周年庆活动期间，每日18:00随机抽取3名会员，免除其今日的全部 RFID 账单金额。",
+    starlight_perk1_title: "1比索加入会员",
+    starlight_perk1_desc: "1p即可开通星光会员，即送价值888p按摩免费一次。",
+    starlight_perk2_title: "2楼生啤酒免费畅饮",
+    starlight_perk2_desc: "星光会员从半夜 1:00 到半夜 5:00 可以在 2 楼餐厅享受生啤酒免费畅饮。",
+    starlight_perk3_title: "免费洗车服务",
+    starlight_perk3_desc: "免费洗车（开放时间：中午12:00 - 半夜00:00）。",
+    starlight_perk4_title: "关注平台送免费按摩",
+    starlight_perk4_desc: "关注 Facebook / TikTok / Instagram 官方社媒账号，每关注一个平台即可免费做一次价值888p的按摩。",
     photoboard_title: "帝皇流光照壁",
     photoboard_subtitle: "每月14日携伴在专属情侣打卡区合照并发布社媒，可获赠4小时免费套房体验券！",
     contact_header: "联系我们",
@@ -599,6 +751,8 @@ const translations = {
     camp2_desc: "每月14日，情侣在专属打卡区合影并发布社交媒体，即可获赠4小时免单客房体验券！",
     camp3_title: "您消费，我买单",
     camp3_desc: "每日18:00随机抽取3位幸运会员，全额免除其今日的全部手环RFID消费金额！",
+    camp4_title: "生日专属宠爱",
+    camp4_desc: "生日日前后三天内，同行三人或以上即可享受本人免门票优惠！提前半天预订，更可免费赠送精美生日小蛋糕一个。",
     days: "天",
     hours_short: "小时",
     minutes_short: "分",
@@ -728,7 +882,66 @@ const translations = {
     calc_unlimited_buffet_seafood: "新鲜海鲜、刺身 & 现场铁板烧",
     calc_unlimited_buffet_cuisine: "精选中华地方美食 & 本地菲式风味",
     calc_unlimited_buffet_desserts: "精美手工甜点、鲜切水果 & 特调茶饮",
-    calc_buffet_schedule_sessions: "自助餐供应时段详情："
+    calc_buffet_schedule_sessions: "自助餐供应时段详情：",
+    adm_sidebar_services: "服务目录",
+    adm_sidebar_packages: "服务套餐",
+    adm_sidebar_bookings: "预约管理",
+    adm_sidebar_campaigns: "活动与推广",
+    adm_sidebar_seo: "SEO 设置",
+    adm_sidebar_banners: "首页横幅",
+    adm_sidebar_gallery: "画册图片",
+    adm_sidebar_videos: "视频",
+    adm_sidebar_socials: "社交动态",
+    adm_sidebar_perks: "会员特权",
+    adm_sidebar_chatbot: "客服机器人训练",
+    adm_sidebar_feedback: "宾客反馈",
+    adm_sidebar_analytics: "数据分析与日志",
+    adm_sidebar_settings: "应用设置与密钥",
+    adm_sidebar_accounts: "用户账户",
+    adm_sidebar_logout: "退出登录",
+    adm_title_services: "管理服务目录",
+    adm_title_packages: "工作日按摩套餐",
+    adm_title_bookings: "宾客预约管理",
+    adm_title_campaigns: "动态活动倒计时横幅",
+    adm_title_seo: "SEO 设置",
+    adm_title_banners: "首页 Hero 横幅设置",
+    adm_title_gallery: "虚拟导览画册图片",
+    adm_title_videos: "实体视频导览",
+    adm_title_socials: "社交媒体照片墙贴文",
+    adm_title_perks: "星光会员专属福利特权",
+    adm_title_chatbot: "AI 客服机器人训练与指令配置",
+    adm_title_feedback: "宾客反馈意见提交",
+    adm_title_analytics: "数据分析与系统日志",
+    adm_title_settings: "应用配置与 API 密钥",
+    adm_title_accounts: "用户账户与角色权限管理",
+    adm_btn_add: "添加新项目",
+    adm_btn_save: "保存",
+    adm_btn_delete: "删除",
+    adm_btn_edit: "编辑",
+    adm_th_title: "标题",
+    adm_th_category: "类别",
+    adm_th_price: "价格 (Php)",
+    adm_th_tips: "小费",
+    adm_th_actions: "操作",
+    adm_th_name: "名称",
+    adm_lbl_title_en: "标题 (英文)",
+    adm_lbl_title_zh: "标题 (中文)",
+    adm_lbl_title_ko: "标题 (韩文)",
+    adm_lbl_desc_en: "描述 (英文)",
+    adm_lbl_desc_zh: "描述 (中文)",
+    adm_lbl_desc_ko: "描述 (韩文)",
+    adm_lbl_inclusions_en: "包含内容 (英文 - 用逗号分隔)",
+    adm_lbl_inclusions_zh: "包含内容 (中文 - 用逗号分隔)",
+    adm_lbl_inclusions_ko: "包含内容 (韩文 - 用逗号分隔)",
+    adm_lbl_rate: "价格 / 费率 (Php)",
+    adm_lbl_savings: "预估省钱金额 (Php)",
+    adm_lbl_image: "图片 URL 链接",
+    adm_lbl_url: "URL 链接",
+    adm_lbl_likes: "点赞数",
+    adm_lbl_username: "用户名",
+    adm_lbl_message: "内容 / 消息",
+    adm_lbl_email: "电子邮箱地址",
+    adm_lbl_role: "角色 / 权限级别"
   },
   ko: {
     nav_home: "홈",
@@ -818,12 +1031,14 @@ const translations = {
     booking_btn_submit: "예약 완료 신청",
     starlight_title: "스타라이트 프리미엄 로열티 (STARLIGHT MEMBERSHIP)",
     starlight_subtitle: "최고급 회원 전용 혜택을 누리세요",
-    starlight_perk1_title: "무제한 생맥주 무료 제공",
-    starlight_perk1_desc: "2026 피파 월드컵 등 빅매치 스포츠 생중계 방영 시 2층 뷔페 라운지에서 무료 생맥주를 무제한으로 제공합니다.",
-    starlight_perk2_title: "월드컵 경기 예측 이벤트",
-    starlight_perk2_desc: "스포츠 경기 결과 스코어를 예측하여 적중하신 분들께는 최고급 스파 마사지권을 증정하여 저녁 피크시간대의 재미를 한층 더해드립니다.",
-    starlight_perk3_title: "아워 스펜드 페이 캐시백",
-    starlight_perk3_desc: "주년 기념 프로모션으로 매일 오후 6시 추첨을 통해 3명의 회원에게 오늘 사용한 모든 RFID 금액 전액 캐시백 혜택을 제공합니다.",
+    starlight_perk1_title: "1페소 스타라이트 회원 가입",
+    starlight_perk1_desc: "1, 1페소로 스타라이트 회원을 개통할 수 있습니다 (888p 마사지 1회 무료).",
+    starlight_perk2_title: "2층 무료 맥주 무제한 제공",
+    starlight_perk2_desc: "2, 스타라이트 회원은 새벽 1시부터 새벽 5시까지 2층에서 무료로 맥주를 무제한 마실 수 있습니다 (새벽1:00-5:00).",
+    starlight_perk3_title: "무료 세차 서비스",
+    starlight_perk3_desc: "3, 무료 세차(점심12:00-새벽00:00).",
+    starlight_perk4_title: "SNS 팔로우 무료 마사지",
+    starlight_perk4_desc: "공식 SNS 채널(Facebook/TikTok/Instagram)을 팔로우하실 때마다, 계정당 888p 무료 마사지 1회 이용권을 드립니다.",
     photoboard_title: "엠그란드 리포트 포토존",
     photoboard_subtitle: "매월 14일 커플 포토존에서 사진 촬영 후 SNS 업로드 시 5층 객실 4시간 무료 대여권을 선사합니다!",
     contact_header: "문의처 안내",
@@ -916,6 +1131,8 @@ const translations = {
     camp2_desc: "매월 14일, 포토존에서 커플 사진 촬영 후 SNS 업로드 시 5층 객실 4시간 무료 이용권을 즉시 지급합니다!",
     camp3_title: "유 스펜드, 위 페이",
     camp3_desc: "매일 오후 6시, 추첨을 통해 3명의 회원에게 오늘 이용하신 RFID 지출 금액을 전액 환불해 드립니다!",
+    camp4_title: "당신만을 위한 생일 이벤트",
+    camp4_desc: "생일 전후 3일 이내에 3명 이상의 동행인과 함께 방문 시 본인 입장료 무료! 반나절 전 사전 예약 시 아름다운 생일 케이크를 무료로 증정합니다.",
     days: "일",
     hours_short: "시간",
     minutes_short: "분",
@@ -1045,7 +1262,66 @@ const translations = {
     calc_unlimited_buffet_seafood: "신선한 바다 게, 새우 해산물과 즉석 그릴 육류",
     calc_unlimited_buffet_cuisine: "정통 차이니즈 요리 및 현지 필리핀 인기 음식",
     calc_unlimited_buffet_desserts: "과일 화채, 고급 조각 케이크 및 프리미엄 탄산음료",
-    calc_buffet_schedule_sessions: "뷔페 세부 타임테이블 안내:"
+    calc_buffet_schedule_sessions: "뷔페 세부 타임테이블 안내:",
+    adm_sidebar_services: "서비스 카탈로그",
+    adm_sidebar_packages: "서비스 패키지",
+    adm_sidebar_bookings: "예약 관리자",
+    adm_sidebar_campaigns: "이벤트 및 캠페인",
+    adm_sidebar_seo: "SEO 설정",
+    adm_sidebar_banners: "홈 배너",
+    adm_sidebar_gallery: "갤러리 사진",
+    adm_sidebar_videos: "비디오",
+    adm_sidebar_socials: "소셜 포스트",
+    adm_sidebar_perks: "멤버십",
+    adm_sidebar_chatbot: "챗봇 학습",
+    adm_sidebar_feedback: "고객 피드백",
+    adm_sidebar_analytics: "분석 및 로그",
+    adm_sidebar_settings: "앱 설정 및 키",
+    adm_sidebar_accounts: "사용자 계정",
+    adm_sidebar_logout: "로그아웃",
+    adm_title_services: "서비스 카탈로그 관리",
+    adm_title_packages: "평일 마사지 패키지",
+    adm_title_bookings: "고객 예약 관리자",
+    adm_title_campaigns: "동적 카운트다운 이벤트 배너",
+    adm_title_seo: "SEO 환경 설정",
+    adm_title_banners: "홈 히어로 배너 설정",
+    adm_title_gallery: "가상 투어 갤러리 사진",
+    adm_title_videos: "시설 투어 안내 비디오",
+    adm_title_socials: "소셜 포토 보드 게시물",
+    adm_title_perks: "스타라이트 회원 프리미엄 혜택",
+    adm_title_chatbot: "AI 컨시어지 챗봇 교육 및 시스템 지침",
+    adm_title_feedback: "고객 의견 제출함",
+    adm_title_analytics: "데이터 분석 및 시스템 로그",
+    adm_title_settings: "앱 설정 및 API 키 설정",
+    adm_title_accounts: "사용자 계정 및 역할 권한 관리",
+    adm_btn_add: "새 항목 추가",
+    adm_btn_save: "저장",
+    adm_btn_delete: "삭제",
+    adm_btn_edit: "편집",
+    adm_th_title: "제목",
+    adm_th_category: "카테고리",
+    adm_th_price: "가격 (Php)",
+    adm_th_tips: "팁",
+    adm_th_actions: "작업",
+    adm_th_name: "이름",
+    adm_lbl_title_en: "제목 (영어)",
+    adm_lbl_title_zh: "제목 (중국어)",
+    adm_lbl_title_ko: "제목 (한국어)",
+    adm_lbl_desc_en: "설명 (영어)",
+    adm_lbl_desc_zh: "설명 (중국어)",
+    adm_lbl_desc_ko: "설명 (한국어)",
+    adm_lbl_inclusions_en: "포함 내역 (영어 - 쉼표로 구분)",
+    adm_lbl_inclusions_zh: "포함 내역 (중국어 - 쉼표로 구분)",
+    adm_lbl_inclusions_ko: "포함 내역 (한국어 - 쉼표로 구분)",
+    adm_lbl_rate: "가격 / 요금 (Php)",
+    adm_lbl_savings: "예상 절약 금액 (Php)",
+    adm_lbl_image: "이미지 URL 경로",
+    adm_lbl_url: "URL 링크",
+    adm_lbl_likes: "좋아요 수",
+    adm_lbl_username: "사용자 이름",
+    adm_lbl_message: "메시지 / 본문 내용",
+    adm_lbl_email: "이메일 주소",
+    adm_lbl_role: "역할 / 권한 등급"
   }
 };
 
@@ -1121,7 +1397,8 @@ const defaultBuffetTimeline = [
 
 export const AppProvider = ({ children }) => {
   const [language, setLanguage] = useState('en');
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState('light');
+  const [isChatOpen, setIsChatOpen] = useState(false);
   
   // Dynamic App State
   const [services, setServices] = useState(defaultServices);
@@ -1142,6 +1419,7 @@ export const AppProvider = ({ children }) => {
   const [chatbotFAQs, setChatbotFAQs] = useState(defaultChatbotFAQs);
   const [chatbotKeyPoints, setChatbotKeyPoints] = useState(defaultChatbotKeyPoints);
   const [chatbotInstructions, setChatbotInstructions] = useState(defaultChatbotInstructions);
+  const [userAccounts, setUserAccounts] = useState([]);
   
   // Interactive parking simulation
   const [parkingSpots, setParkingSpots] = useState(24);
@@ -1172,6 +1450,8 @@ export const AppProvider = ({ children }) => {
     if (storedTheme) {
       setTheme(storedTheme);
       document.documentElement.setAttribute('data-theme', storedTheme);
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
     }
 
     // Check Local Storage configs
@@ -1205,319 +1485,476 @@ export const AppProvider = ({ children }) => {
 
   // Initialize Firebase dynamically if config is provided
   useEffect(() => {
-    if (fbConfig && fbConfig.apiKey) {
+    let checkInterval;
+    let unsubs = [];
+
+    // 1. Load offline/localStorage fallback data immediately as default
+    setDbActive(false);
+    const offlineServices = localStorage.getItem('emgrand_offline_services');
+    if (offlineServices) {
       try {
-        // Prevent duplicate initializations
-        let app;
-        if (!window.firebase?.apps?.length) {
-          app = window.firebase?.initializeApp(fbConfig);
-        } else {
-          app = window.firebase?.app();
-        }
-
-        if (app) {
-          setFirebaseApp(app);
-          setDbActive(true);
-          
-          // Setup real-time listeners for Services, Bookings, Campaigns, Feedbacks, and Logs
-          const firestore = app.firestore();
-          
-          // Listen to Services
-          const unsubServices = firestore.collection('services').onSnapshot(snap => {
-            if (!snap.empty) {
-              const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-              
-              // Verify standard admission prices to ensure they match 1699
-              const updatedList = list.map(item => {
-                if (item.id === 'adm_adult' && item.rate !== 1699) {
-                  firestore.collection('services').doc(item.id).update({ rate: 1699 });
-                  return { ...item, rate: 1699 };
-                }
-                return item;
-              });
-              
-              setServices(updatedList);
-            } else {
-              // Pre-populate firestore with defaults if empty
-              defaultServices.forEach(item => {
-                firestore.collection('services').doc(item.id).set(item);
-              });
-            }
-          });
-
-          // Listen to Campaigns
-          const unsubCampaigns = firestore.collection('campaigns').onSnapshot(snap => {
-            if (!snap.empty) {
-              const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-              setCampaigns(list);
-            } else {
-              defaultCampaigns.forEach(item => {
-                firestore.collection('campaigns').doc(item.id).set(item);
-              });
-            }
-          });
-
-          // Listen to Bookings
-          const unsubBookings = firestore.collection('bookings').onSnapshot(snap => {
-            const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            setBookings(list);
-          });
-
-          // Listen to Feedback
-          const unsubFeedback = firestore.collection('feedbacks').onSnapshot(snap => {
-            const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            setFeedbacks(list);
-          });
-
-          // Listen to Audit logs
-          const unsubAudit = firestore.collection('audit_logs').orderBy('timestamp', 'desc').limit(50).onSnapshot(snap => {
-            const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            setAuditLogs(list);
-          });
-
-          // Listen to Chat logs
-          const unsubChat = firestore.collection('chat_logs').orderBy('timestamp', 'desc').limit(50).onSnapshot(snap => {
-            const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            setChatLogs(list);
-          });
-
-          // Listen to SEO Settings
-          const unsubSEO = firestore.collection('seo_settings').doc('main').onSnapshot(doc => {
-            if (doc.exists) {
-              setSeoSettings(doc.data());
-            } else {
-              firestore.collection('seo_settings').doc('main').set(defaultSeoSettings);
-            }
-          });
-
-          // Listen to Home Banner Settings
-          const unsubBanner = firestore.collection('home_banner').doc('main').onSnapshot(doc => {
-            if (doc.exists) {
-              setHomeBanner(doc.data());
-            } else {
-              firestore.collection('home_banner').doc('main').set(defaultHomeBanner);
-            }
-          });
-
-          // Listen to Service Packages
-          const unsubPackages = firestore.collection('service_packages').onSnapshot(snap => {
-            if (!snap.empty) {
-              const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-              setServicePackages(list);
-            } else {
-              defaultServicePackages.forEach(item => {
-                firestore.collection('service_packages').doc(item.id).set(item);
-              });
-            }
-          });
-
-          // Listen to Gallery Photos
-          const unsubGallery = firestore.collection('gallery_photos').onSnapshot(snap => {
-            if (!snap.empty) {
-              const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-              setGalleryPhotos(list);
-            } else {
-              defaultGalleryPhotos.forEach(item => {
-                firestore.collection('gallery_photos').doc(item.id).set(item);
-              });
-            }
-          });
-
-          // Listen to Promo Videos
-          const unsubVideos = firestore.collection('promo_videos').onSnapshot(snap => {
-            if (!snap.empty) {
-              const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-              setPromoVideos(list);
-            } else {
-              defaultPromoVideos.forEach(item => {
-                firestore.collection('promo_videos').doc(item.id).set(item);
-              });
-            }
-          });
-
-          // Listen to Social Posts
-          const unsubSocial = firestore.collection('social_posts').onSnapshot(snap => {
-            if (!snap.empty) {
-              const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-              setSocialPosts(list);
-            } else {
-              defaultSocialPosts.forEach(item => {
-                firestore.collection('social_posts').doc(item.id).set(item);
-              });
-            }
-          });
-
-          // Listen to Membership Perks
-          const unsubPerks = firestore.collection('membership_perks').onSnapshot(snap => {
-            if (!snap.empty) {
-              const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-              setMembershipPerks(list);
-            } else {
-              defaultMembershipPerks.forEach(item => {
-                firestore.collection('membership_perks').doc(item.id).set(item);
-              });
-            }
-          });
-
-          // Listen to Chatbot FAQs
-          const unsubFAQs = firestore.collection('chatbot_faqs').onSnapshot(snap => {
-            if (!snap.empty) {
-              const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-              setChatbotFAQs(list);
-            } else {
-              defaultChatbotFAQs.forEach(item => {
-                firestore.collection('chatbot_faqs').doc(item.id).set(item);
-              });
-            }
-          });
-
-          // Listen to Chatbot Key Points
-          const unsubKeyPoints = firestore.collection('chatbot_key_points').onSnapshot(snap => {
-            if (!snap.empty) {
-              const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-              setChatbotKeyPoints(list);
-            } else {
-              defaultChatbotKeyPoints.forEach(item => {
-                firestore.collection('chatbot_key_points').doc(item.id).set(item);
-              });
-            }
-          });
-
-          // Listen to Chatbot Answering Instructions
-          const unsubInstructions = firestore.collection('chatbot_settings').doc('main').onSnapshot(doc => {
-            if (doc.exists) {
-              const savedInstructions = doc.data().instructions || "";
-              const isOutdated = !savedInstructions || 
-                                 (!savedInstructions.includes("1,699") && !savedInstructions.includes("1699")) ||
-                                 (savedInstructions.includes("1,500") && savedInstructions.toLowerCase().includes("adult"));
-              if (isOutdated) {
-                firestore.collection('chatbot_settings').doc('main').set({ instructions: defaultChatbotInstructions });
-                setChatbotInstructions(defaultChatbotInstructions);
-              } else {
-                setChatbotInstructions(savedInstructions);
-              }
-            } else {
-              firestore.collection('chatbot_settings').doc('main').set({ instructions: defaultChatbotInstructions });
-            }
-          });
-
-          // Auth Listener
-          const unsubAuth = app.auth().onAuthStateChanged(user => {
-            if (user) {
-              setAdminUser({ email: user.email, uid: user.uid });
-            } else {
-              setAdminUser(null);
-            }
-          });
-
-          return () => {
-            unsubServices();
-            unsubCampaigns();
-            unsubBookings();
-            unsubFeedback();
-            unsubAudit();
-            unsubChat();
-            unsubSEO();
-            unsubBanner();
-            unsubPackages();
-            unsubGallery();
-            unsubVideos();
-            unsubSocial();
-            unsubPerks();
-            unsubFAQs();
-            unsubKeyPoints();
-            unsubInstructions();
-            unsubAuth();
-          };
-        }
-      } catch (err) {
-        console.error("Firebase Initialization Error, falling back to LocalStorage:", err);
-        setDbActive(false);
-      }
-    } else {
-      // Offline fallback: load dynamic fields from LocalStorage if edits happened offline
-      setDbActive(false);
-      const offlineServices = localStorage.getItem('emgrand_offline_services');
-      if (offlineServices) {
-        try {
-          let parsed = JSON.parse(offlineServices);
-          let updated = false;
-          parsed = parsed.map(s => {
-            if (s.id === 'adm_adult' && s.rate !== 1699) {
-              updated = true;
-              return { ...s, rate: 1699 };
-            }
-            return s;
-          });
-          setServices(parsed);
-          if (updated) {
-            localStorage.setItem('emgrand_offline_services', JSON.stringify(parsed));
+        let parsed = JSON.parse(offlineServices);
+        let updated = false;
+        parsed = parsed.map(s => {
+          if (s.id === 'adm_adult' && s.rate !== 1699) {
+            updated = true;
+            return { ...s, rate: 1699 };
           }
-        } catch (e) {
-          console.error("Error parsing offline services", e);
-          setServices(defaultServices);
+          return s;
+        });
+        setServices(parsed);
+        if (updated) {
+          localStorage.setItem('emgrand_offline_services', JSON.stringify(parsed));
         }
-      } else {
+      } catch (e) {
+        console.error("Error parsing offline services", e);
         setServices(defaultServices);
       }
+    } else {
+      setServices(defaultServices);
+    }
 
-      const offlineCampaigns = localStorage.getItem('emgrand_offline_campaigns');
-      if (offlineCampaigns) setCampaigns(JSON.parse(offlineCampaigns));
-
-      const offlineBookings = localStorage.getItem('emgrand_offline_bookings');
-      if (offlineBookings) setBookings(JSON.parse(offlineBookings));
-
-      const offlineFeedback = localStorage.getItem('emgrand_offline_feedback');
-      if (offlineFeedback) setFeedbacks(JSON.parse(offlineFeedback));
-
-      const offlineAudit = localStorage.getItem('emgrand_offline_audit');
-      if (offlineAudit) setAuditLogs(JSON.parse(offlineAudit));
-
-      const offlineChat = localStorage.getItem('emgrand_offline_chat');
-      if (offlineChat) setChatLogs(JSON.parse(offlineChat));
-
-      const offlineSeo = localStorage.getItem('emgrand_offline_seo');
-      if (offlineSeo) setSeoSettings(JSON.parse(offlineSeo));
-
-      const offlineBanner = localStorage.getItem('emgrand_offline_banner');
-      if (offlineBanner) setHomeBanner(JSON.parse(offlineBanner));
-
-      const offlinePackages = localStorage.getItem('emgrand_offline_packages');
-      if (offlinePackages) setServicePackages(JSON.parse(offlinePackages));
-
-      const offlineGallery = localStorage.getItem('emgrand_offline_gallery');
-      if (offlineGallery) setGalleryPhotos(JSON.parse(offlineGallery));
-
-      const offlineVideos = localStorage.getItem('emgrand_offline_videos');
-      if (offlineVideos) setPromoVideos(JSON.parse(offlineVideos));
-
-      const offlineSocials = localStorage.getItem('emgrand_offline_socials');
-      if (offlineSocials) setSocialPosts(JSON.parse(offlineSocials));
-
-      const offlinePerks = localStorage.getItem('emgrand_offline_perks');
-      if (offlinePerks) setMembershipPerks(JSON.parse(offlinePerks));
-
-      const offlineFAQs = localStorage.getItem('emgrand_offline_faqs');
-      if (offlineFAQs) setChatbotFAQs(JSON.parse(offlineFAQs));
-
-      const offlineKeyPoints = localStorage.getItem('emgrand_offline_key_points');
-      if (offlineKeyPoints) setChatbotKeyPoints(JSON.parse(offlineKeyPoints));
-
-      const offlineInstructions = localStorage.getItem('emgrand_offline_chatbot_instructions');
-      if (offlineInstructions) {
-        const isOutdated = !offlineInstructions || 
-                           (!offlineInstructions.includes("1,699") && !offlineInstructions.includes("1699")) ||
-                           (offlineInstructions.includes("1,500") && offlineInstructions.toLowerCase().includes("adult"));
-        if (isOutdated) {
-          setChatbotInstructions(defaultChatbotInstructions);
-          localStorage.setItem('emgrand_offline_chatbot_instructions', defaultChatbotInstructions);
+    const offlineCampaigns = localStorage.getItem('emgrand_offline_campaigns');
+    if (offlineCampaigns) {
+      try {
+        let parsed = JSON.parse(offlineCampaigns);
+        if (parsed.length !== defaultCampaigns.length || !parsed.some(c => c.id === 'camp4') || !parsed[0].title_zh) {
+          setCampaigns(defaultCampaigns);
+          localStorage.setItem('emgrand_offline_campaigns', JSON.stringify(defaultCampaigns));
         } else {
-          setChatbotInstructions(offlineInstructions);
+          setCampaigns(parsed);
         }
-      } else {
+      } catch (e) {
+        setCampaigns(defaultCampaigns);
+      }
+    } else {
+      setCampaigns(defaultCampaigns);
+    }
+
+    const offlineBookings = localStorage.getItem('emgrand_offline_bookings');
+    if (offlineBookings) setBookings(JSON.parse(offlineBookings));
+
+    const offlineFeedback = localStorage.getItem('emgrand_offline_feedback');
+    if (offlineFeedback) setFeedbacks(JSON.parse(offlineFeedback));
+
+    const offlineAudit = localStorage.getItem('emgrand_offline_audit');
+    if (offlineAudit) setAuditLogs(JSON.parse(offlineAudit));
+
+    const offlineChat = localStorage.getItem('emgrand_offline_chat');
+    if (offlineChat) setChatLogs(JSON.parse(offlineChat));
+
+    const offlineSeo = localStorage.getItem('emgrand_offline_seo');
+    if (offlineSeo) setSeoSettings(JSON.parse(offlineSeo));
+
+    const offlineBanner = localStorage.getItem('emgrand_offline_banner');
+    if (offlineBanner) {
+      try {
+        let parsed = JSON.parse(offlineBanner);
+        if (!parsed.title_zh) {
+          setHomeBanner(defaultHomeBanner);
+          localStorage.setItem('emgrand_offline_banner', JSON.stringify(defaultHomeBanner));
+        } else {
+          setHomeBanner(parsed);
+        }
+      } catch (e) {
+        setHomeBanner(defaultHomeBanner);
+      }
+    } else {
+      setHomeBanner(defaultHomeBanner);
+    }
+
+    const offlinePackages = localStorage.getItem('emgrand_offline_packages');
+    if (offlinePackages) {
+      try {
+        let parsed = JSON.parse(offlinePackages);
+        let updated = false;
+        parsed = parsed.map(pkg => {
+          const defaultPkg = defaultServicePackages.find(d => d.id === pkg.id);
+          if (defaultPkg && (pkg.savings !== defaultPkg.savings || !pkg.title_zh || !pkg.inclusions_zh)) {
+            updated = true;
+            return defaultPkg;
+          }
+          return pkg;
+        });
+        setServicePackages(parsed);
+        if (updated) {
+          localStorage.setItem('emgrand_offline_packages', JSON.stringify(parsed));
+        }
+      } catch (e) {
+        setServicePackages(defaultServicePackages);
+      }
+    } else {
+      setServicePackages(defaultServicePackages);
+    }
+
+    const offlineGallery = localStorage.getItem('emgrand_offline_gallery');
+    if (offlineGallery) setGalleryPhotos(JSON.parse(offlineGallery));
+
+    const offlineVideos = localStorage.getItem('emgrand_offline_videos');
+    if (offlineVideos) setPromoVideos(JSON.parse(offlineVideos));
+
+    const offlineSocials = localStorage.getItem('emgrand_offline_socials');
+    if (offlineSocials) setSocialPosts(JSON.parse(offlineSocials));
+
+    const offlinePerks = localStorage.getItem('emgrand_offline_perks');
+    if (offlinePerks) {
+      try {
+        let parsed = JSON.parse(offlinePerks);
+        if (parsed.length !== defaultMembershipPerks.length || !parsed.some(p => p.id === 'prk4') || !parsed[0].title_zh) {
+          setMembershipPerks(defaultMembershipPerks);
+          localStorage.setItem('emgrand_offline_perks', JSON.stringify(defaultMembershipPerks));
+        } else {
+          setMembershipPerks(parsed);
+        }
+      } catch (e) {
+        setMembershipPerks(defaultMembershipPerks);
+      }
+    } else {
+      setMembershipPerks(defaultMembershipPerks);
+    }
+
+    const offlineFAQs = localStorage.getItem('emgrand_offline_faqs');
+    if (offlineFAQs) setChatbotFAQs(JSON.parse(offlineFAQs));
+
+    const offlineKeyPoints = localStorage.getItem('emgrand_offline_key_points');
+    if (offlineKeyPoints) setChatbotKeyPoints(JSON.parse(offlineKeyPoints));
+
+    const offlineInstructions = localStorage.getItem('emgrand_offline_chatbot_instructions');
+    if (offlineInstructions) {
+      const isOutdated = !offlineInstructions || 
+                         (!offlineInstructions.includes("1,699") && !offlineInstructions.includes("1699")) ||
+                         (offlineInstructions.includes("1,500") && offlineInstructions.toLowerCase().includes("adult"));
+      if (isOutdated) {
         setChatbotInstructions(defaultChatbotInstructions);
+        localStorage.setItem('emgrand_offline_chatbot_instructions', defaultChatbotInstructions);
+      } else {
+        setChatbotInstructions(offlineInstructions);
+      }
+    } else {
+      setChatbotInstructions(defaultChatbotInstructions);
+    }
+
+    const offlineUsers = localStorage.getItem('emgrand_offline_users');
+    if (offlineUsers) {
+      setUserAccounts(JSON.parse(offlineUsers));
+    } else {
+      setUserAccounts([
+        { id: 'admin@emgrandspa.com', email: 'admin@emgrandspa.com', role: 'admin', addedAt: new Date().toLocaleString() }
+      ]);
+    }
+
+    // 2. Initialize online Firebase dynamically once window.firebase is ready
+    const initFirebase = () => {
+      if (fbConfig && fbConfig.apiKey && window.firebase && window.firebase.apps) {
+        clearInterval(checkInterval);
+        try {
+          let app;
+          if (!window.firebase.apps.length) {
+            app = window.firebase.initializeApp(fbConfig);
+          } else {
+            app = window.firebase.app();
+          }
+
+          if (app) {
+            setFirebaseApp(app);
+            setDbActive(true);
+            
+            const firestore = app.firestore();
+            
+            const unsubServices = firestore.collection('services').onSnapshot(snap => {
+              if (!snap.empty) {
+                const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                const updatedList = list.map(item => {
+                  const defaultItem = defaultServices.find(d => d.id === item.id);
+                  const updates = {};
+                  
+                  if (item.id === 'adm_adult' && item.rate !== 1699) {
+                    updates.rate = 1699;
+                  }
+                  
+                  if (defaultItem) {
+                    if (!item.desc_zh && defaultItem.desc_zh) updates.desc_zh = defaultItem.desc_zh;
+                    if (!item.desc_ko && defaultItem.desc_ko) updates.desc_ko = defaultItem.desc_ko;
+                    if (!item.desc_en && defaultItem.desc_en) updates.desc_en = defaultItem.desc_en;
+                  }
+                  
+                  if (Object.keys(updates).length > 0) {
+                    firestore.collection('services').doc(item.id).update(updates);
+                    return { ...item, ...updates };
+                  }
+                  return item;
+                });
+                
+                setServices(updatedList);
+              } else {
+                defaultServices.forEach(item => {
+                  firestore.collection('services').doc(item.id).set(item);
+                });
+              }
+            });
+            unsubs.push(unsubServices);
+
+            const unsubCampaigns = firestore.collection('campaigns').onSnapshot(snap => {
+              if (!snap.empty) {
+                const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                setCampaigns(list);
+                
+                // Sync campaigns in Firestore to add multilingual fields if missing
+                list.forEach(camp => {
+                  const defaultCamp = defaultCampaigns.find(d => d.id === camp.id);
+                  if (defaultCamp && (!camp.title_zh || !camp.title_ko || camp.title === 'camp1_title')) {
+                    firestore.collection('campaigns').doc(camp.id).set(defaultCamp);
+                  }
+                });
+              } else {
+                defaultCampaigns.forEach(item => {
+                  firestore.collection('campaigns').doc(item.id).set(item);
+                });
+              }
+            });
+            unsubs.push(unsubCampaigns);
+
+            const unsubBookings = firestore.collection('bookings').onSnapshot(snap => {
+              const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+              setBookings(list);
+            });
+            unsubs.push(unsubBookings);
+
+            const unsubFeedback = firestore.collection('feedbacks').onSnapshot(snap => {
+              const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+              setFeedbacks(list);
+            });
+            unsubs.push(unsubFeedback);
+
+            const unsubAudit = firestore.collection('audit_logs').orderBy('timestamp', 'desc').limit(50).onSnapshot(snap => {
+              const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+              setAuditLogs(list);
+            });
+            unsubs.push(unsubAudit);
+
+            const unsubChat = firestore.collection('chat_logs').orderBy('timestamp', 'desc').limit(50).onSnapshot(snap => {
+              const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+              setChatLogs(list);
+            });
+            unsubs.push(unsubChat);
+
+            const unsubSEO = firestore.collection('seo_settings').doc('main').onSnapshot(doc => {
+              if (doc.exists) {
+                setSeoSettings(doc.data());
+              } else {
+                firestore.collection('seo_settings').doc('main').set(defaultSeoSettings);
+              }
+            });
+            unsubs.push(unsubSEO);
+
+            const unsubBanner = firestore.collection('home_banner').doc('main').onSnapshot(doc => {
+              if (doc.exists) {
+                const data = doc.data();
+                setHomeBanner(data);
+                if (!data.title_zh) {
+                  firestore.collection('home_banner').doc('main').set(defaultHomeBanner);
+                }
+              } else {
+                firestore.collection('home_banner').doc('main').set(defaultHomeBanner);
+              }
+            });
+            unsubs.push(unsubBanner);
+
+            const unsubPackages = firestore.collection('service_packages').onSnapshot(snap => {
+              if (!snap.empty) {
+                const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                setServicePackages(list);
+                
+                // Sync service packages in Firestore
+                list.forEach(pkg => {
+                  const defaultPkg = defaultServicePackages.find(d => d.id === pkg.id);
+                  if (defaultPkg && (pkg.savings !== defaultPkg.savings || !pkg.title_zh || !pkg.inclusions_zh)) {
+                    firestore.collection('service_packages').doc(pkg.id).set(defaultPkg);
+                  }
+                });
+              } else {
+                defaultServicePackages.forEach(item => {
+                  firestore.collection('service_packages').doc(item.id).set(item);
+                });
+              }
+            });
+            unsubs.push(unsubPackages);
+
+            const unsubGallery = firestore.collection('gallery_photos').onSnapshot(snap => {
+              if (!snap.empty) {
+                const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                setGalleryPhotos(list);
+              } else {
+                defaultGalleryPhotos.forEach(item => {
+                  firestore.collection('gallery_photos').doc(item.id).set(item);
+                });
+              }
+            });
+            unsubs.push(unsubGallery);
+
+            const unsubVideos = firestore.collection('promo_videos').onSnapshot(snap => {
+              if (!snap.empty) {
+                const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                setPromoVideos(list);
+              } else {
+                defaultPromoVideos.forEach(item => {
+                  firestore.collection('promo_videos').doc(item.id).set(item);
+                });
+              }
+            });
+            unsubs.push(unsubVideos);
+
+            const unsubSocial = firestore.collection('social_posts').onSnapshot(snap => {
+              if (!snap.empty) {
+                const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                setSocialPosts(list);
+              } else {
+                defaultSocialPosts.forEach(item => {
+                  firestore.collection('social_posts').doc(item.id).set(item);
+                });
+              }
+            });
+            unsubs.push(unsubSocial);
+
+            const unsubPerks = firestore.collection('membership_perks').onSnapshot(snap => {
+              if (!snap.empty) {
+                const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                setMembershipPerks(list);
+                
+                // Sync membership perks in Firestore
+                defaultMembershipPerks.forEach(item => {
+                  const existing = list.find(l => l.id === item.id);
+                  if (!existing || !existing.title_zh || !existing.desc_zh || existing.icon !== item.icon) {
+                    firestore.collection('membership_perks').doc(item.id).set(item);
+                  }
+                });
+              } else {
+                defaultMembershipPerks.forEach(item => {
+                  firestore.collection('membership_perks').doc(item.id).set(item);
+                });
+              }
+            });
+            unsubs.push(unsubPerks);
+
+            const unsubFAQs = firestore.collection('chatbot_faqs').onSnapshot(snap => {
+              if (!snap.empty) {
+                const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                setChatbotFAQs(list);
+              } else {
+                defaultChatbotFAQs.forEach(item => {
+                  firestore.collection('chatbot_faqs').doc(item.id).set(item);
+                });
+              }
+            });
+            unsubs.push(unsubFAQs);
+
+            const unsubKeyPoints = firestore.collection('chatbot_key_points').onSnapshot(snap => {
+              if (!snap.empty) {
+                const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                setChatbotKeyPoints(list);
+              } else {
+                defaultChatbotKeyPoints.forEach(item => {
+                  firestore.collection('chatbot_key_points').doc(item.id).set(item);
+                });
+              }
+            });
+            unsubs.push(unsubKeyPoints);
+
+            const unsubInstructions = firestore.collection('chatbot_settings').doc('main').onSnapshot(doc => {
+              if (doc.exists) {
+                const savedInstructions = doc.data().instructions || "";
+                const isOutdated = !savedInstructions || 
+                                   (!savedInstructions.includes("1,699") && !savedInstructions.includes("1699")) ||
+                                   (savedInstructions.includes("1,500") && savedInstructions.toLowerCase().includes("adult"));
+                if (isOutdated) {
+                  firestore.collection('chatbot_settings').doc('main').set({ instructions: defaultChatbotInstructions });
+                  setChatbotInstructions(defaultChatbotInstructions);
+                } else {
+                  setChatbotInstructions(savedInstructions);
+                }
+              } else {
+                firestore.collection('chatbot_settings').doc('main').set({ instructions: defaultChatbotInstructions });
+              }
+            });
+            unsubs.push(unsubInstructions);
+
+            // Listen to Users (RBAC)
+            const unsubUsers = firestore.collection('users').onSnapshot(snap => {
+              if (!snap.empty) {
+                const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                setUserAccounts(list);
+              } else {
+                // If database is brand new and users list is empty, seed admin@emgrandspa.com as admin
+                const firstUser = {
+                  email: 'admin@emgrandspa.com',
+                  role: 'admin',
+                  addedAt: new Date().toLocaleString()
+                };
+                firestore.collection('users').doc('admin@emgrandspa.com').set(firstUser);
+                setUserAccounts([{ id: 'admin@emgrandspa.com', ...firstUser }]);
+              }
+            });
+            unsubs.push(unsubUsers);
+
+            // Auth Listener
+            const unsubAuth = app.auth().onAuthStateChanged(async user => {
+              if (user) {
+                try {
+                  const userDoc = await firestore.collection('users').doc(user.email.toLowerCase()).get();
+                  if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    if (userData.role === 'admin' || userData.role === 'superadmin') {
+                      setAdminUser({ email: user.email, uid: user.uid, role: userData.role });
+                    } else {
+                      await app.auth().signOut();
+                      setAdminUser(null);
+                    }
+                  } else {
+                    await app.auth().signOut();
+                    setAdminUser(null);
+                  }
+                } catch (err) {
+                  console.error("Error fetching user profile:", err);
+                  setAdminUser(null);
+                }
+              } else {
+                setAdminUser(null);
+              }
+            });
+            unsubs.push(unsubAuth);
+
+            return true;
+          }
+        } catch (err) {
+          console.error("Firebase Initialization Error:", err);
+        }
+      }
+      return false;
+    };
+
+    if (fbConfig && fbConfig.apiKey) {
+      const success = initFirebase();
+      if (!success) {
+        checkInterval = setInterval(() => {
+          const checkSuccess = initFirebase();
+          if (checkSuccess) {
+            clearInterval(checkInterval);
+          }
+        }, 500);
       }
     }
+
+    return () => {
+      clearInterval(checkInterval);
+      unsubs.forEach(unsub => {
+        try {
+          unsub();
+        } catch (e) {
+          console.error("Error running unsubscriber cleanup", e);
+        }
+      });
+    };
   }, [fbConfig]);
 
   // Translation helper
@@ -1953,6 +2390,50 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const addUserAccount = async (email, role) => {
+    const cleanEmail = email.trim().toLowerCase();
+    const data = {
+      email: cleanEmail,
+      role: role || 'admin',
+      addedAt: new Date().toLocaleString()
+    };
+    if (dbActive && firebaseApp) {
+      await firebaseApp.firestore().collection('users').doc(cleanEmail).set(data);
+      await addAuditLog(`Added user ${cleanEmail} with role ${role}`);
+    } else {
+      const list = [...userAccounts, { id: cleanEmail, ...data }];
+      setUserAccounts(list);
+      localStorage.setItem('emgrand_offline_users', JSON.stringify(list));
+      await addAuditLog(`Added user ${cleanEmail} with role ${role} offline`);
+    }
+  };
+
+  const updateUserRole = async (email, role) => {
+    const cleanEmail = email.toLowerCase();
+    if (dbActive && firebaseApp) {
+      await firebaseApp.firestore().collection('users').doc(cleanEmail).update({ role });
+      await addAuditLog(`Updated user ${cleanEmail} role to ${role}`);
+    } else {
+      const list = userAccounts.map(u => u.email.toLowerCase() === cleanEmail ? { ...u, role } : u);
+      setUserAccounts(list);
+      localStorage.setItem('emgrand_offline_users', JSON.stringify(list));
+      await addAuditLog(`Updated user ${cleanEmail} role to ${role} offline`);
+    }
+  };
+
+  const deleteUserAccount = async (email) => {
+    const cleanEmail = email.toLowerCase();
+    if (dbActive && firebaseApp) {
+      await firebaseApp.firestore().collection('users').doc(cleanEmail).delete();
+      await addAuditLog(`Deleted user ${cleanEmail}`);
+    } else {
+      const list = userAccounts.filter(u => u.email.toLowerCase() !== cleanEmail);
+      setUserAccounts(list);
+      localStorage.setItem('emgrand_offline_users', JSON.stringify(list));
+      await addAuditLog(`Deleted user ${cleanEmail} offline`);
+    }
+  };
+
   return (
     <AppContext.Provider value={{
       language,
@@ -2015,7 +2496,13 @@ export const AppProvider = ({ children }) => {
       addChatbotKeyPoint,
       deleteChatbotKeyPoint,
       chatbotInstructions,
-      updateChatbotInstructions
+      updateChatbotInstructions,
+      isChatOpen,
+      setIsChatOpen,
+      userAccounts,
+      addUserAccount,
+      updateUserRole,
+      deleteUserAccount
     }}>
       {children}
     </AppContext.Provider>

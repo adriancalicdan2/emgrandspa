@@ -13,10 +13,11 @@ export default function FloatingChat() {
     chatbotKeyPoints, 
     chatbotInstructions,
     language,
-    t
+    t,
+    isChatOpen,
+    setIsChatOpen
   } = useAppState();
 
-  const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -219,7 +220,7 @@ ${campaigns.map(c => `- ${t(c.title)}: ${t(c.desc)} (Ends: ${c.end_date})`).join
   return (
     <div className="ai-chatbot-widget">
       {/* Suggestive Tooltip */}
-      {!isOpen && showTooltip && (
+      {!isChatOpen && showTooltip && (
         <div className="chat-suggest-tooltip">
           {getTooltipText()}
         </div>
@@ -227,19 +228,19 @@ ${campaigns.map(c => `- ${t(c.title)}: ${t(c.desc)} (Ends: ${c.end_date})`).join
 
       {/* Floating Toggle Bubble */}
       <button 
-        className={`chat-toggle-bubble ${!isOpen && showTooltip ? 'pulse-active' : ''}`}
+        className={`chat-toggle-bubble ${!isChatOpen && showTooltip ? 'pulse-active' : ''}`}
         onClick={() => {
-          setIsOpen(!isOpen);
+          setIsChatOpen(!isChatOpen);
           setShowTooltip(false);
         }}
         aria-label="Open Chat Assistant"
       >
-        <i className={`fa-solid ${isOpen ? 'fa-xmark' : 'fa-comments'}`}></i>
-        {!isOpen && <span className="chat-badge">💬</span>}
+        <i className={`fa-solid ${isChatOpen ? 'fa-xmark' : 'fa-comments'}`}></i>
+        {!isChatOpen && <span className="chat-badge">💬</span>}
       </button>
 
       {/* Expanded Chat Window */}
-      <div className={`chat-window-card ${isOpen ? 'active' : ''}`}>
+      <div className={`chat-window-card ${isChatOpen ? 'active' : ''}`}>
         <div className="chat-window-header">
           <div className="chat-bot-info">
             <i className="fa-solid fa-headset"></i>
@@ -248,7 +249,7 @@ ${campaigns.map(c => `- ${t(c.title)}: ${t(c.desc)} (Ends: ${c.end_date})`).join
               <p><span className="online-indicator"></span> {t('chat_subtitle')}</p>
             </div>
           </div>
-          <button className="chat-close-btn" onClick={() => setIsOpen(false)} aria-label="Close Chat">&times;</button>
+          <button className="chat-close-btn" onClick={() => setIsChatOpen(false)} aria-label="Close Chat">&times;</button>
         </div>
 
         {/* Messages */}
