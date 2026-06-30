@@ -2,6 +2,96 @@
 import React from 'react';
 import { useAppState } from '@/context/AppContext';
 
+const TikTokPlayer = ({ url, language }) => {
+  const match = url.match(/\/video\/(\d+)/);
+  const initialVideoId = match && match[1] ? match[1] : null;
+
+  const [videoId, setVideoId] = React.useState(initialVideoId);
+  const [loading, setLoading] = React.useState(!initialVideoId);
+
+  React.useEffect(() => {
+    if (initialVideoId) {
+      return;
+    }
+
+    let active = true;
+    fetch(`/api/tiktok?url=${encodeURIComponent(url)}`)
+      .then(res => res.json())
+      .then(data => {
+        if (active && data.videoId) {
+          setVideoId(data.videoId);
+        }
+      })
+      .catch(err => console.error("Error resolving TikTok URL:", err))
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [url, initialVideoId]);
+
+  if (loading) {
+    return (
+      <div style={{
+        position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#07090c'
+      }}>
+        <div style={{
+          width: '30px', height: '30px', border: '3px solid rgba(255,255,255,0.1)',
+          borderTopColor: 'var(--accent-gold)', borderRadius: '50%', animation: 'spin 1s linear infinite'
+        }} />
+      </div>
+    );
+  }
+
+  if (videoId) {
+    const embedUrl = `https://www.tiktok.com/embed/v2/${videoId}?autoplay=1`;
+    return (
+      <iframe
+        src={embedUrl}
+        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
+        allowFullScreen={true}
+        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+      />
+    );
+  }
+
+  return (
+    <div style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: '#07090c',
+      padding: '20px',
+      textAlign: 'center',
+      border: '1px solid var(--border-color)',
+      boxSizing: 'border-box'
+    }}>
+      <i className="fa-brands fa-tiktok" style={{ fontSize: '2.5rem', color: '#ff0050', marginBottom: '12px' }}></i>
+      <p style={{ fontSize: '0.85rem', color: 'var(--text-primary)', marginBottom: '15px', fontWeight: '500' }}>
+        {language === 'zh' ? 'TikTok 视频' : (language === 'ko' ? '틱톡 동영상' : 'TikTok Video')}
+      </p>
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="btn btn-secondary btn-sm"
+        style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '20px', fontSize: '0.8rem' }}
+      >
+        <i className="fa-brands fa-tiktok"></i> Watch on TikTok
+      </a>
+    </div>
+  );
+};
+
 export default function Socials() {
   const { t, language, socialPosts, membershipPerks, promoVideos } = useAppState();
 
@@ -88,53 +178,7 @@ export default function Socials() {
     const isTikTok = url.includes('tiktok.com');
 
     if (isTikTok) {
-      const match = url.match(/\/video\/(\d+)/);
-      const videoId = match ? match[1] : null;
-
-      if (videoId) {
-        const embedUrl = `https://www.tiktok.com/embed/v2/${videoId}?autoplay=1`;
-        return (
-          <iframe
-            src={embedUrl}
-            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
-            allowFullScreen={true}
-            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-          />
-        );
-      } else {
-        return (
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: '#07090c',
-            padding: '20px',
-            textAlign: 'center',
-            border: '1px solid var(--border-color)',
-            boxSizing: 'border-box'
-          }}>
-            <i className="fa-brands fa-tiktok" style={{ fontSize: '2.5rem', color: '#ff0050', marginBottom: '12px' }}></i>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-primary)', marginBottom: '15px', fontWeight: '500' }}>
-              {language === 'zh' ? 'TikTok 视频' : (language === 'ko' ? '틱톡 동영상' : 'TikTok Video')}
-            </p>
-            <a
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-secondary btn-sm"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '20px', fontSize: '0.8rem' }}
-            >
-              <i className="fa-brands fa-tiktok"></i> Watch on TikTok
-            </a>
-          </div>
-        );
-      }
+      return <TikTokPlayer url={url} language={language} />;
     }
 
     const isEmbeddable = url.includes('youtube.com') || url.includes('youtu.be') || url.includes('vimeo.com') || !url.match(/\.(mp4|webm|ogg)($|\?)/i);
