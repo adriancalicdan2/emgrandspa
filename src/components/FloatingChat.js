@@ -39,6 +39,67 @@ export default function FloatingChat() {
     return '💬 Chat here!';
   };
 
+  const renderParsedMessage = (text) => {
+    if (!text) return null;
+    const urlRegex = /(https?:\/\/[^\s()]+)/g;
+    const parts = text.split(urlRegex);
+    
+    return parts.map((part, index) => {
+      if (urlRegex.test(part)) {
+        let label = "Visit Link";
+        let iconClass = "fa-solid fa-arrow-up-right-from-square";
+        
+        if (part.includes("facebook.com")) {
+          label = language === 'zh' ? '打开 Facebook' : (language === 'ko' ? '페이스북 열기' : 'Open Facebook');
+          iconClass = "fa-brands fa-facebook-f";
+        } else if (part.includes("instagram.com")) {
+          label = language === 'zh' ? '打开 Instagram' : (language === 'ko' ? '인스타그램 열기' : 'Open Instagram');
+          iconClass = "fa-brands fa-instagram";
+        } else if (part.includes("tiktok.com")) {
+          label = language === 'zh' ? '打开 TikTok' : (language === 'ko' ? '틱톡 열기' : 'Open TikTok');
+          iconClass = "fa-brands fa-tiktok";
+        }
+        
+        return (
+          <a
+            key={index}
+            href={part}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              background: 'rgba(212, 175, 55, 0.1)',
+              border: '1px solid var(--accent-gold)',
+              borderRadius: '20px',
+              padding: '6px 14px',
+              color: 'var(--accent-gold)',
+              textDecoration: 'none',
+              fontSize: '0.82rem',
+              fontWeight: '600',
+              margin: '4px 4px',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              verticalAlign: 'middle'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'var(--accent-gold)';
+              e.currentTarget.style.color = '#000';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(212, 175, 55, 0.1)';
+              e.currentTarget.style.color = 'var(--accent-gold)';
+            }}
+          >
+            <i className={iconClass}></i> {label}
+          </a>
+        );
+      }
+      return <span key={index}>{part}</span>;
+    });
+  };
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -260,7 +321,7 @@ ${campaigns.map(c => `- ${t(c.title)}: ${t(c.desc)} (Ends: ${c.end_date})`).join
                 <i className={`fa-solid ${msg.sender === 'bot' ? 'fa-headset' : 'fa-user'}`}></i>
               </div>
               <div className="msg-text-wrap">
-                <p style={{ whiteSpace: 'pre-line' }}>{msg.text}</p>
+                <p style={{ whiteSpace: 'pre-line' }}>{renderParsedMessage(msg.text)}</p>
               </div>
             </div>
           ))}
