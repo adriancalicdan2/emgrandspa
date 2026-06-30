@@ -2019,7 +2019,7 @@ export const AppProvider = ({ children }) => {
   // CRUD for Bookings
   const addBooking = async (booking) => {
     const bookingId = 'book_' + Date.now();
-    const data = { ...booking, id: bookingId, timestamp: new Date().toISOString() };
+    const data = { ...booking, id: bookingId, status: booking.status || 'pending', timestamp: new Date().toISOString() };
     
     if (dbActive && firebaseApp) {
       await firebaseApp.firestore().collection('bookings').doc(bookingId).set(data);
@@ -2039,6 +2039,18 @@ export const AppProvider = ({ children }) => {
       setBookings(list);
       localStorage.setItem('emgrand_offline_bookings', JSON.stringify(list));
       addAuditLog(`Removed reservation offline: ${id}`);
+    }
+  };
+
+  const updateBookingStatus = async (id, status) => {
+    if (dbActive && firebaseApp) {
+      await firebaseApp.firestore().collection('bookings').doc(id).update({ status });
+      await addAuditLog(`Updated reservation status: ${id} to ${status}`);
+    } else {
+      const list = bookings.map(b => b.id === id ? { ...b, status } : b);
+      setBookings(list);
+      localStorage.setItem('emgrand_offline_bookings', JSON.stringify(list));
+      addAuditLog(`Updated reservation status offline: ${id} to ${status}`);
     }
   };
 
@@ -2454,6 +2466,7 @@ export const AppProvider = ({ children }) => {
       bookings,
       addBooking,
       removeBooking,
+      updateBookingStatus,
       feedbacks,
       submitFeedback,
       campaigns,

@@ -10,6 +10,7 @@ export default function Admin() {
     deleteService,
     bookings,
     removeBooking,
+    updateBookingStatus,
     feedbacks,
     campaigns,
     addCampaign,
@@ -67,6 +68,7 @@ export default function Admin() {
   } = useAppState();
 
   const [adminTab, setAdminTab] = useState('adminServices');
+  const [bookingStatusTab, setBookingStatusTab] = useState('pending');
 
   // Auth form states
   const [email, setEmail] = useState('');
@@ -975,8 +977,33 @@ export default function Admin() {
             {/* TAB 3: BOOKINGS LIST */}
             {adminTab === 'adminBookings' && (
               <div className="admin-tab-content active">
-                <div className="admin-section-header">
-                  <h4>{t('adm_title_bookings')}</h4>
+                <div className="admin-section-header" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '15px', marginBottom: '20px' }}>
+                  <h4 style={{ margin: 0 }}>{t('adm_title_bookings')}</h4>
+                  
+                  {/* Reservation Status Filter Tabs */}
+                  <div className="bookings-sub-tabs" style={{ display: 'flex', gap: '10px' }}>
+                    <button 
+                      className={`btn btn-xs ${bookingStatusTab === 'pending' ? 'btn-primary' : 'btn-secondary'}`}
+                      onClick={() => setBookingStatusTab('pending')}
+                      style={{ padding: '8px 16px', fontSize: '0.85rem' }}
+                    >
+                      {language === 'zh' ? '待处理' : (language === 'ko' ? '대기 중' : 'Pending')} ({bookings.filter(b => (b.status || 'pending') === 'pending').length})
+                    </button>
+                    <button 
+                      className={`btn btn-xs ${bookingStatusTab === 'done' ? 'btn-primary' : 'btn-secondary'}`}
+                      onClick={() => setBookingStatusTab('done')}
+                      style={{ padding: '8px 16px', fontSize: '0.85rem' }}
+                    >
+                      {language === 'zh' ? '已完成' : (language === 'ko' ? '완료됨' : 'Done')} ({bookings.filter(b => b.status === 'done').length})
+                    </button>
+                    <button 
+                      className={`btn btn-xs ${bookingStatusTab === 'cancel' ? 'btn-primary' : 'btn-secondary'}`}
+                      onClick={() => setBookingStatusTab('cancel')}
+                      style={{ padding: '8px 16px', fontSize: '0.85rem' }}
+                    >
+                      {language === 'zh' ? '已取消' : (language === 'ko' ? '취소됨' : 'Cancelled')} ({bookings.filter(b => b.status === 'cancel').length})
+                    </button>
+                  </div>
                 </div>
                 
                 <div className="table-wrapper">
@@ -989,12 +1016,18 @@ export default function Admin() {
                         <th>{language === 'zh' ? '项目/设施' : (language === 'ko' ? '항목/시설' : 'Item/Facility')}</th>
                         <th>{language === 'zh' ? '时长' : (language === 'ko' ? '기간' : 'Duration')}</th>
                         <th>{language === 'zh' ? '人数' : (language === 'ko' ? '인원' : 'Guests')}</th>
-                        <th>{t('adm_th_actions')}</th>
+                        <th style={{ minWidth: '180px' }}>{t('adm_th_actions')}</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {bookings.length > 0 ? (
-                        bookings.map(book => (
+                      {bookings.filter(b => {
+                        const status = b.status || 'pending';
+                        return status === bookingStatusTab;
+                      }).length > 0 ? (
+                        bookings.filter(b => {
+                          const status = b.status || 'pending';
+                          return status === bookingStatusTab;
+                        }).map(book => (
                           <tr key={book.id}>
                             <td style={{ fontWeight: 'bold' }}>{book.name}</td>
                             <td>{book.contact}</td>
@@ -1003,19 +1036,51 @@ export default function Admin() {
                             <td>{book.duration}</td>
                             <td>{book.guests}</td>
                             <td>
-                              <button 
-                                className="btn btn-danger btn-xs" 
-                                onClick={() => removeBooking(book.id)}
-                              >
-                                {language === 'zh' ? '取消预订' : (language === 'ko' ? '예약 취소' : 'Cancel Booking')}
-                              </button>
+                              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                                {bookingStatusTab === 'pending' && (
+                                  <>
+                                    <button 
+                                      className="btn btn-primary btn-xs" 
+                                      onClick={() => updateBookingStatus(book.id, 'done')}
+                                      style={{ padding: '4px 10px', fontSize: '0.75rem', background: '#2e7d32', borderColor: '#2e7d32', color: '#fff' }}
+                                    >
+                                      {language === 'zh' ? '完成' : (language === 'ko' ? '완료' : 'Done')}
+                                    </button>
+                                    <button 
+                                      className="btn btn-secondary btn-xs" 
+                                      onClick={() => updateBookingStatus(book.id, 'cancel')}
+                                      style={{ padding: '4px 10px', fontSize: '0.75rem', background: '#c62828', borderColor: '#c62828', color: '#fff' }}
+                                    >
+                                      {language === 'zh' ? '取消' : (language === 'ko' ? '취소' : 'Cancel')}
+                                    </button>
+                                  </>
+                                )}
+                                {bookingStatusTab !== 'pending' && (
+                                  <button 
+                                    className="btn btn-secondary btn-xs" 
+                                    onClick={() => updateBookingStatus(book.id, 'pending')}
+                                    style={{ padding: '4px 10px', fontSize: '0.75rem' }}
+                                  >
+                                    {language === 'zh' ? '设为待处理' : (language === 'ko' ? '대기 중으로 설정' : 'Revert to Pending')}
+                                  </button>
+                                )}
+                                <button 
+                                  className="btn btn-danger btn-xs" 
+                                  onClick={() => removeBooking(book.id)}
+                                  style={{ padding: '4px 10px', fontSize: '0.75rem', background: 'transparent', border: '1px solid var(--accent-red)', color: 'var(--accent-red)' }}
+                                >
+                                  {language === 'zh' ? '删除记录' : (language === 'ko' ? '삭제' : 'Delete')}
+                                </button>
+                              </div>
                             </td>
                           </tr>
                         ))
                       ) : (
                         <tr>
                           <td colSpan="7" style={{ textAlign: 'center', padding: '30px', color: 'var(--text-secondary)' }}>
-                            {language === 'zh' ? '未在数据库中找到有效的预订。' : (language === 'ko' ? '데이터베이스에 활성화된 예약이 없습니다.' : 'No active reservations found in database.')}
+                            {bookingStatusTab === 'pending' && (language === 'zh' ? '没有待处理的预订。' : (language === 'ko' ? '대기 중인 예약이 없습니다.' : 'No pending reservations.'))}
+                            {bookingStatusTab === 'done' && (language === 'zh' ? '没有已完成的预订。' : (language === 'ko' ? '완료된 예약이 없습니다.' : 'No completed reservations.'))}
+                            {bookingStatusTab === 'cancel' && (language === 'zh' ? '没有已取消的预订。' : (language === 'ko' ? '취소된 예약이 없습니다.' : 'No cancelled reservations.'))}
                           </td>
                         </tr>
                       )}
