@@ -38,7 +38,9 @@ export default function Admin() {
     galleryPhotos,
     addGalleryPhoto,
     deleteGalleryPhoto,
-
+    promoVideos,
+    addPromoVideo,
+    deletePromoVideo,
     socialPosts,
     addSocialPost,
     deleteSocialPost,
@@ -141,7 +143,10 @@ export default function Admin() {
   const [galleryPhotoUrl, setGalleryPhotoUrl] = useState('');
   const [galleryCaption, setGalleryCaption] = useState('');
 
-
+  // 5. Walkthrough Videos Form
+  const [videoTitle, setVideoTitle] = useState('');
+  const [videoUrl, setVideoUrl] = useState('');
+  const [videoDesc, setVideoDesc] = useState('');
 
   // 6. Social Mock Posts Form
   const [socialUser, setSocialUser] = useState('');
@@ -429,7 +434,36 @@ export default function Admin() {
     }
   };
 
+  // Walkthrough Videos CRUD
+  const handleVideoAdd = async (e) => {
+    e.preventDefault();
+    try {
+      await addPromoVideo({
+        title: videoTitle,
+        url: videoUrl,
+        desc: videoDesc
+      });
+      setVideoTitle('');
+      setVideoUrl('');
+      setVideoDesc('');
+      triggerToast("🎉 Added walkthrough video link!");
+    } catch (err) {
+      console.error(err);
+      triggerToast("❌ Error adding video.");
+    }
+  };
 
+  const handleVideoDelete = async (id, title) => {
+    if (confirm(`Delete video link: "${title}"?`)) {
+      try {
+        await deletePromoVideo(id, title);
+        triggerToast("🎉 Video deleted.");
+      } catch (err) {
+        console.error(err);
+        triggerToast("❌ Error deleting video.");
+      }
+    }
+  };
 
   // Social Posts CRUD
   const handleSocialAdd = async (e) => {
@@ -771,7 +805,12 @@ export default function Admin() {
               >
                 <i className="fa-solid fa-images"></i> {t('adm_sidebar_gallery')}
               </button>
-
+              <button 
+                className={`admin-tab-btn ${adminTab === 'adminVideos' ? 'active' : ''}`}
+                onClick={() => setAdminTab('adminVideos')}
+              >
+                <i className="fa-solid fa-circle-play"></i> {t('adm_sidebar_videos')}
+              </button>
               <button 
                 className={`admin-tab-btn ${adminTab === 'adminSocial' ? 'active' : ''}`}
                 onClick={() => setAdminTab('adminSocial')}
@@ -1198,7 +1237,87 @@ export default function Admin() {
               </div>
             )}
 
+            {/* TAB 8: Videos */}
+            {adminTab === 'adminVideos' && (
+              <div className="admin-tab-content active">
+                <div className="admin-section-header">
+                  <h4>{t('adm_title_videos')}</h4>
+                </div>
+                
+                {/* Inline Add Video Form */}
+                <div className="glass-panel" style={{ padding: '20px', marginBottom: '25px', width: '100%' }}>
+                  <h5 style={{ color: 'var(--accent-gold)', marginBottom: '15px' }}>{language === 'zh' ? '添加导览视频链接' : (language === 'ko' ? '둘러보기 비디오 링크 추가' : 'Add Walkthrough Video Link')}</h5>
+                  <form onSubmit={handleVideoAdd} style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', alignItems: 'flex-end' }}>
+                    <div className="form-group" style={{ flex: '1 1 200px' }}>
+                      <label>{language === 'zh' ? '视频标题' : (language === 'ko' ? '비디오 제목' : 'Video Title')}</label>
+                      <input 
+                        type="text" 
+                        value={videoTitle} 
+                        onChange={(e) => setVideoTitle(e.target.value)} 
+                        className="form-control" 
+                        placeholder="Grand Opening Tour" 
+                        required 
+                      />
+                    </div>
+                    <div className="form-group" style={{ flex: '1 1 350px' }}>
+                      <label>{language === 'zh' ? '视频 URL (MP4、YouTube、TikTok 或 Facebook)' : (language === 'ko' ? '비디오 URL (MP4, YouTube, TikTok 또는 Facebook)' : 'Video URL (MP4, YouTube, TikTok, or Facebook)')}</label>
+                      <input 
+                        type="text" 
+                        value={videoUrl} 
+                        onChange={(e) => setVideoUrl(e.target.value)} 
+                        className="form-control" 
+                        placeholder="e.g. https://www.tiktok.com/@username/video/12345678" 
+                        required 
+                      />
+                      <small style={{ display: 'block', marginTop: '4px', fontSize: '0.72rem', color: 'var(--text-secondary)' }}>
+                        {language === 'zh' 
+                          ? '使用直接链接（如 /reel/ID、/watch/?v=ID 或 /video/ID）在应用内播放。避免使用分享/重定向的短链接。' 
+                          : (language === 'ko' 
+                            ? '앱 내에서 재생하려면 클린 링크(/reel/ID, /watch/?v=ID 또는 /video/ID 등)를 사용하세요. 공유/리디렉션 단축 링크는 피하십시오.' 
+                            : 'Use clean links (e.g. /reel/ID, /watch/?v=ID, or /video/ID) to play inside the app. Avoid share/redirect short links.')}
+                      </small>
+                    </div>
+                    <div className="form-group" style={{ flex: '1 1 250px' }}>
+                      <label>{language === 'zh' ? '简短描述' : (language === 'ko' ? '짧은 설명' : 'Short Description')}</label>
+                      <input 
+                        type="text" 
+                        value={videoDesc} 
+                        onChange={(e) => setVideoDesc(e.target.value)} 
+                        className="form-control" 
+                        placeholder="Facility Walkthrough" 
+                        required 
+                      />
+                    </div>
+                    <button type="submit" className="btn btn-primary" style={{ padding: '12px 25px' }}>{language === 'zh' ? '添加视频' : (language === 'ko' ? '비디오 추가' : 'Add Video')}</button>
+                  </form>
+                </div>
 
+                <div className="table-wrapper">
+                  <table className="admin-table">
+                    <thead>
+                      <tr>
+                        <th>{t('adm_th_title')}</th>
+                        <th>URL</th>
+                        <th>{language === 'zh' ? '描述' : (language === 'ko' ? '설명' : 'Description')}</th>
+                        <th>{t('adm_th_actions')}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {promoVideos && promoVideos.map(vid => (
+                        <tr key={vid.id}>
+                          <td style={{ fontWeight: 'bold' }}>{vid.title.startsWith('vid') ? t(vid.title) : vid.title}</td>
+                          <td style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{vid.url}</td>
+                          <td>{vid.desc.startsWith('vid') ? t(vid.desc) : vid.desc}</td>
+                          <td>
+                            <button className="btn btn-danger btn-xs" onClick={() => handleVideoDelete(vid.id, vid.title)}>{t('adm_btn_delete')}</button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
 
             {/* TAB 9: Social Posts */}
             {adminTab === 'adminSocial' && (

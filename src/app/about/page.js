@@ -3,112 +3,11 @@ import React, { useState } from 'react';
 import { useAppState } from '@/context/AppContext';
 
 export default function About() {
-  const { t, galleryPhotos, promoVideos, defaultFloors } = useAppState();
+  const { t, galleryPhotos, defaultFloors } = useAppState();
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   const activePhoto = galleryPhotos[activeImageIndex] || galleryPhotos[0] || { src: '', caption: '' };
 
-  const renderVideoPlayer = (vid) => {
-    const url = vid.url || '';
-    const isFacebook = url.includes('facebook.com') || url.includes('fb.watch');
-
-    if (isFacebook) {
-      // Parse and clean the URL to ensure compatibility
-      let cleanUrl = url;
-      // Standardize Facebook subdomains (e.g. web.facebook.com, m.facebook.com) to www.facebook.com
-      cleanUrl = cleanUrl.replace(/\/\/(?:[a-zA-Z0-9-]+\.)?facebook\.com/, '//www.facebook.com');
-
-      // Convert Reel URLs (e.g. /reel/ID) to canonical watch URLs (e.g. /watch/?v=ID)
-      // because Facebook's video plugin handles watch links much more reliably inside iframes.
-      const reelMatch = cleanUrl.match(/\/reel(?:s)?\/([a-zA-Z0-9_-]+)/);
-      if (reelMatch) {
-        cleanUrl = `https://www.facebook.com/watch/?v=${reelMatch[1]}`;
-      } else if (cleanUrl.includes('facebook.com/watch')) {
-        const match = cleanUrl.match(/[?&]v=([^&#]+)/);
-        const videoId = match ? match[1] : '';
-        cleanUrl = videoId ? `https://www.facebook.com/watch/?v=${videoId}` : cleanUrl.split('?')[0];
-      } else {
-        cleanUrl = cleanUrl.split('?')[0];
-      }
-
-      const embedUrl = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(cleanUrl)}&show_text=0&width=560`;
-
-      return (
-        <>
-          <iframe
-            src={embedUrl}
-            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none', zIndex: 1 }}
-            scrolling="no"
-            frameBorder="0"
-            allowFullScreen={true}
-            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-          />
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Watch video on Facebook"
-            style={{
-              position: 'absolute',
-              bottom: '10px',
-              right: '10px',
-              zIndex: 10,
-              background: 'rgba(7, 9, 12, 0.85)',
-              border: '1px solid var(--accent-gold)',
-              borderRadius: '20px',
-              padding: '4px 10px',
-              fontSize: '0.7rem',
-              fontWeight: 'bold',
-              color: 'var(--accent-gold)',
-              textDecoration: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
-              transition: 'all 0.2s ease',
-            }}
-            className="fb-video-fallback-btn"
-          >
-            <i className="fa-brands fa-facebook"></i> Watch on FB
-          </a>
-        </>
-      );
-    }
-
-    const isEmbeddable = url.includes('youtube.com') || url.includes('youtu.be') || url.includes('vimeo.com') || !url.match(/\.(mp4|webm|ogg)($|\?)/i);
-
-    if (isEmbeddable) {
-      let embedUrl = url;
-      if (url.includes('youtube.com/watch?v=')) {
-        const vidId = url.split('v=')[1]?.split('&')[0];
-        embedUrl = `https://www.youtube.com/embed/${vidId}`;
-      } else if (url.includes('youtu.be/')) {
-        const vidId = url.split('youtu.be/')[1]?.split('?')[0];
-        embedUrl = `https://www.youtube.com/embed/${vidId}`;
-      }
-
-      return (
-        <iframe
-          src={embedUrl}
-          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
-          scrolling="no"
-          frameBorder="0"
-          allowFullScreen={true}
-          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-        />
-      );
-    }
-
-    return (
-      <video 
-        src={url} 
-        controls 
-        playsInline 
-        preload="metadata"
-        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-      />
-    );
-  };
 
   return (
     <div className="animate-fade">
@@ -147,7 +46,7 @@ export default function About() {
           </div>
 
           {/* Gallery and Videos Side by Side */}
-          <div className="gallery-video-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px', marginBottom: '40px' }}>
+          <div className="gallery-video-grid" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '30px', marginBottom: '40px' }}>
             {/* Gallery Tour */}
             <div className="about-gallery glass-panel" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <h3 style={{ color: 'var(--accent-gold)', marginBottom: '20px', fontSize: '1.2rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '10px' }}>
@@ -156,7 +55,7 @@ export default function About() {
               <div className="gallery-container" style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 {galleryPhotos.length > 0 ? (
                   <>
-                    <div className="gallery-active-image-wrap" style={{ position: 'relative', width: '100%', height: '240px', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--border-color)', marginBottom: '15px' }}>
+                    <div className="gallery-active-image-wrap" style={{ position: 'relative', width: '100%', height: '360px', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--border-color)', marginBottom: '15px' }}>
                       <img 
                         src={activePhoto.src} 
                         alt="Emgrand Spa Facility"
@@ -193,30 +92,6 @@ export default function About() {
                   </>
                 ) : (
                   <p style={{ textAlign: 'center', padding: '30px', color: 'var(--text-secondary)' }}>No photos uploaded.</p>
-                )}
-              </div>
-            </div>
-
-            {/* Video Tours */}
-            <div className="about-videos glass-panel">
-              <h3 style={{ color: 'var(--accent-gold)', marginBottom: '20px', fontSize: '1.2rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '10px' }}>
-                <i className="fa-solid fa-play" style={{ marginRight: '8px' }}></i> {t('video_tour_label')}
-              </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                {promoVideos.length > 0 ? (
-                  promoVideos.slice(0, 2).map((vid) => (
-                    <div key={vid.id} style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-                      <div className="video-wrapper" style={{ position: 'relative', width: '120px', height: '68px', borderRadius: '6px', overflow: 'hidden', background: '#000', flexShrink: 0 }}>
-                        {renderVideoPlayer(vid)}
-                      </div>
-                      <div>
-                        <h4 style={{ color: 'var(--text-primary)', fontSize: '0.9rem', marginBottom: '4px', fontWeight: 'bold' }}>{vid.title}</h4>
-                        <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: 0 }}>{vid.desc}</p>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>No video tours loaded.</p>
                 )}
               </div>
             </div>

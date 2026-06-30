@@ -1,6 +1,6 @@
 # Emgrand Spa Manila Web Application
 
-Welcome to the official repository of **Emgrand Spa Manila**, a premium wellness web platform built with React 19 and Next.js 16. It offers clients a luxurious spa overview, interactive booking tools, real-time pricing calculation, and a social photo board showcase alongside an advanced, secure administrative dashboard.
+Welcome to the official repository of **Emgrand Spa Manila**, a premium wellness web platform built with React 19 and Next.js 16. It offers clients a luxurious spa overview, interactive booking tools, real-time pricing calculation, and social showcases alongside an advanced, secure administrative dashboard.
 
 ---
 
@@ -10,16 +10,22 @@ Welcome to the official repository of **Emgrand Spa Manila**, a premium wellness
 - **Services Catalog**: View customized offerings across specialized categories (Massage Treatment, Private Suite Lodging, Specialized Therapy, and TCM Orthopedics).
 - **Interactive Bill Builder**: Guests can dynamically add services, packages, and custom add-ons to build their custom receipt, calculating totals, service charges, and taxes in real-time.
 
-### 2. AI Chat Assistant
+### 2. Gallery & TikTok Walkthrough Showcase
+- **Vertical Video Grid**: An immersive 3-column media grid rendering TikTok-style vertical videos (`9/16` aspect ratio) with support for YouTube, YouTube Shorts, and Facebook formats.
+- **Autoplay Integration**: Media clips are set to auto-play and loop on desktop and mobile viewports.
+- **Pagination**: Optimized "See More" controls display a maximum of 3 items on desktop and 1 item on mobile viewports by default.
+
+### 3. AI Chat Assistant
 - Powered by the **GROQ Llama-3** language model, providing immediate responses to guest inquiries about booking availability, services, prices, and operating hours.
 
-### 3. Admin Management Dashboard (`/admin`)
+### 4. Admin Management Dashboard (`/admin`)
 - Secure login view protecting administrative actions.
 - **Authorized Accounts Management**: Manage administrative and staff users (Full Name, Email, Position, Password, Role) inside a clean modal popup.
 - **Service Management**: Add, update, and remove spa service treatments.
 - **Campaign Configuration**: Launch and configure promotional events.
+- **Walkthrough Videos Config**: Easily register TikTok, Facebook, or YouTube shorts URLs for the gallery showcase.
 
-### 4. Multi-Language & Multi-Theme Options
+### 5. Multi-Language & Multi-Theme Options
 - Full translations available in **English (EN)**, **Simplified Chinese (ZH)**, and **Korean (KO)**.
 - Theme toggles supporting premium dark glassmorphism and classic light layouts.
 
@@ -48,7 +54,7 @@ Welcome to the official repository of **Emgrand Spa Manila**, a premium wellness
     │   ├── bookings/       # Reservation & booking calendar views
     │   ├── contact/        # Contact forms
     │   ├── services/       # Catalog & interactive bill receipt builder
-    │   ├── socials/        # Gallery photo board & social posts grid
+    │   ├── socials/        # Reels vertical video player & social posts grid
     │   ├── globals.css     # Global core styling & color themes
     │   └── layout.js       # App entry shell
     ├── components/         # Reusable widgets (Header, Footer, FloatingChat)

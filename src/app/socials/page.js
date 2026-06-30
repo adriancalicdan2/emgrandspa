@@ -2,10 +2,101 @@
 import React from 'react';
 import { useAppState } from '@/context/AppContext';
 
+const TikTokPlayer = ({ url, language }) => {
+  const match = url.match(/\/video\/(\d+)/);
+  const initialVideoId = match && match[1] ? match[1] : null;
+
+  const [videoId, setVideoId] = React.useState(initialVideoId);
+  const [loading, setLoading] = React.useState(!initialVideoId);
+
+  React.useEffect(() => {
+    if (initialVideoId) {
+      return;
+    }
+
+    let active = true;
+    fetch(`/api/tiktok?url=${encodeURIComponent(url)}`)
+      .then(res => res.json())
+      .then(data => {
+        if (active && data.videoId) {
+          setVideoId(data.videoId);
+        }
+      })
+      .catch(err => console.error("Error resolving TikTok URL:", err))
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [url, initialVideoId]);
+
+  if (loading) {
+    return (
+      <div style={{
+        position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#07090c'
+      }}>
+        <div style={{
+          width: '30px', height: '30px', border: '3px solid rgba(255,255,255,0.1)',
+          borderTopColor: 'var(--accent-gold)', borderRadius: '50%', animation: 'spin 1s linear infinite'
+        }} />
+      </div>
+    );
+  }
+
+  if (videoId) {
+    const embedUrl = `https://www.tiktok.com/embed/v2/${videoId}?autoplay=1`;
+    return (
+      <iframe
+        src={embedUrl}
+        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
+        allowFullScreen={true}
+        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+      />
+    );
+  }
+
+  return (
+    <div style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: '#07090c',
+      padding: '20px',
+      textAlign: 'center',
+      border: '1px solid var(--border-color)',
+      boxSizing: 'border-box'
+    }}>
+      <i className="fa-brands fa-tiktok" style={{ fontSize: '2.5rem', color: '#ff0050', marginBottom: '12px' }}></i>
+      <p style={{ fontSize: '0.85rem', color: 'var(--text-primary)', marginBottom: '15px', fontWeight: '500' }}>
+        {language === 'zh' ? 'TikTok 视频' : (language === 'ko' ? '틱톡 동영상' : 'TikTok Video')}
+      </p>
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="btn btn-secondary btn-sm"
+        style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '20px', fontSize: '0.8rem' }}
+      >
+        <i className="fa-brands fa-tiktok"></i> Watch on TikTok
+      </a>
+    </div>
+  );
+};
+
 export default function Socials() {
-  const { t, language, socialPosts, membershipPerks } = useAppState();
+  const { t, language, socialPosts, membershipPerks, promoVideos } = useAppState();
 
   const [isMobile, setIsMobile] = React.useState(false);
+  const [showAllVideos, setShowAllVideos] = React.useState(false);
   const [showAllPosts, setShowAllPosts] = React.useState(false);
 
   React.useEffect(() => {
@@ -17,6 +108,129 @@ export default function Socials() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const renderVideoPlayer = (vid) => {
+    const url = vid.url || '';
+    const isFacebook = url.includes('facebook.com') || url.includes('fb.watch');
+
+    if (isFacebook) {
+      // Parse and clean the URL to ensure compatibility
+      let cleanUrl = url;
+      // Standardize Facebook subdomains (e.g. web.facebook.com, m.facebook.com) to www.facebook.com
+      cleanUrl = cleanUrl.replace(/\/\/(?:[a-zA-Z0-9-]+\.)?facebook\.com/, '//www.facebook.com');
+
+      // Convert Reel URLs (e.g. /reel/ID) to canonical watch URLs (e.g. /watch/?v=ID)
+      // because Facebook's video plugin handles watch links much more reliably inside iframes.
+      const reelMatch = cleanUrl.match(/\/reel(?:s)?\/([a-zA-Z0-9_-]+)/);
+      if (reelMatch) {
+        cleanUrl = `https://www.facebook.com/watch/?v=${reelMatch[1]}`;
+      } else if (cleanUrl.includes('facebook.com/watch')) {
+        const match = cleanUrl.match(/[?&]v=([^&#]+)/);
+        const videoId = match ? match[1] : '';
+        cleanUrl = videoId ? `https://www.facebook.com/watch/?v=${videoId}` : cleanUrl.split('?')[0];
+      } else {
+        cleanUrl = cleanUrl.split('?')[0];
+      }
+
+      const embedUrl = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(cleanUrl)}&show_text=0&width=560&autoplay=true&mute=1`;
+
+      return (
+        <>
+          <iframe
+            src={embedUrl}
+            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none', zIndex: 1 }}
+            scrolling="no"
+            frameBorder="0"
+            allowFullScreen={true}
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+          />
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Watch video on Facebook"
+            style={{
+              position: 'absolute',
+              bottom: '10px',
+              right: '10px',
+              zIndex: 10,
+              background: 'rgba(7, 9, 12, 0.85)',
+              border: '1px solid var(--accent-gold)',
+              borderRadius: '20px',
+              padding: '4px 10px',
+              fontSize: '0.7rem',
+              fontWeight: 'bold',
+              color: 'var(--accent-gold)',
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
+              transition: 'all 0.2s ease',
+            }}
+            className="fb-video-fallback-btn"
+          >
+            <i className="fa-brands fa-facebook"></i> Watch on FB
+          </a>
+        </>
+      );
+    }
+
+    const isTikTok = url.includes('tiktok.com');
+
+    if (isTikTok) {
+      return <TikTokPlayer url={url} language={language} />;
+    }
+
+    const isEmbeddable = url.includes('youtube.com') || url.includes('youtu.be') || url.includes('vimeo.com') || !url.match(/\.(mp4|webm|ogg)($|\?)/i);
+
+    if (isEmbeddable) {
+      let embedUrl = url;
+      if (url.includes('youtube.com/watch?v=')) {
+        const vidId = url.split('v=')[1]?.split('&')[0];
+        embedUrl = `https://www.youtube.com/embed/${vidId}?autoplay=1&mute=1`;
+      } else if (url.includes('youtu.be/')) {
+        const vidId = url.split('youtu.be/')[1]?.split('?')[0];
+        embedUrl = `https://www.youtube.com/embed/${vidId}?autoplay=1&mute=1`;
+      } else if (url.includes('youtube.com/shorts/')) {
+        const vidId = url.split('youtube.com/shorts/')[1]?.split('?')[0];
+        embedUrl = `https://www.youtube.com/embed/${vidId}?autoplay=1&mute=1`;
+      } else {
+        if (embedUrl.includes('vimeo.com')) {
+          embedUrl = embedUrl.includes('?') ? `${embedUrl}&autoplay=1&muted=1` : `${embedUrl}?autoplay=1&muted=1`;
+        }
+      }
+
+      return (
+        <iframe
+          src={embedUrl}
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
+          scrolling="no"
+          frameBorder="0"
+          allowFullScreen={true}
+          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+        />
+      );
+    }
+
+    return (
+      <video 
+        src={url} 
+        controls 
+        playsInline 
+        autoPlay
+        muted
+        loop
+        preload="metadata"
+        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+      />
+    );
+  };
+
+  const displayedVideos = showAllVideos
+    ? promoVideos
+    : (isMobile 
+        ? (promoVideos ? promoVideos.slice(0, 1) : [])
+        : (promoVideos ? promoVideos.slice(0, 3) : []));
   const displayedPosts = showAllPosts
     ? socialPosts
     : (isMobile 
@@ -46,6 +260,47 @@ export default function Socials() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Video Tour Walkthroughs (FB Videos & Social Media) */}
+        <div className="video-tour-section" style={{ marginTop: '60px' }}>
+          <div className="section-title-wrap">
+            <h2 className="section-main-title"><span className="gold-text"><i className="fa-solid fa-play"></i> {t('label_reels_title')}</span></h2>
+            <p className="section-sub-title">{t('label_reels_subtitle')}</p>
+          </div>
+          
+          <div className="video-grid" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: '25px', marginTop: '25px' }}>
+            {displayedVideos && displayedVideos.length > 0 ? (
+              displayedVideos.map(vid => (
+                <div key={vid.id} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div className="video-card glass-panel" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: 0, border: '1px solid var(--border-color)', borderRadius: 'var(--border-radius)', position: 'relative', width: '100%', aspectRatio: '9/16' }}>
+                    {renderVideoPlayer(vid)}
+                  </div>
+                  <div style={{ padding: '0 4px', fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: '600' }}>
+                    @emgrand.spa
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="glass-panel" style={{ gridColumn: '1 / -1', padding: '40px', textAlign: 'center', color: 'var(--text-secondary)' }}>
+                {t('label_no_reels')}
+              </div>
+            )}
+          </div>
+          {promoVideos && (
+            (!isMobile && promoVideos.length > 3 && !showAllVideos) || 
+            (isMobile && promoVideos.length > 1 && !showAllVideos)
+          ) && (
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '30px' }}>
+              <button 
+                onClick={() => setShowAllVideos(true)}
+                className="btn btn-secondary"
+                style={{ width: '100%', maxWidth: '200px' }}
+              >
+                {language === 'zh' ? '查看更多视频' : (language === 'ko' ? '비디오 더 보기' : 'See More Videos')}
+              </button>
+            </div>
+          )}
         </div>
 
         {/* SECTION: SOCIAL MEDIA POSTS */}
