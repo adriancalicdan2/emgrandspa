@@ -1430,12 +1430,12 @@ export const AppProvider = ({ children }) => {
   
   // Custom API configurations
   const [fbConfig, setFbConfig] = useState({
-    apiKey: "AIzaSyCSL0q_93FaaDOiX2eBGZO41EMkeBmFeho",
-    authDomain: "emgrand-7d168.firebaseapp.com",
-    projectId: "emgrand-7d168",
-    storageBucket: "emgrand-7d168.firebasestorage.app",
-    messagingSenderId: "488778176195",
-    appId: "1:488778176195:web:85202b645fc2247ab3f476"
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "",
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "",
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "",
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "",
+    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "",
+    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || ""
   });
   const [groqKey, setGroqKey] = useState(process.env.NEXT_PUBLIC_GROQ_API_KEY || '');
   const [groqModel, setGroqModel] = useState('llama-3.1-8b-instant');
