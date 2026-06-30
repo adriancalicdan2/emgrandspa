@@ -7,7 +7,7 @@ export default function Bookings() {
 
   useEffect(() => {
     if (setActiveSEO) {
-      const pageTitle = `${t('nav_booking') || 'Book Now'} | Emgrand Spa Manila`;
+      const pageTitle = `${t('nav_bookings') || 'Book Now'} | Emgrand Spa Manila`;
       const desc = language === 'zh'
         ? "预订您在马尼拉帝皇水汇（Emgrand Spa Manila）的专属名额。选择我们的豪华水疗套房、客房住宿、室内高尔夫、私人KTV和全天候无限量自助餐。"
         : language === 'ko'

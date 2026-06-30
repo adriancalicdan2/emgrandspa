@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 const AppContext = createContext();
 
@@ -1959,9 +1959,9 @@ export const AppProvider = ({ children }) => {
   }, [fbConfig]);
 
   // Translation helper
-  const t = (key) => {
+  const t = useCallback((key) => {
     return translations[language]?.[key] || translations['en']?.[key] || key;
-  };
+  }, [language]);
 
   // Switch language
   const toggleLanguage = (lang) => {
