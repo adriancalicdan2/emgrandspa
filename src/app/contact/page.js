@@ -159,7 +159,7 @@ export default function Contact() {
               )}
             </div>
             <div style={{ flexGrow: 1, lineHeight: '1.4' }}>
-              {toastMsg.replace(/^[🎉❌⚙️]\s*/, '')}
+              {toastMsg.replace(/^[🎉❌⚙️]\s*/u, '')}
             </div>
           </div>
         )}
