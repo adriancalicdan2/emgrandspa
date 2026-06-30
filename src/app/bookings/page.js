@@ -3,7 +3,26 @@ import React, { useState, useEffect } from 'react';
 import { useAppState } from '@/context/AppContext';
 
 export default function Bookings() {
-  const { t, services, addBooking, language } = useAppState();
+  const { t, services, addBooking, language, setActiveSEO } = useAppState();
+
+  useEffect(() => {
+    if (setActiveSEO) {
+      const pageTitle = `${t('nav_booking') || 'Book Now'} | Emgrand Spa Manila`;
+      const desc = language === 'zh'
+        ? "预订您在马尼拉帝皇水汇（Emgrand Spa Manila）的专属名额。选择我们的豪华水疗套房、客房住宿、室内高尔夫、私人KTV和全天候无限量自助餐。"
+        : language === 'ko'
+          ? "엠그란드 스파 마닐라 예약을 신청하세요. 럭셔리 스파 객실 숙박, 실내 골프, 노래방 및 24시간 뷔페 서비스를 온라인으로 예약할 수 있습니다."
+          : "Book your premium reservation slot at Emgrand Spa Manila. Reserve luxury lodging suites, wellness massage sessions, indoor golf simulators, private karaoke booths, and 24H continuous buffet access online.";
+
+      setActiveSEO({
+        title: pageTitle,
+        description: desc,
+        keywords: "booking, reservation, spa lodging, book room, massage appointment, spa online reservation, manila spa"
+      });
+      return () => setActiveSEO(null);
+    }
+  }, [language, setActiveSEO, t]);
+
 
   const [name, setName] = useState('');
   const [contact, setContact] = useState('');

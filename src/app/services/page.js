@@ -9,10 +9,39 @@ export default function Services() {
     services, 
     language, 
     defaultBuffetTimeline,
-    servicePackages
+    servicePackages,
+    setActiveSEO
   } = useAppState();
 
   const [activeTab, setActiveTab] = useState('spaMenu');
+
+  // Dynamic SEO metadata based on available services and packages
+  useEffect(() => {
+    if (setActiveSEO && services && services.length > 0) {
+      const topServices = services.slice(0, 5).map(s => {
+        return language === 'zh' ? (s.name_zh || s.name) : language === 'ko' ? (s.name_ko || s.name) : (s.name_en || s.name);
+      }).join(', ');
+
+      const topPackages = servicePackages.slice(0, 3).map(p => {
+        return language === 'zh' ? (p.title_zh || p.title) : language === 'ko' ? (p.title_ko || p.title) : (p.title_en || p.title);
+      }).join(', ');
+
+      const pageTitle = `${t('nav_services') || 'Services'} | Emgrand Spa Manila`;
+      const desc = language === 'zh'
+        ? `探索我们的豪华按摩和温泉服务，包括：${topServices}。还有超值套餐如：${topPackages}。立即预订，享受身心放松。`
+        : language === 'ko'
+          ? `최고의 마사지 및 스파 서비스를 제공합니다: ${topServices}. 인기 패키지: ${topPackages}. 지금 예약하고 편안한 휴식을 취하세요.`
+          : `Explore our premium massage & spa services including: ${topServices}. Discover top-value packages such as: ${topPackages}. Book your appointment for relaxation today.`;
+
+      setActiveSEO({
+        title: pageTitle,
+        description: desc,
+        keywords: `services, wellness, massage, spa, packages, lodging, buffet, ${topServices}`
+      });
+      return () => setActiveSEO(null);
+    }
+  }, [services, servicePackages, language, setActiveSEO, t]);
+
 
   // Calculator Form States
   const [pricingModel, setPricingModel] = useState('standard');

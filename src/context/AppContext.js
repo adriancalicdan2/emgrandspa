@@ -1410,6 +1410,7 @@ export const AppProvider = ({ children }) => {
 
   // New admin view dynamic states
   const [seoSettings, setSeoSettings] = useState(defaultSeoSettings);
+  const [activeSEO, setActiveSEO] = useState(null);
   const [homeBanner, setHomeBanner] = useState(defaultHomeBanner);
   const [servicePackages, setServicePackages] = useState(defaultServicePackages);
   const [galleryPhotos, setGalleryPhotos] = useState(defaultGalleryPhotos);
@@ -2119,9 +2120,10 @@ export const AppProvider = ({ children }) => {
 
   // Dynamic SEO metadata updater
   useEffect(() => {
-    if (seoSettings) {
+    const current = activeSEO || seoSettings;
+    if (current) {
       if (typeof document !== 'undefined') {
-        document.title = seoSettings.title || "Emgrand Spa Manila - Premium 24H Urban Wellness Resort";
+        document.title = current.title || "Emgrand Spa Manila - Premium 24H Urban Wellness Resort";
         
         let metaDesc = document.querySelector('meta[name="description"]');
         if (!metaDesc) {
@@ -2129,7 +2131,7 @@ export const AppProvider = ({ children }) => {
           metaDesc.name = 'description';
           document.head.appendChild(metaDesc);
         }
-        metaDesc.content = seoSettings.description || "";
+        metaDesc.content = current.description || "";
 
         let metaKeywords = document.querySelector('meta[name="keywords"]');
         if (!metaKeywords) {
@@ -2137,10 +2139,11 @@ export const AppProvider = ({ children }) => {
           metaKeywords.name = 'keywords';
           document.head.appendChild(metaKeywords);
         }
-        metaKeywords.content = seoSettings.keywords || "";
+        metaKeywords.content = current.keywords || "";
       }
     }
-  }, [seoSettings]);
+  }, [activeSEO, seoSettings]);
+
 
   // SEO Settings
   const updateSeoSettings = async (seo) => {
@@ -2472,6 +2475,8 @@ export const AppProvider = ({ children }) => {
       defaultFloors,
       defaultBuffetTimeline,
       seoSettings,
+      activeSEO,
+      setActiveSEO,
       updateSeoSettings,
       homeBanner,
       updateHomeBanner,

@@ -1,9 +1,28 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppState } from '@/context/AppContext';
 
 export default function Contact() {
-  const { t, parkingSpots, submitFeedback, language, setIsChatOpen } = useAppState();
+  const { t, parkingSpots, submitFeedback, language, setIsChatOpen, setActiveSEO } = useAppState();
+
+  useEffect(() => {
+    if (setActiveSEO) {
+      const pageTitle = `${t('nav_contact') || 'Contact Us'} | Emgrand Spa Manila`;
+      const desc = language === 'zh'
+        ? `联系马尼拉帝皇水汇（Emgrand Spa Manila）。获取热线电话（0992-1888-888）、电子邮件、官方地址（Bradco Avenue, Aseana City）以及实时空余车位（当前剩余 ${parkingSpots} 个车位）。`
+        : language === 'ko'
+          ? `엠그란드 스파 마닐라에 문의하세요. 핫라인 전화번호(0992-1888-888), 이메일, 공식 주소(Bradco Avenue, Aseana City) 및 실시간 주차 정보(현재 ${parkingSpots}개 구역 여유)를 확인하실 수 있습니다.`
+          : `Contact Emgrand Spa Manila. Find our hotline phone numbers (0992-1888-888), email address, official directions (Bradco Avenue, Aseana City), and live parking space availability (currently ${parkingSpots} spots available).`;
+
+      setActiveSEO({
+        title: pageTitle,
+        description: desc,
+        keywords: "contact emgrand, address, phone number, directions, google map location, spa parking, viber hotline"
+      });
+      return () => setActiveSEO(null);
+    }
+  }, [language, parkingSpots, setActiveSEO, t]);
+
 
   const [name, setName] = useState('');
   const [contactInfo, setContactInfo] = useState('');

@@ -93,7 +93,27 @@ const TikTokPlayer = ({ url, language }) => {
 };
 
 export default function Socials() {
-  const { t, language, socialPosts, membershipPerks, promoVideos } = useAppState();
+  const { t, language, socialPosts, membershipPerks, promoVideos, setActiveSEO } = useAppState();
+
+  React.useEffect(() => {
+    if (setActiveSEO) {
+      const topVideos = promoVideos.slice(0, 3).map(v => v.title).join(', ');
+      const pageTitle = `${t('nav_socials') || 'Socials'} | Emgrand Spa Manila`;
+      const desc = language === 'zh'
+        ? `观看帝皇水汇（Emgrand Spa Manila）的实景导览视频，包括：${topVideos || '体验视频'}。关注我们的社交媒体更新，了解最新会员福利与独家折扣优惠。`
+        : language === 'ko'
+          ? `엠그란드 스파 마닐라의 비디오 투어와 소셜 미디어 게시물을 확인하세요: ${topVideos || '체험 영상'}. 독점 멤버십 혜택과 이벤트 소식을 제공합니다.`
+          : `Watch video tours of Emgrand Spa Manila, including: ${topVideos || 'walkthrough tour'}. Stay updated with our latest social media posts, exclusive membership perks, and wellness campaigns.`;
+
+      setActiveSEO({
+        title: pageTitle,
+        description: desc,
+        keywords: "social media, video tour, emgrand tiktok, youtube walkthrough, membership benefits, promo codes, manila spa resort"
+      });
+      return () => setActiveSEO(null);
+    }
+  }, [language, promoVideos, setActiveSEO, t]);
+
 
   const [isMobile, setIsMobile] = React.useState(false);
   const [showAllVideos, setShowAllVideos] = React.useState(false);

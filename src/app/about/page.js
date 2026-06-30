@@ -1,10 +1,29 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppState } from '@/context/AppContext';
 
 export default function About() {
-  const { t, galleryPhotos, defaultFloors } = useAppState();
+  const { t, galleryPhotos, defaultFloors, setActiveSEO, language } = useAppState();
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  useEffect(() => {
+    if (setActiveSEO) {
+      const pageTitle = `${t('nav_about') || 'About Us'} | Emgrand Spa Manila`;
+      const desc = language === 'zh'
+        ? "了解马尼拉帝皇水汇（Emgrand Spa Manila）—— 体验24小时连续自助餐、豪华温泉池、桑拿、蒸汽浴、专业的按摩疗法和顶级家庭娱乐设施。"
+        : language === 'ko'
+          ? "엠그란드 스파 마닐라에 대해 알아보세요 - 24시간 뷔페, 온수 수영장, 사우나, 스팀 룸, 전문 마사지 치료 및 프리미엄 가족 엔터테인먼트 시설을 제공합니다."
+          : "Learn about Emgrand Spa Manila - experience our 24-hour continuous buffet, hot spring pools, sauna, steam room, professional massage therapies, and premium family entertainment facilities.";
+      
+      setActiveSEO({
+        title: pageTitle,
+        description: desc,
+        keywords: "about us, emgrand spa, history, facilities, buffet, pools, manila spa"
+      });
+      return () => setActiveSEO(null);
+    }
+  }, [language, setActiveSEO, t]);
+
 
   const activePhoto = galleryPhotos[activeImageIndex] || galleryPhotos[0] || { src: '', caption: '' };
 
