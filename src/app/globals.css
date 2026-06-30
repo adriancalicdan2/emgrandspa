@@ -2270,10 +2270,14 @@ label {
 }
 
 @media (max-width: 768px) {
+  .main-footer {
+    height: auto !important;
+    padding: 24px 20px 96px 20px !important;
+  }
   .footer-container {
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     text-align: center;
   }
   .booking-form-grid {

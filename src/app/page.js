@@ -70,44 +70,47 @@ export default function Home() {
           <p className="hero-subtitle">
             {language === 'zh' ? (homeBanner?.subtitle_zh || homeBanner?.subtitle) : (language === 'ko' ? (homeBanner?.subtitle_ko || homeBanner?.subtitle) : (homeBanner?.subtitle_en || homeBanner?.subtitle || t('hero_subtitle')))}
           </p>
-          <div className="hero-cta-buttons" style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+          <div className="hero-cta-buttons">
             <Link href="/bookings" className="btn btn-primary">{t('hero_btn_book')}</Link>
             <Link href="/services" className="btn btn-secondary">{t('hero_btn_calc')}</Link>
-            <div style={{ display: 'flex', gap: '15px', alignItems: 'center', marginLeft: '10px' }}>
-              <a 
-                href="https://www.facebook.com/emgrandspa88888888" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                style={{ color: '#fff', fontSize: '1.25rem', transition: 'color 0.2s', opacity: 0.8 }}
-                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-gold)'}
-                onMouseLeave={(e) => e.currentTarget.style.color = '#fff'}
-                title="Facebook"
-              >
-                <i className="fa-brands fa-facebook"></i>
-              </a>
-              <a 
-                href="https://www.instagram.com/emgrandspa/" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                style={{ color: '#fff', fontSize: '1.25rem', transition: 'color 0.2s', opacity: 0.8 }}
-                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-gold)'}
-                onMouseLeave={(e) => e.currentTarget.style.color = '#fff'}
-                title="Instagram"
-              >
-                <i className="fa-brands fa-instagram"></i>
-              </a>
-              <a 
-                href="https://www.tiktok.com/@emgrand.spa" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                style={{ color: '#fff', fontSize: '1.25rem', transition: 'color 0.2s', opacity: 0.8 }}
-                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-gold)'}
-                onMouseLeave={(e) => e.currentTarget.style.color = '#fff'}
-                title="TikTok"
-              >
-                <i className="fa-brands fa-tiktok"></i>
-              </a>
-            </div>
+          </div>
+          <div className="hero-social-links" style={{ display: 'flex', gap: '15px', alignItems: 'center', marginTop: '20px', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '0.82rem', textTransform: 'uppercase', letterSpacing: '1px', opacity: 0.6, color: '#fff', fontWeight: '600' }}>
+              {language === 'zh' ? '关注我们' : (language === 'ko' ? '팔로우하기' : 'Follow Us')}:
+            </span>
+            <a 
+              href="https://www.facebook.com/emgrandspa88888888" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ color: '#fff', fontSize: '1.25rem', transition: 'color 0.2s', opacity: 0.8, display: 'inline-flex', alignItems: 'center' }}
+              onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-gold)'}
+              onMouseLeave={(e) => e.currentTarget.style.color = '#fff'}
+              title="Facebook"
+            >
+              <i className="fa-brands fa-facebook"></i>
+            </a>
+            <a 
+              href="https://www.instagram.com/emgrandspa/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ color: '#fff', fontSize: '1.25rem', transition: 'color 0.2s', opacity: 0.8, display: 'inline-flex', alignItems: 'center' }}
+              onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-gold)'}
+              onMouseLeave={(e) => e.currentTarget.style.color = '#fff'}
+              title="Instagram"
+            >
+              <i className="fa-brands fa-instagram"></i>
+            </a>
+            <a 
+              href="https://www.tiktok.com/@emgrand.spa" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              style={{ color: '#fff', fontSize: '1.25rem', transition: 'color 0.2s', opacity: 0.8, display: 'inline-flex', alignItems: 'center' }}
+              onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-gold)'}
+              onMouseLeave={(e) => e.currentTarget.style.color = '#fff'}
+              title="TikTok"
+            >
+              <i className="fa-brands fa-tiktok"></i>
+            </a>
           </div>
         </div>
         <div className="hero-operating-badge">
