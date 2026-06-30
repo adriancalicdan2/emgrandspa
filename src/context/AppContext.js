@@ -2390,11 +2390,14 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  const addUserAccount = async (email, role) => {
+  const addUserAccount = async (email, role, name = '', position = '', password = '') => {
     const cleanEmail = email.trim().toLowerCase();
     const data = {
       email: cleanEmail,
       role: role || 'admin',
+      name: name.trim(),
+      position: position.trim(),
+      password: password,
       addedAt: new Date().toLocaleString()
     };
     if (dbActive && firebaseApp) {

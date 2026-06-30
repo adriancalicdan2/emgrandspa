@@ -41,7 +41,7 @@ export default function Socials() {
         cleanUrl = cleanUrl.split('?')[0];
       }
 
-      const embedUrl = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(cleanUrl)}&show_text=0&width=560`;
+      const embedUrl = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(cleanUrl)}&show_text=0&width=560&autoplay=true&mute=1`;
 
       return (
         <>
@@ -85,16 +85,75 @@ export default function Socials() {
       );
     }
 
+    const isTikTok = url.includes('tiktok.com');
+
+    if (isTikTok) {
+      const match = url.match(/\/video\/(\d+)/);
+      const videoId = match ? match[1] : null;
+
+      if (videoId) {
+        const embedUrl = `https://www.tiktok.com/embed/v2/${videoId}?autoplay=1`;
+        return (
+          <iframe
+            src={embedUrl}
+            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
+            allowFullScreen={true}
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+          />
+        );
+      } else {
+        return (
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: '#07090c',
+            padding: '20px',
+            textAlign: 'center',
+            border: '1px solid var(--border-color)',
+            boxSizing: 'border-box'
+          }}>
+            <i className="fa-brands fa-tiktok" style={{ fontSize: '2.5rem', color: '#ff0050', marginBottom: '12px' }}></i>
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-primary)', marginBottom: '15px', fontWeight: '500' }}>
+              {language === 'zh' ? 'TikTok 视频' : (language === 'ko' ? '틱톡 동영상' : 'TikTok Video')}
+            </p>
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-secondary btn-sm"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 14px', borderRadius: '20px', fontSize: '0.8rem' }}
+            >
+              <i className="fa-brands fa-tiktok"></i> Watch on TikTok
+            </a>
+          </div>
+        );
+      }
+    }
+
     const isEmbeddable = url.includes('youtube.com') || url.includes('youtu.be') || url.includes('vimeo.com') || !url.match(/\.(mp4|webm|ogg)($|\?)/i);
 
     if (isEmbeddable) {
       let embedUrl = url;
       if (url.includes('youtube.com/watch?v=')) {
         const vidId = url.split('v=')[1]?.split('&')[0];
-        embedUrl = `https://www.youtube.com/embed/${vidId}`;
+        embedUrl = `https://www.youtube.com/embed/${vidId}?autoplay=1&mute=1`;
       } else if (url.includes('youtu.be/')) {
         const vidId = url.split('youtu.be/')[1]?.split('?')[0];
-        embedUrl = `https://www.youtube.com/embed/${vidId}`;
+        embedUrl = `https://www.youtube.com/embed/${vidId}?autoplay=1&mute=1`;
+      } else if (url.includes('youtube.com/shorts/')) {
+        const vidId = url.split('youtube.com/shorts/')[1]?.split('?')[0];
+        embedUrl = `https://www.youtube.com/embed/${vidId}?autoplay=1&mute=1`;
+      } else {
+        if (embedUrl.includes('vimeo.com')) {
+          embedUrl = embedUrl.includes('?') ? `${embedUrl}&autoplay=1&muted=1` : `${embedUrl}?autoplay=1&muted=1`;
+        }
       }
 
       return (
@@ -114,14 +173,25 @@ export default function Socials() {
         src={url} 
         controls 
         playsInline 
+        autoPlay
+        muted
+        loop
         preload="metadata"
         style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
       />
     );
   };
 
-  const displayedVideos = (isMobile && !showAllVideos) ? (promoVideos ? promoVideos.slice(0, 1) : []) : promoVideos;
-  const displayedPosts = (isMobile && !showAllPosts) ? (socialPosts ? socialPosts.slice(0, 1) : []) : socialPosts;
+  const displayedVideos = showAllVideos
+    ? promoVideos
+    : (isMobile 
+        ? (promoVideos ? promoVideos.slice(0, 1) : [])
+        : (promoVideos ? promoVideos.slice(0, 3) : []));
+  const displayedPosts = showAllPosts
+    ? socialPosts
+    : (isMobile 
+        ? (socialPosts ? socialPosts.slice(0, 1) : [])
+        : (socialPosts ? socialPosts.slice(0, 3) : []));
 
   return (
     <div className="animate-fade">
@@ -155,16 +225,15 @@ export default function Socials() {
             <p className="section-sub-title">{t('label_reels_subtitle')}</p>
           </div>
           
-          <div className="video-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '25px', marginTop: '25px' }}>
+          <div className="video-grid" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: '25px', marginTop: '25px' }}>
             {displayedVideos && displayedVideos.length > 0 ? (
               displayedVideos.map(vid => (
-                <div key={vid.id} className="video-card glass-panel" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-                  <div className="video-wrapper" style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', background: '#000' }}>
+                <div key={vid.id} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div className="video-card glass-panel" style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', padding: 0, border: '1px solid var(--border-color)', borderRadius: 'var(--border-radius)', position: 'relative', width: '100%', aspectRatio: '9/16' }}>
                     {renderVideoPlayer(vid)}
                   </div>
-                  <div className="video-info" style={{ padding: '15px' }}>
-                    <h4 style={{ color: 'var(--accent-gold)', fontSize: '1.05rem', marginBottom: '6px' }}>{t(vid.title)}</h4>
-                    <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{t(vid.desc)}</p>
+                  <div style={{ padding: '0 4px', fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: '600' }}>
+                    @emgrand.spa
                   </div>
                 </div>
               ))
@@ -174,8 +243,11 @@ export default function Socials() {
               </div>
             )}
           </div>
-          {isMobile && promoVideos && promoVideos.length > 1 && !showAllVideos && (
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+          {promoVideos && (
+            (!isMobile && promoVideos.length > 3 && !showAllVideos) || 
+            (isMobile && promoVideos.length > 1 && !showAllVideos)
+          ) && (
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '30px' }}>
               <button 
                 onClick={() => setShowAllVideos(true)}
                 className="btn btn-secondary"
@@ -219,8 +291,11 @@ export default function Socials() {
               </div>
             ))}
           </div>
-          {isMobile && socialPosts && socialPosts.length > 1 && !showAllPosts && (
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+          {socialPosts && (
+            (!isMobile && socialPosts.length > 3 && !showAllPosts) || 
+            (isMobile && socialPosts.length > 1 && !showAllPosts)
+          ) && (
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '30px' }}>
               <button 
                 onClick={() => setShowAllPosts(true)}
                 className="btn btn-secondary"

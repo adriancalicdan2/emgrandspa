@@ -71,9 +71,14 @@ export default function Admin() {
   // Auth form states
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
   const [toastMsg, setToastMsg] = useState('');
   const [newUserEmail, setNewUserEmail] = useState('');
   const [newUserRole, setNewUserRole] = useState('admin');
+  const [newUserName, setNewUserName] = useState('');
+  const [newUserPosition, setNewUserPosition] = useState('');
+  const [newUserPassword, setNewUserPassword] = useState('');
+  const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
 
   // Service Edit Form States
   const [isServiceModalOpen, setIsServiceModalOpen] = useState(false);
@@ -202,18 +207,17 @@ export default function Admin() {
   // Login handler
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoginError('');
     if (dbActive && window.firebase) {
       try {
         await window.firebase.auth().signInWithEmailAndPassword(email, password);
-        triggerToast("🎉 Admin Authenticated via Firebase Auth!");
       } catch (err) {
         console.error(err);
-        triggerToast(`❌ Auth Error: ${err.message}`);
+        setLoginError(language === 'zh' ? '邮箱或密码不正确' : (language === 'ko' ? '이메일 또는 비밀번호가 잘못되었습니다' : 'Incorrect Email or Password'));
       }
     } else {
       // Mock Auth Fallback
       setAdminUser({ email, uid: 'mock_uid_' + Date.now() });
-      triggerToast("🎉 Logged in successfully under Mock Database Mode!");
     }
   };
 
@@ -223,7 +227,6 @@ export default function Admin() {
       await window.firebase.auth().signOut();
     }
     setAdminUser(null);
-    triggerToast("👋 Logged out successfully.");
   };
 
   // Service CRUD operations
@@ -697,12 +700,30 @@ export default function Admin() {
               <p>{language === 'zh' ? '使用您的管理员账户凭据登录以修改动态内容。' : (language === 'ko' ? '동적 콘텐츠를 수정하려면 관리자 계정 자격 증명으로 로그인하십시오.' : 'Log in with your administrator account credentials to modify dynamic contents.')}</p>
             </div>
             <form onSubmit={handleLogin}>
+              {loginError && (
+                <div style={{
+                  color: 'var(--accent-red)',
+                  background: 'rgba(198, 40, 40, 0.08)',
+                  border: '1px solid rgba(198, 40, 40, 0.3)',
+                  borderRadius: 'var(--border-radius)',
+                  padding: '12px 15px',
+                  marginBottom: '20px',
+                  fontSize: '0.85rem',
+                  fontWeight: '600',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px'
+                }}>
+                  <i className="fa-solid fa-triangle-exclamation" style={{ color: 'var(--accent-red)', fontSize: '1rem' }}></i>
+                  <span>{loginError}</span>
+                </div>
+              )}
               <div className="form-group">
                 <label>{t('adm_lbl_email')}</label>
                 <input 
                   type="email" 
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => { setEmail(e.target.value); setLoginError(''); }}
                   className="form-control" 
                   required 
                   placeholder="admin@emgrandspa.com" 
@@ -713,7 +734,7 @@ export default function Admin() {
                 <input 
                   type="password" 
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => { setPassword(e.target.value); setLoginError(''); }}
                   className="form-control" 
                   required 
                   placeholder="••••••••" 
@@ -1239,21 +1260,21 @@ export default function Admin() {
                       />
                     </div>
                     <div className="form-group" style={{ flex: '1 1 350px' }}>
-                      <label>{language === 'zh' ? '视频 URL (MP4、YouTube 或 Facebook)' : (language === 'ko' ? '비디오 URL (MP4, YouTube 또는 Facebook)' : 'Video URL (MP4, YouTube, or Facebook)')}</label>
+                      <label>{language === 'zh' ? '视频 URL (MP4、YouTube、TikTok 或 Facebook)' : (language === 'ko' ? '비디오 URL (MP4, YouTube, TikTok 또는 Facebook)' : 'Video URL (MP4, YouTube, TikTok, or Facebook)')}</label>
                       <input 
                         type="text" 
                         value={videoUrl} 
                         onChange={(e) => setVideoUrl(e.target.value)} 
                         className="form-control" 
-                        placeholder="e.g. https://www.facebook.com/reel/12345678" 
+                        placeholder="e.g. https://www.tiktok.com/@username/video/12345678" 
                         required 
                       />
                       <small style={{ display: 'block', marginTop: '4px', fontSize: '0.72rem', color: 'var(--text-secondary)' }}>
                         {language === 'zh' 
-                          ? '使用直接链接（如 /reel/ID 或 /watch/?v=ID）在应用内播放。避免使用分享/重定向的短链接。' 
+                          ? '使用直接链接（如 /reel/ID、/watch/?v=ID 或 /video/ID）在应用内播放。避免使用分享/重定向的短链接。' 
                           : (language === 'ko' 
-                            ? '앱 내에서 재생하려면 클린 링크(/reel/ID 또는 /watch/?v=ID 등)를 사용하세요. 공유/리디렉션 단축 링크는 피하십시오.' 
-                            : 'Use clean links (e.g. /reel/ID or /watch/?v=ID) to play inside the app. Avoid share/redirect short links.')}
+                            ? '앱 내에서 재생하려면 클린 링크(/reel/ID, /watch/?v=ID 또는 /video/ID 등)를 사용하세요. 공유/리디렉션 단축 링크는 피하십시오.' 
+                            : 'Use clean links (e.g. /reel/ID, /watch/?v=ID, or /video/ID) to play inside the app. Avoid share/redirect short links.')}
                       </small>
                     </div>
                     <div className="form-group" style={{ flex: '1 1 250px' }}>
@@ -1789,107 +1810,76 @@ export default function Admin() {
             {/* TAB 15: USER ACCOUNTS */}
             {adminTab === 'adminAccounts' && (
               <div className="admin-tab-content active">
-                <div className="admin-section-header">
+                <div className="admin-section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                   <h4>{t('adm_title_accounts')}</h4>
+                  <button className="btn btn-primary btn-sm" onClick={() => setIsAccountModalOpen(true)}>
+                    <i className="fa-solid fa-plus" style={{ marginRight: '6px' }}></i>
+                    {language === 'zh' ? '添加员工' : (language === 'ko' ? '직원 추가' : 'Add Employee')}
+                  </button>
                 </div>
-                <div className="settings-grid">
-                  <div className="settings-card glass-panel" style={{ maxWidth: '600px', width: '100%' }}>
-                    <h5>{language === 'zh' ? '注册新管理员/员工账户' : (language === 'ko' ? '새 관리자/직원 계정 등록' : 'Register New Admin/Staff Account')}</h5>
-                    <form onSubmit={async (e) => {
-                      e.preventDefault();
-                      if (!newUserEmail.trim()) return;
-                      try {
-                        await addUserAccount(newUserEmail, newUserRole);
-                        setNewUserEmail('');
-                        triggerToast("🎉 " + (language === 'zh' ? '账户注册成功！' : (language === 'ko' ? '계정이 성공적으로 등록되었습니다!' : 'Account registered successfully!')));
-                      } catch (err) {
-                        console.error(err);
-                        triggerToast("❌ " + (language === 'zh' ? '注册账户时出错。' : (language === 'ko' ? '계정 등록 중 오류가 발생했습니다.' : 'Error registering account.')));
-                      }
-                    }}>
-                      <div className="form-group">
-                        <label>{t('adm_lbl_email')}</label>
-                        <input 
-                          type="email" 
-                          value={newUserEmail} 
-                          onChange={(e) => setNewUserEmail(e.target.value)} 
-                          className="form-control" 
-                          placeholder="staff@emgrandspa.com" 
-                          required 
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>{language === 'zh' ? '角色权限' : (language === 'ko' ? '역할' : 'Role')}</label>
-                        <select 
-                          value={newUserRole} 
-                          onChange={(e) => setNewUserRole(e.target.value)} 
-                          className="form-control"
-                        >
-                          <option value="admin">Admin</option>
-                          <option value="staff">Staff</option>
-                        </select>
-                      </div>
-                      <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>{language === 'zh' ? '添加账户' : (language === 'ko' ? '계정 추가' : 'Add Account')}</button>
-                    </form>
-                  </div>
-
-                  <div className="settings-card glass-panel">
-                    <h5>{language === 'zh' ? '系统授权用户列表' : (language === 'ko' ? '시스템 승인된 사용자 목록' : 'Authorized System Users')}</h5>
-                    <div className="table-wrapper">
-                      <table className="admin-table">
-                        <thead>
-                          <tr>
-                            <th>{t('adm_lbl_email')}</th>
-                            <th>{language === 'zh' ? '角色权限' : (language === 'ko' ? '역할' : 'Role')}</th>
-                            <th>{t('adm_th_actions')}</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {userAccounts && userAccounts.map(acc => (
-                            <tr key={acc.id || acc.email}>
-                              <td>{acc.email}</td>
-                              <td>
-                                <select 
-                                  value={acc.role} 
-                                  onChange={async (e) => {
+                
+                <div className="glass-panel" style={{ width: '100%' }}>
+                  <h5 style={{ marginBottom: '15px', color: 'var(--accent-gold)' }}>{language === 'zh' ? '系统授权用户列表' : (language === 'ko' ? '시스템 승인된 사용자 목록' : 'Authorized System Users')}</h5>
+                  <div className="table-wrapper">
+                    <table className="admin-table">
+                      <thead>
+                        <tr>
+                          <th>{language === 'zh' ? '姓名' : (language === 'ko' ? '이름' : 'Full Name')}</th>
+                          <th>{t('adm_lbl_email')}</th>
+                          <th>{language === 'zh' ? '职位' : (language === 'ko' ? '직책' : 'Position')}</th>
+                          <th>{language === 'zh' ? '密码' : (language === 'ko' ? '비밀번호' : 'Password')}</th>
+                          <th>{language === 'zh' ? '角色权限' : (language === 'ko' ? '역할' : 'Role')}</th>
+                          <th>{t('adm_th_actions')}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {userAccounts && userAccounts.map(acc => (
+                          <tr key={acc.id || acc.email}>
+                            <td style={{ fontWeight: 'bold' }}>{acc.name || '-'}</td>
+                            <td>{acc.email}</td>
+                            <td>{acc.position || '-'}</td>
+                            <td style={{ fontFamily: 'monospace' }}>{acc.password || '••••••••'}</td>
+                            <td>
+                              <select 
+                                value={acc.role} 
+                                onChange={async (e) => {
+                                  try {
+                                    await updateUserRole(acc.id || acc.email, e.target.value);
+                                    triggerToast("🎉 " + (language === 'zh' ? '角色更新成功！' : (language === 'ko' ? '역할이 성공적으로 업데이트되었습니다!' : 'Role updated successfully!')));
+                                  } catch (err) {
+                                    console.error(err);
+                                    triggerToast("❌ " + (language === 'zh' ? '更新角色时出错。' : (language === 'ko' ? '역할 업데이트 중 오류가 발생했습니다.' : 'Error updating role.')));
+                                  }
+                                }}
+                                className="form-control"
+                                style={{ padding: '4px', fontSize: '0.8rem' }}
+                              >
+                                <option value="admin">Admin</option>
+                                <option value="staff">Staff</option>
+                              </select>
+                            </td>
+                            <td>
+                              <button 
+                                className="btn btn-danger btn-xs" 
+                                onClick={async () => {
+                                  if (confirm(`Delete account: ${acc.email}?`)) {
                                     try {
-                                      await updateUserRole(acc.id || acc.email, e.target.value);
-                                      triggerToast("🎉 " + (language === 'zh' ? '角色更新成功！' : (language === 'ko' ? '역할이 성공적으로 업데이트되었습니다!' : 'Role updated successfully!')));
+                                      await deleteUserAccount(acc.id || acc.email);
+                                      triggerToast("🎉 " + (language === 'zh' ? '账户删除成功！' : (language === 'ko' ? '계정이 성공적으로 삭제되었습니다!' : 'Account deleted successfully!')));
                                     } catch (err) {
                                       console.error(err);
-                                      triggerToast("❌ " + (language === 'zh' ? '更新角色时出错。' : (language === 'ko' ? '역할 업데이트 중 오류가 발생했습니다.' : 'Error updating role.')));
+                                      triggerToast("❌ " + (language === 'zh' ? '删除账户时出错。' : (language === 'ko' ? '계정 삭제 중 오류가 발생했습니다.' : 'Error deleting account.')));
                                     }
-                                  }}
-                                  className="form-control"
-                                  style={{ padding: '4px', fontSize: '0.8rem' }}
-                                >
-                                  <option value="admin">Admin</option>
-                                  <option value="staff">Staff</option>
-                                </select>
-                              </td>
-                              <td>
-                                <button 
-                                  className="btn btn-danger btn-xs" 
-                                  onClick={async () => {
-                                    if (confirm(`Delete account: ${acc.email}?`)) {
-                                      try {
-                                        await deleteUserAccount(acc.id || acc.email);
-                                        triggerToast("🎉 " + (language === 'zh' ? '账户删除成功！' : (language === 'ko' ? '계정이 성공적으로 삭제되었습니다!' : 'Account deleted successfully!')));
-                                      } catch (err) {
-                                        console.error(err);
-                                        triggerToast("❌ " + (language === 'zh' ? '删除账户时出错。' : (language === 'ko' ? '계정 삭제 중 오류가 발생했습니다.' : 'Error deleting account.')));
-                                      }
-                                    }
-                                  }}
-                                >
-                                  {t('adm_btn_delete')}
-                                </button>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+                                  }
+                                }}
+                              >
+                                {t('adm_btn_delete')}
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -2268,6 +2258,93 @@ export default function Admin() {
                 />
               </div>
               <button type="submit" className="btn btn-primary" style={{ marginTop: '10px' }}>{language === 'zh' ? '保存特权' : (language === 'ko' ? '혜택 저장' : 'Save Perk')}</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      {/* ADD EMPLOYEE MODAL */}
+      <div className={`modal ${isAccountModalOpen ? 'active' : ''}`}>
+        <div className="modal-content glass-panel" style={{ maxWidth: '500px', width: '90%' }}>
+          <div className="modal-header">
+            <h3>{language === 'zh' ? '添加新员工' : (language === 'ko' ? '새 직원 추가' : 'Add New Employee')}</h3>
+            <button className="modal-close-btn" onClick={() => setIsAccountModalOpen(false)}>&times;</button>
+          </div>
+          <div className="modal-body">
+            <form onSubmit={async (e) => {
+              e.preventDefault();
+              if (!newUserEmail.trim()) return;
+              try {
+                await addUserAccount(newUserEmail, newUserRole, newUserName, newUserPosition, newUserPassword);
+                setNewUserEmail('');
+                setNewUserName('');
+                setNewUserPosition('');
+                setNewUserPassword('');
+                setIsAccountModalOpen(false);
+                triggerToast("🎉 " + (language === 'zh' ? '员工添加成功！' : (language === 'ko' ? '직원이 성공적으로 추가되었습니다!' : 'Employee added successfully!')));
+              } catch (err) {
+                console.error(err);
+                triggerToast("❌ " + (language === 'zh' ? '添加员工时出错。' : (language === 'ko' ? '직원 추가 중 오류가 발생했습니다.' : 'Error adding employee.')));
+              }
+            }}>
+              <div className="form-group">
+                <label>{language === 'zh' ? '姓名' : (language === 'ko' ? '이름' : 'Full Name')}</label>
+                <input 
+                  type="text" 
+                  value={newUserName} 
+                  onChange={(e) => setNewUserName(e.target.value)} 
+                  className="form-control" 
+                  placeholder="e.g. John Doe" 
+                  required 
+                />
+              </div>
+              <div className="form-group">
+                <label>{t('adm_lbl_email')}</label>
+                <input 
+                  type="email" 
+                  value={newUserEmail} 
+                  onChange={(e) => setNewUserEmail(e.target.value)} 
+                  className="form-control" 
+                  placeholder="staff@emgrandspa.com" 
+                  required 
+                />
+              </div>
+              <div className="form-group">
+                <label>{language === 'zh' ? '职位' : (language === 'ko' ? '직책' : 'Position')}</label>
+                <input 
+                  type="text" 
+                  value={newUserPosition} 
+                  onChange={(e) => setNewUserPosition(e.target.value)} 
+                  className="form-control" 
+                  placeholder="e.g. Receptionist" 
+                  required 
+                />
+              </div>
+              <div className="form-group">
+                <label>{language === 'zh' ? '密码' : (language === 'ko' ? '비밀번호' : 'Password')}</label>
+                <input 
+                  type="text" 
+                  value={newUserPassword} 
+                  onChange={(e) => setNewUserPassword(e.target.value)} 
+                  className="form-control" 
+                  placeholder="e.g. password123" 
+                  required 
+                />
+              </div>
+              <div className="form-group">
+                <label>{language === 'zh' ? '角色权限' : (language === 'ko' ? '역할' : 'Role')}</label>
+                <select 
+                  value={newUserRole} 
+                  onChange={(e) => setNewUserRole(e.target.value)} 
+                  className="form-control"
+                >
+                  <option value="admin">Admin</option>
+                  <option value="staff">Staff</option>
+                </select>
+              </div>
+              <button type="submit" className="btn btn-primary" style={{ marginTop: '15px', width: '100%' }}>
+                {language === 'zh' ? '添加员工' : (language === 'ko' ? '직원 추가' : 'Add Employee')}
+              </button>
             </form>
           </div>
         </div>
