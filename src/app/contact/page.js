@@ -7,13 +7,24 @@ export default function Contact() {
 
   const [name, setName] = useState('');
   const [contactInfo, setContactInfo] = useState('');
-  const [rating, setRating] = useState('5');
+  const [rating, setRating] = useState(0);
   const [message, setMessage] = useState('');
   const [toastMsg, setToastMsg] = useState('');
   const [hoverRating, setHoverRating] = useState(0);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (rating === 0) {
+      const validationMsg = language === 'zh' 
+        ? '❌ 请选择评分。' 
+        : (language === 'ko' 
+          ? '❌ 평점을 선택해주세요.' 
+          : '❌ Please select a rating.');
+      setToastMsg(validationMsg);
+      setTimeout(() => setToastMsg(''), 5000);
+      return;
+    }
 
     const fbData = {
       name: name || 'Anonymous Guest',
@@ -61,7 +72,7 @@ export default function Contact() {
       // Reset Form
       setName('');
       setContactInfo('');
-      setRating('5');
+      setRating(0);
       setMessage('');
 
       setToastMsg(t('toast_feedback_success'));
@@ -256,12 +267,12 @@ export default function Contact() {
                   style={{ display: 'flex', gap: '10px', padding: '4px 0', alignItems: 'center' }}
                 >
                   {[1, 2, 3, 4, 5].map((val) => {
-                    const isActive = val <= (hoverRating || Number(rating));
+                    const isActive = val <= (hoverRating || rating);
                     return (
                       <button
                         key={val}
                         type="button"
-                        onClick={() => setRating(String(val))}
+                        onClick={() => setRating(val)}
                         onMouseEnter={() => setHoverRating(val)}
                         style={{
                           background: 'none',
@@ -269,9 +280,9 @@ export default function Contact() {
                           padding: 0,
                           cursor: 'pointer',
                           fontSize: '1.8rem',
-                          color: isActive ? 'var(--accent-gold)' : 'rgba(255, 255, 255, 0.35)',
+                          color: isActive ? 'var(--accent-gold)' : 'rgba(255, 255, 255, 0.5)',
                           transition: 'all 0.15s ease',
-                          transform: val === (hoverRating || Number(rating)) ? 'scale(1.2)' : 'scale(1)',
+                          transform: val === (hoverRating || rating) ? 'scale(1.2)' : 'scale(1)',
                         }}
                         aria-label={`Rate ${val} stars`}
                       >
@@ -285,13 +296,15 @@ export default function Contact() {
                     color: 'var(--text-secondary)', 
                     alignSelf: 'center',
                     fontWeight: '500',
-                    transition: 'all 0.2s ease'
+                    transition: 'all 0.2s ease',
+                    minWidth: '100px'
                   }}>
-                    {(hoverRating || Number(rating)) === 5 && t('opt_rate_excellent')}
-                    {(hoverRating || Number(rating)) === 4 && t('opt_rate_good')}
-                    {(hoverRating || Number(rating)) === 3 && t('opt_rate_neutral')}
-                    {(hoverRating || Number(rating)) === 2 && t('opt_rate_fair')}
-                    {(hoverRating || Number(rating)) === 1 && t('opt_rate_poor')}
+                    {(hoverRating || rating) === 5 && t('opt_rate_excellent')}
+                    {(hoverRating || rating) === 4 && t('opt_rate_good')}
+                    {(hoverRating || rating) === 3 && t('opt_rate_neutral')}
+                    {(hoverRating || rating) === 2 && t('opt_rate_fair')}
+                    {(hoverRating || rating) === 1 && t('opt_rate_poor')}
+                    {(hoverRating || rating) === 0 && (language === 'zh' ? '点击星级评分' : language === 'ko' ? '별점을 선택하세요' : 'Click to rate')}
                   </span>
                 </div>
               </div>
