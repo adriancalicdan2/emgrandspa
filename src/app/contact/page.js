@@ -292,7 +292,7 @@ export default function Contact() {
                           className="fa-solid fa-star"
                           style={{
                             color: isActive ? 'var(--accent-gold)' : 'transparent',
-                            WebkitTextStroke: isActive ? '1.5px var(--accent-gold)' : '1.5px rgba(255, 255, 255, 0.55)',
+                            WebkitTextStroke: isActive ? '1.5px var(--accent-gold)' : '1.5px var(--text-secondary)',
                             transition: 'all 0.15s ease',
                           }}
                         ></i>
