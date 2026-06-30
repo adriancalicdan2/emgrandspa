@@ -95,19 +95,55 @@ export default function Bookings() {
           <div 
             style={{
               position: 'fixed',
-              top: '100px',
-              right: '30px',
-              zIndex: 9999,
-              background: toastMsg.startsWith('🎉') ? 'var(--accent-jade)' : 'var(--accent-red)',
+              top: '90px',
+              right: '24px',
+              zIndex: 99999,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              background: 'rgba(15, 17, 23, 0.9)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: toastMsg.startsWith('🎉') || toastMsg.startsWith('⚙️') || toastMsg.toLowerCase().includes('success') || toastMsg.includes('成功') || toastMsg.includes('성공')
+                ? '1px solid rgba(74, 222, 128, 0.4)' 
+                : '1px solid rgba(248, 113, 113, 0.4)',
               color: '#fff',
-              padding: '15px 25px',
-              borderRadius: '8px',
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-              fontWeight: '600',
-              animation: 'fadeIn 0.3s ease forwards'
+              padding: '14px 22px',
+              borderRadius: '12px',
+              boxShadow: toastMsg.startsWith('🎉') || toastMsg.startsWith('⚙️') || toastMsg.toLowerCase().includes('success') || toastMsg.includes('成功') || toastMsg.includes('성공')
+                ? '0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px 0 rgba(74, 222, 128, 0.15)'
+                : '0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px 0 rgba(248, 113, 113, 0.15)',
+              fontWeight: '500',
+              fontSize: '0.95rem',
+              animation: 'fadeIn 0.3s ease forwards',
+              maxWidth: '380px'
             }}
           >
-            {toastMsg}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '28px',
+              height: '28px',
+              borderRadius: '50%',
+              background: toastMsg.startsWith('🎉') || toastMsg.startsWith('⚙️') || toastMsg.toLowerCase().includes('success') || toastMsg.includes('成功') || toastMsg.includes('성공')
+                ? 'rgba(74, 222, 128, 0.15)'
+                : 'rgba(248, 113, 113, 0.15)',
+              color: toastMsg.startsWith('🎉') || toastMsg.startsWith('⚙️') || toastMsg.toLowerCase().includes('success') || toastMsg.includes('成功') || toastMsg.includes('성공')
+                ? '#4ade80'
+                : '#f87171',
+              flexShrink: 0,
+              fontSize: '1.1rem'
+            }}>
+              {toastMsg.startsWith('🎉') || toastMsg.startsWith('⚙️') || toastMsg.toLowerCase().includes('success') || toastMsg.includes('成功') || toastMsg.includes('성공') ? (
+                <i className="fa-solid fa-circle-check"></i>
+              ) : (
+                <i className="fa-solid fa-circle-xmark"></i>
+              )}
+            </div>
+            <div style={{ flexGrow: 1, lineHeight: '1.4' }}>
+              {toastMsg.replace(/^[🎉❌⚙️]\s*/, '')}
+            </div>
           </div>
         )}
 

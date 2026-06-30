@@ -81,19 +81,55 @@ export default function Contact() {
           <div 
             style={{
               position: 'fixed',
-              top: '100px',
-              right: '30px',
-              zIndex: 9999,
-              background: toastMsg.startsWith('🎉') ? 'var(--accent-jade)' : 'var(--accent-red)',
+              top: '90px',
+              right: '24px',
+              zIndex: 99999,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              background: 'rgba(15, 17, 23, 0.9)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: toastMsg.startsWith('🎉') || toastMsg.startsWith('⚙️') || toastMsg.toLowerCase().includes('success') || toastMsg.includes('成功') || toastMsg.includes('성공')
+                ? '1px solid rgba(74, 222, 128, 0.4)' 
+                : '1px solid rgba(248, 113, 113, 0.4)',
               color: '#fff',
-              padding: '15px 25px',
-              borderRadius: '8px',
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-              fontWeight: '600',
-              animation: 'fadeIn 0.3s ease forwards'
+              padding: '14px 22px',
+              borderRadius: '12px',
+              boxShadow: toastMsg.startsWith('🎉') || toastMsg.startsWith('⚙️') || toastMsg.toLowerCase().includes('success') || toastMsg.includes('成功') || toastMsg.includes('성공')
+                ? '0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px 0 rgba(74, 222, 128, 0.15)'
+                : '0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px 0 rgba(248, 113, 113, 0.15)',
+              fontWeight: '500',
+              fontSize: '0.95rem',
+              animation: 'fadeIn 0.3s ease forwards',
+              maxWidth: '380px'
             }}
           >
-            {toastMsg}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '28px',
+              height: '28px',
+              borderRadius: '50%',
+              background: toastMsg.startsWith('🎉') || toastMsg.startsWith('⚙️') || toastMsg.toLowerCase().includes('success') || toastMsg.includes('成功') || toastMsg.includes('성공')
+                ? 'rgba(74, 222, 128, 0.15)'
+                : 'rgba(248, 113, 113, 0.15)',
+              color: toastMsg.startsWith('🎉') || toastMsg.startsWith('⚙️') || toastMsg.toLowerCase().includes('success') || toastMsg.includes('成功') || toastMsg.includes('성공')
+                ? '#4ade80'
+                : '#f87171',
+              flexShrink: 0,
+              fontSize: '1.1rem'
+            }}>
+              {toastMsg.startsWith('🎉') || toastMsg.startsWith('⚙️') || toastMsg.toLowerCase().includes('success') || toastMsg.includes('成功') || toastMsg.includes('성공') ? (
+                <i className="fa-solid fa-circle-check"></i>
+              ) : (
+                <i className="fa-solid fa-circle-xmark"></i>
+              )}
+            </div>
+            <div style={{ flexGrow: 1, lineHeight: '1.4' }}>
+              {toastMsg.replace(/^[🎉❌⚙️]\s*/, '')}
+            </div>
           </div>
         )}
 
@@ -213,18 +249,51 @@ export default function Contact() {
               </div>
 
               <div className="form-group">
-                <label>{t('feedback_label_rating')}</label>
-                <select 
-                  value={rating} 
-                  onChange={(e) => setRating(e.target.value)}
-                  className="form-control"
-                >
-                  <option value="5">⭐⭐⭐⭐⭐ {t('opt_rate_excellent')}</option>
-                  <option value="4">⭐⭐⭐⭐ {t('opt_rate_good')}</option>
-                  <option value="3">⭐⭐⭐ {t('opt_rate_neutral')}</option>
-                  <option value="2">⭐⭐ {t('opt_rate_fair')}</option>
-                  <option value="1">⭐ {t('opt_rate_poor')}</option>
-                </select>
+                <label style={{ display: 'block', marginBottom: '8px' }}>{t('feedback_label_rating')}</label>
+                <div style={{ display: 'flex', gap: '10px', padding: '4px 0', alignItems: 'center' }}>
+                  {[1, 2, 3, 4, 5].map((val) => (
+                    <button
+                      key={val}
+                      type="button"
+                      onClick={() => setRating(String(val))}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        padding: 0,
+                        cursor: 'pointer',
+                        fontSize: '1.8rem',
+                        color: val <= Number(rating) ? 'var(--accent-gold)' : 'rgba(255, 255, 255, 0.2)',
+                        transition: 'all 0.2s ease',
+                        transform: val === Number(rating) ? 'scale(1.2)' : 'scale(1)',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.3)';
+                        e.currentTarget.style.color = 'var(--accent-gold)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = val === Number(rating) ? 'scale(1.2)' : 'scale(1)';
+                        e.currentTarget.style.color = val <= Number(rating) ? 'var(--accent-gold)' : 'rgba(255, 255, 255, 0.2)';
+                      }}
+                      aria-label={`Rate ${val} stars`}
+                    >
+                      <i className="fa-solid fa-star"></i>
+                    </button>
+                  ))}
+                  <span style={{ 
+                    marginLeft: '8px', 
+                    fontSize: '0.9rem', 
+                    color: 'var(--text-secondary)', 
+                    alignSelf: 'center',
+                    fontWeight: '500',
+                    transition: 'all 0.2s ease'
+                  }}>
+                    {rating === '5' && t('opt_rate_excellent')}
+                    {rating === '4' && t('opt_rate_good')}
+                    {rating === '3' && t('opt_rate_neutral')}
+                    {rating === '2' && t('opt_rate_fair')}
+                    {rating === '1' && t('opt_rate_poor')}
+                  </span>
+                </div>
               </div>
 
               <div className="form-group" style={{ display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
