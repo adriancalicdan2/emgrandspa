@@ -10,6 +10,7 @@ export default function Contact() {
   const [rating, setRating] = useState('5');
   const [message, setMessage] = useState('');
   const [toastMsg, setToastMsg] = useState('');
+  const [hoverRating, setHoverRating] = useState(0);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -250,35 +251,34 @@ export default function Contact() {
 
               <div className="form-group">
                 <label style={{ display: 'block', marginBottom: '8px' }}>{t('feedback_label_rating')}</label>
-                <div style={{ display: 'flex', gap: '10px', padding: '4px 0', alignItems: 'center' }}>
-                  {[1, 2, 3, 4, 5].map((val) => (
-                    <button
-                      key={val}
-                      type="button"
-                      onClick={() => setRating(String(val))}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        padding: 0,
-                        cursor: 'pointer',
-                        fontSize: '1.8rem',
-                        color: val <= Number(rating) ? 'var(--accent-gold)' : 'rgba(255, 255, 255, 0.2)',
-                        transition: 'all 0.2s ease',
-                        transform: val === Number(rating) ? 'scale(1.2)' : 'scale(1)',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'scale(1.3)';
-                        e.currentTarget.style.color = 'var(--accent-gold)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = val === Number(rating) ? 'scale(1.2)' : 'scale(1)';
-                        e.currentTarget.style.color = val <= Number(rating) ? 'var(--accent-gold)' : 'rgba(255, 255, 255, 0.2)';
-                      }}
-                      aria-label={`Rate ${val} stars`}
-                    >
-                      <i className="fa-solid fa-star"></i>
-                    </button>
-                  ))}
+                <div 
+                  onMouseLeave={() => setHoverRating(0)}
+                  style={{ display: 'flex', gap: '10px', padding: '4px 0', alignItems: 'center' }}
+                >
+                  {[1, 2, 3, 4, 5].map((val) => {
+                    const isActive = val <= (hoverRating || Number(rating));
+                    return (
+                      <button
+                        key={val}
+                        type="button"
+                        onClick={() => setRating(String(val))}
+                        onMouseEnter={() => setHoverRating(val)}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          padding: 0,
+                          cursor: 'pointer',
+                          fontSize: '1.8rem',
+                          color: isActive ? 'var(--accent-gold)' : 'rgba(255, 255, 255, 0.35)',
+                          transition: 'all 0.15s ease',
+                          transform: val === (hoverRating || Number(rating)) ? 'scale(1.2)' : 'scale(1)',
+                        }}
+                        aria-label={`Rate ${val} stars`}
+                      >
+                        <i className={isActive ? "fa-solid fa-star" : "fa-regular fa-star"}></i>
+                      </button>
+                    );
+                  })}
                   <span style={{ 
                     marginLeft: '8px', 
                     fontSize: '0.9rem', 
@@ -287,11 +287,11 @@ export default function Contact() {
                     fontWeight: '500',
                     transition: 'all 0.2s ease'
                   }}>
-                    {rating === '5' && t('opt_rate_excellent')}
-                    {rating === '4' && t('opt_rate_good')}
-                    {rating === '3' && t('opt_rate_neutral')}
-                    {rating === '2' && t('opt_rate_fair')}
-                    {rating === '1' && t('opt_rate_poor')}
+                    {(hoverRating || Number(rating)) === 5 && t('opt_rate_excellent')}
+                    {(hoverRating || Number(rating)) === 4 && t('opt_rate_good')}
+                    {(hoverRating || Number(rating)) === 3 && t('opt_rate_neutral')}
+                    {(hoverRating || Number(rating)) === 2 && t('opt_rate_fair')}
+                    {(hoverRating || Number(rating)) === 1 && t('opt_rate_poor')}
                   </span>
                 </div>
               </div>
