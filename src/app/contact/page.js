@@ -427,7 +427,7 @@ export default function Contact() {
               />
 
               {/* Address overlay card */}
-              <div style={{
+              <div className="map-overlay-card" style={{
                 position: 'absolute',
                 bottom: '20px',
                 left: '20px',
