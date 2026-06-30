@@ -285,34 +285,34 @@ export default function Socials() {
                       href="https://www.facebook.com/emgrandspa88888888" 
                       target="_blank" 
                       rel="noopener noreferrer" 
-                      style={{ color: 'var(--accent-gold)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', borderRadius: '50%', border: '1px solid var(--accent-gold)', textDecoration: 'none', transition: 'all 0.2s' }}
+                      style={{ color: 'var(--accent-gold)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '50%', border: '1px solid var(--accent-gold)', textDecoration: 'none', transition: 'all 0.2s' }}
                       onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'var(--accent-gold)'; }}
                       onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--accent-gold)'; e.currentTarget.style.background = 'none'; }}
                       title="Facebook"
                     >
-                      <i className="fa-brands fa-facebook-f"></i>
+                      <i className="fa-brands fa-facebook-f" style={{ margin: 0, fontSize: '1.1rem', color: 'inherit', lineHeight: 1 }}></i>
                     </a>
                     <a 
                       href="https://www.instagram.com/emgrandspa/" 
                       target="_blank" 
                       rel="noopener noreferrer" 
-                      style={{ color: 'var(--accent-gold)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', borderRadius: '50%', border: '1px solid var(--accent-gold)', textDecoration: 'none', transition: 'all 0.2s' }}
+                      style={{ color: 'var(--accent-gold)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '50%', border: '1px solid var(--accent-gold)', textDecoration: 'none', transition: 'all 0.2s' }}
                       onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'var(--accent-gold)'; }}
                       onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--accent-gold)'; e.currentTarget.style.background = 'none'; }}
                       title="Instagram"
                     >
-                      <i className="fa-brands fa-instagram"></i>
+                      <i className="fa-brands fa-instagram" style={{ margin: 0, fontSize: '1.1rem', color: 'inherit', lineHeight: 1 }}></i>
                     </a>
                     <a 
                       href="https://www.tiktok.com/@emgrand.spa" 
                       target="_blank" 
                       rel="noopener noreferrer" 
-                      style={{ color: 'var(--accent-gold)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', borderRadius: '50%', border: '1px solid var(--accent-gold)', textDecoration: 'none', transition: 'all 0.2s' }}
+                      style={{ color: 'var(--accent-gold)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '50%', border: '1px solid var(--accent-gold)', textDecoration: 'none', transition: 'all 0.2s' }}
                       onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'var(--accent-gold)'; }}
                       onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--accent-gold)'; e.currentTarget.style.background = 'none'; }}
                       title="TikTok"
                     >
-                      <i className="fa-brands fa-tiktok"></i>
+                      <i className="fa-brands fa-tiktok" style={{ margin: 0, fontSize: '1.1rem', color: 'inherit', lineHeight: 1 }}></i>
                     </a>
                   </div>
                 )}
