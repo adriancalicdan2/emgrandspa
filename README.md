@@ -72,6 +72,11 @@ Ensure you have [Node.js](https://nodejs.org/) installed (v18+ recommended).
 Create a `.env.local` file in the root directory:
 ```env
 NEXT_PUBLIC_GROQ_API_KEY=your_groq_api_key_here
+
+# EmailJS credentials for contact form submissions:
+NEXT_PUBLIC_EMAILJS_SERVICE_ID=service_iryaxhu
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=template_dgpuiqk
+NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_emailjs_public_key_here
 ```
 
 ### 3. Install Dependencies

@@ -22,7 +22,40 @@ export default function Contact() {
     };
 
     try {
+      // 1. Submit to local/firebase database log
       await submitFeedback(fbData);
+
+      // 2. Dispatch via EmailJS API if credentials are set
+      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+      if (serviceId && templateId && publicKey && publicKey !== 'YOUR_PUBLIC_KEY_HERE') {
+        const emailResponse = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            service_id: serviceId,
+            template_id: templateId,
+            user_id: publicKey,
+            template_params: {
+              from_name: name || 'Anonymous Guest',
+              contact_info: contactInfo || 'Not provided',
+              rating: rating,
+              message: message
+            }
+          })
+        });
+
+        if (!emailResponse.ok) {
+          const errorText = await emailResponse.text();
+          throw new Error(`EmailJS sending failed: ${emailResponse.status} - ${errorText}`);
+        }
+      } else {
+        console.warn("EmailJS is not fully configured (missing NEXT_PUBLIC_EMAILJS_PUBLIC_KEY or other fields). Saved to local logs instead.");
+      }
       
       // Reset Form
       setName('');
