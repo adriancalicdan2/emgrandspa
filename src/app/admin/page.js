@@ -864,12 +864,7 @@ export default function Admin() {
               >
                 <i className="fa-solid fa-chart-pie"></i> {t('adm_sidebar_analytics')}
               </button>
-              <button 
-                className={`admin-tab-btn ${adminTab === 'adminSettings' ? 'active' : ''}`}
-                onClick={() => setAdminTab('adminSettings')}
-              >
-                <i className="fa-solid fa-gears"></i> {t('adm_sidebar_settings')}
-              </button>
+
               <button 
                 className={`admin-tab-btn ${adminTab === 'adminAccounts' ? 'active' : ''}`}
                 onClick={() => setAdminTab('adminAccounts')}
@@ -1729,109 +1724,6 @@ export default function Admin() {
               </div>
             )}
 
-            {/* TAB 14: SETTINGS & KEYS */}
-            {adminTab === 'adminSettings' && (
-              <div className="admin-tab-content active">
-                <div className="settings-grid">
-                  
-                  {/* Firebase Config Form */}
-                  <div className="settings-card glass-panel">
-                    <h5>{language === 'zh' ? 'Firebase 凭据设置' : (language === 'ko' ? 'Firebase 자격 증명 설정' : 'Firebase Credentials Setup')}</h5>
-                    <p className="settings-desc">
-                      {language === 'zh' 
-                        ? '提供您的 Firebase 项目配置以启用实时同步。如果为空，应用将退回到本地 Local Storage 数据库。' 
-                        : (language === 'ko' 
-                          ? '실시간 동기화를 활성화하려면 Firebase 프로젝트 구성을 제공하십시오. 비어 있는 경우 앱은 로컬 스토리지 DB로 돌아갑니다.' 
-                          : 'Provide your Firebase project configurations to activate real-time synchronization. If empty, the app falls back to Local Storage DB.')}
-                    </p>
-                    <form onSubmit={saveFirebaseSettings}>
-                      <div className="form-group">
-                        <label>Firebase API Key</label>
-                        <input 
-                          type="text" 
-                          value={fbApiKey}
-                          onChange={(e) => setFbApiKey(e.target.value)}
-                          className="form-control" 
-                          placeholder="AIzaSy..." 
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>Auth Domain</label>
-                        <input 
-                          type="text" 
-                          value={fbAuthDomain}
-                          onChange={(e) => setFbAuthDomain(e.target.value)}
-                          className="form-control" 
-                          placeholder="emgrand-spa.firebaseapp.com" 
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>Project ID</label>
-                        <input 
-                          type="text" 
-                          value={fbProjectId}
-                          onChange={(e) => setFbProjectId(e.target.value)}
-                          className="form-control" 
-                          placeholder="emgrand-spa" 
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>App ID</label>
-                        <input 
-                          type="text" 
-                          value={fbAppId}
-                          onChange={(e) => setFbAppId(e.target.value)}
-                          className="form-control" 
-                          placeholder="1:XXX:web:XXX" 
-                        />
-                      </div>
-                      <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-                        <button type="submit" className="btn btn-primary btn-sm">{language === 'zh' ? '保存配置并重新加载' : (language === 'ko' ? '구성 저장 및 새로고침' : 'Save Config & Reload')}</button>
-                        <button type="button" className="btn btn-secondary btn-sm" onClick={clearFirebaseSettings}>{language === 'zh' ? '清除配置' : (language === 'ko' ? '구성 지우기' : 'Clear Config')}</button>
-                      </div>
-                    </form>
-                  </div>
-
-                  {/* Groq Config Form */}
-                  <div className="settings-card glass-panel">
-                    <h5>{language === 'zh' ? 'Groq 云端 AI 设置' : (language === 'ko' ? 'Groq 클라우드 AI 설정' : 'Groq Cloud AI Settings')}</h5>
-                    <p className="settings-desc">
-                      {language === 'zh' 
-                        ? '提供 Groq API 密钥，以使用 Llama-3 模型为漂浮的 AI 康养助手提供支持。请在下方检查自定义系统上下文。' 
-                        : (language === 'ko' 
-                          ? 'Llama-3 모델을 사용하여 플로팅 AI 웰니스 어시스턴트에 전원을 공급하려면 Groq API 키를 제공하십시오. 아래에서 맞춤형 시스템 컨텍스트를 확인하십시오.' 
-                          : 'Provide a Groq API Key to power the floating AI Wellness Assistant with Llama-3 models. Check custom systems contexts below.')}
-                    </p>
-                    <form onSubmit={saveGroqSettings}>
-                      <div className="form-group">
-                        <label>Groq API Key</label>
-                        <input 
-                          type="password" 
-                          value={tempGroqKey}
-                          onChange={(e) => setTempGroqKey(e.target.value)}
-                          className="form-control" 
-                          placeholder="gsk_..." 
-                        />
-                      </div>
-                      <div className="form-group">
-                        <label>{language === 'zh' ? '选择 Groq 模型' : (language === 'ko' ? 'Groq 모델 선택' : 'Select Groq Model')}</label>
-                        <select 
-                          value={tempGroqModel}
-                          onChange={(e) => setTempGroqModel(e.target.value)}
-                          className="form-control"
-                        >
-                          <option value="llama-3.1-8b-instant">Llama 3.1 8B Instant (llama-3.1-8b-instant) - {language === 'zh' ? '最划算且极速' : (language === 'ko' ? '가장 저렴하고 초고속' : 'Cheapest & Ultra-Fast')}</option>
-                          <option value="llama-3.3-70b-versatile">Llama 3.3 70B Versatile (llama-3.3-70b-versatile) - {language === 'zh' ? '高度精准' : (language === 'ko' ? '높은 정확도' : 'Highly Accurate')}</option>
-                          <option value="mixtral-8x7b-32768">Mixtral 8x7B (mixtral-8x7b-32768) - {language === 'zh' ? '全面性' : (language === 'ko' ? '종합적' : 'Comprehensive')}</option>
-                        </select>
-                      </div>
-                      <button type="submit" className="btn btn-primary btn-sm" style={{ marginTop: '10px' }}>{language === 'zh' ? '保存 Groq 密钥' : (language === 'ko' ? 'Groq 키 저장' : 'Save Groq Key')}</button>
-                    </form>
-                  </div>
-
-                </div>
-              </div>
-            )}
 
             {/* TAB 15: USER ACCOUNTS */}
             {adminTab === 'adminAccounts' && (
