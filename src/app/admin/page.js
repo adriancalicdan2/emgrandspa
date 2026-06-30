@@ -216,8 +216,7 @@ export default function Admin() {
         setLoginError(language === 'zh' ? '邮箱或密码不正确' : (language === 'ko' ? '이메일 또는 비밀번호가 잘못되었습니다' : 'Incorrect Email or Password'));
       }
     } else {
-      // Mock Auth Fallback
-      setAdminUser({ email, uid: 'mock_uid_' + Date.now() });
+      setLoginError(language === 'zh' ? '数据库连接未激活' : (language === 'ko' ? '데이터베이스 연결이 비활성화되었습니다' : 'Database connection is not active.'));
     }
   };
 
@@ -780,18 +779,6 @@ export default function Admin() {
                 <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>{language === 'zh' ? '登录' : (language === 'ko' ? '로그인' : 'Log In')}</button>
               </div>
             </form>
-            
-            {!dbActive && (
-              <div className="local-database-fallback">
-                <i className="fa-solid fa-triangle-exclamation"></i>
-                <div>
-                  <strong>{language === 'zh' ? '本地模拟数据库模式处于活动状态' : (language === 'ko' ? '로컬 모의 데이터베이스 모드 활성화됨' : 'Local Mock Database Mode Active')}</strong>
-                  <p>
-                    {language === 'zh' ? 'Firebase 配置未激活。正在使用本地 localStorage 模拟数据库进行即时测试。您可以使用上方的任何用户名/密码立即登录！' : (language === 'ko' ? 'Firebase 구성이 활성화되어 있지 않습니다. 즉석 테스트를 위해 로컬 localStorage 모의 DB를 사용합니다. 위의 아무 사용자 이름/비밀번호를 사용하여 바로 로그인하십시오!' : 'Firebase configuration is not active. Using mock in-memory localStorage db for instant testing. Feel free to use any username/password above to log in instantly!')}
-                  </p>
-                </div>
-              </div>
-            )}
           </div>
         ) : (
           /* LOGGED IN ADMINISTRATIVE DASHBOARD */
