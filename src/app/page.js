@@ -82,7 +82,7 @@ export default function Home() {
               href="https://www.facebook.com/emgrandspa88888888" 
               target="_blank" 
               rel="noopener noreferrer" 
-              style={{ color: '#fff', fontSize: '1.25rem', transition: 'color 0.2s', opacity: 0.8, display: 'inline-flex', alignItems: 'center' }}
+              style={{ color: '#fff', fontSize: '1.25rem', transition: 'color 0.2s', opacity: 0.8, display: 'inline-flex', alignItems: 'center', textDecoration: 'none' }}
               onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-gold)'}
               onMouseLeave={(e) => e.currentTarget.style.color = '#fff'}
               title="Facebook"
@@ -93,7 +93,7 @@ export default function Home() {
               href="https://www.instagram.com/emgrandspa/" 
               target="_blank" 
               rel="noopener noreferrer" 
-              style={{ color: '#fff', fontSize: '1.25rem', transition: 'color 0.2s', opacity: 0.8, display: 'inline-flex', alignItems: 'center' }}
+              style={{ color: '#fff', fontSize: '1.25rem', transition: 'color 0.2s', opacity: 0.8, display: 'inline-flex', alignItems: 'center', textDecoration: 'none' }}
               onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-gold)'}
               onMouseLeave={(e) => e.currentTarget.style.color = '#fff'}
               title="Instagram"
@@ -104,7 +104,7 @@ export default function Home() {
               href="https://www.tiktok.com/@emgrand.spa" 
               target="_blank" 
               rel="noopener noreferrer" 
-              style={{ color: '#fff', fontSize: '1.25rem', transition: 'color 0.2s', opacity: 0.8, display: 'inline-flex', alignItems: 'center' }}
+              style={{ color: '#fff', fontSize: '1.25rem', transition: 'color 0.2s', opacity: 0.8, display: 'inline-flex', alignItems: 'center', textDecoration: 'none' }}
               onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-gold)'}
               onMouseLeave={(e) => e.currentTarget.style.color = '#fff'}
               title="TikTok"
