@@ -1079,7 +1079,7 @@ export default function Admin() {
                 <div className="admin-section-header">
                   <h4>{t('adm_title_seo')}</h4>
                 </div>
-                <div className="settings-card glass-panel" style={{ maxWidth: '600px', width: '100%' }}>
+                <div className="settings-card glass-panel" style={{ maxWidth: '1000px', width: '100%' }}>
                   <form onSubmit={(e) => {
                     e.preventDefault();
                     updateSeoSettings({ title: seoTitle, description: seoDesc, keywords: seoKeywords });
@@ -1127,7 +1127,7 @@ export default function Admin() {
                 <div className="admin-section-header">
                   <h4>{t('adm_title_banners')}</h4>
                 </div>
-                <div className="settings-card glass-panel" style={{ maxWidth: '600px', width: '100%' }}>
+                <div className="settings-card glass-panel" style={{ maxWidth: '1000px', width: '100%' }}>
                   <form onSubmit={(e) => {
                     e.preventDefault();
                     updateHomeBanner({ 
@@ -1283,9 +1283,9 @@ export default function Admin() {
                 {/* Inline Add Video Form */}
                 <div className="glass-panel" style={{ padding: '20px', marginBottom: '25px', width: '100%' }}>
                   <h5 style={{ color: 'var(--accent-gold)', marginBottom: '15px' }}>{language === 'zh' ? '添加导览视频链接' : (language === 'ko' ? '둘러보기 비디오 링크 추가' : 'Add Walkthrough Video Link')}</h5>
-                  <form onSubmit={handleVideoAdd} style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', alignItems: 'flex-end' }}>
-                    <div className="form-group" style={{ flex: '1 1 200px' }}>
-                      <label>{language === 'zh' ? '视频标题' : (language === 'ko' ? '비디오 제목' : 'Video Title')}</label>
+                  <form onSubmit={handleVideoAdd} style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', alignItems: 'flex-end', marginBottom: '10px' }}>
+                    <div className="form-group" style={{ flex: '1 1 200px', margin: 0 }}>
+                      <label style={{ marginBottom: '8px', display: 'block' }}>{language === 'zh' ? '视频标题' : (language === 'ko' ? '비디오 제목' : 'Video Title')}</label>
                       <input 
                         type="text" 
                         value={videoTitle} 
@@ -1295,8 +1295,8 @@ export default function Admin() {
                         required 
                       />
                     </div>
-                    <div className="form-group" style={{ flex: '1 1 350px' }}>
-                      <label>{language === 'zh' ? '视频 URL (MP4、YouTube、TikTok 或 Facebook)' : (language === 'ko' ? '비디오 URL (MP4, YouTube, TikTok 또는 Facebook)' : 'Video URL (MP4, YouTube, TikTok, or Facebook)')}</label>
+                    <div className="form-group" style={{ flex: '2 1 300px', margin: 0 }}>
+                      <label style={{ marginBottom: '8px', display: 'block' }}>{language === 'zh' ? '视频 URL' : (language === 'ko' ? '비디오 URL' : 'Video URL')}</label>
                       <input 
                         type="text" 
                         value={videoUrl} 
@@ -1305,16 +1305,9 @@ export default function Admin() {
                         placeholder="e.g. https://www.tiktok.com/@username/video/12345678" 
                         required 
                       />
-                      <small style={{ display: 'block', marginTop: '4px', fontSize: '0.72rem', color: 'var(--text-secondary)' }}>
-                        {language === 'zh' 
-                          ? '使用直接链接（如 /reel/ID、/watch/?v=ID 或 /video/ID）在应用内播放。避免使用分享/重定向的短链接。' 
-                          : (language === 'ko' 
-                            ? '앱 내에서 재생하려면 클린 링크(/reel/ID, /watch/?v=ID 또는 /video/ID 등)를 사용하세요. 공유/리디렉션 단축 링크는 피하십시오.' 
-                            : 'Use clean links (e.g. /reel/ID, /watch/?v=ID, or /video/ID) to play inside the app. Avoid share/redirect short links.')}
-                      </small>
                     </div>
-                    <div className="form-group" style={{ flex: '1 1 250px' }}>
-                      <label>{language === 'zh' ? '简短描述' : (language === 'ko' ? '짧은 설명' : 'Short Description')}</label>
+                    <div className="form-group" style={{ flex: '1.5 1 200px', margin: 0 }}>
+                      <label style={{ marginBottom: '8px', display: 'block' }}>{language === 'zh' ? '简短描述' : (language === 'ko' ? '짧은 설명' : 'Short Description')}</label>
                       <input 
                         type="text" 
                         value={videoDesc} 
@@ -1324,8 +1317,18 @@ export default function Admin() {
                         required 
                       />
                     </div>
-                    <button type="submit" className="btn btn-primary" style={{ padding: '12px 25px' }}>{language === 'zh' ? '添加视频' : (language === 'ko' ? '비디오 추가' : 'Add Video')}</button>
+                    <button type="submit" className="btn btn-primary" style={{ height: '42px', padding: '0 25px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {language === 'zh' ? '添加视频' : (language === 'ko' ? '비디오 추가' : 'Add Video')}
+                    </button>
                   </form>
+                  <small style={{ display: 'block', marginTop: '10px', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                    <i className="fa-solid fa-circle-info" style={{ marginRight: '6px', color: 'var(--accent-gold)' }}></i>
+                    {language === 'zh' 
+                      ? '支持 MP4、YouTube、TikTok 或 Facebook。使用直接链接（如 /reel/ID、/watch/?v=ID 或 /video/ID）在应用内播放。避免使用分享/重定向的短链接。' 
+                      : (language === 'ko' 
+                        ? 'MP4, YouTube, TikTok 또는 Facebook을 지원합니다. 앱 내에서 재생하려면 클린 링크(/reel/ID, /watch/?v=ID 또는 /video/ID 등)를 사용하세요. 공유/리디렉션 단축 링크는 피하십시오.' 
+                        : 'Supports MP4, YouTube, TikTok, or Facebook. Use clean links (e.g. /reel/ID, /watch/?v=ID, or /video/ID) to play inside the app. Avoid share/redirect short links.')}
+                  </small>
                 </div>
 
                 <div className="table-wrapper">
