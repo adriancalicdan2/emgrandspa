@@ -273,10 +273,49 @@ export default function Socials() {
           
           <div className="starlight-perks-grid">
             {membershipPerks && membershipPerks.map(perk => (
-              <div key={perk.id} className="perk-card">
-                <i className={`fa-solid ${perk.icon || 'fa-award'}`}></i>
-                <h4>{language === 'zh' ? (perk.title_zh || t(perk.title)) : (language === 'ko' ? (perk.title_ko || t(perk.title)) : (perk.title_en || t(perk.title)))}</h4>
-                <p>{language === 'zh' ? (perk.desc_zh || t(perk.desc)) : (language === 'ko' ? (perk.desc_ko || t(perk.desc)) : (perk.desc_en || t(perk.desc)))}</p>
+              <div key={perk.id} className="perk-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div>
+                  <i className={`fa-solid ${perk.icon || 'fa-award'}`}></i>
+                  <h4>{language === 'zh' ? (perk.title_zh || t(perk.title)) : (language === 'ko' ? (perk.title_ko || t(perk.title)) : (perk.title_en || t(perk.title)))}</h4>
+                  <p>{language === 'zh' ? (perk.desc_zh || t(perk.desc)) : (language === 'ko' ? (perk.desc_ko || t(perk.desc)) : (perk.desc_en || t(perk.desc)))}</p>
+                </div>
+                {perk.id === 'prk4' && (
+                  <div style={{ display: 'flex', gap: '12px', marginTop: '16px', justifyContent: 'center' }}>
+                    <a 
+                      href="https://www.facebook.com/emgrandspa88888888" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      style={{ color: 'var(--accent-gold)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', borderRadius: '50%', border: '1px solid var(--accent-gold)', textDecoration: 'none', transition: 'all 0.2s' }}
+                      onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'var(--accent-gold)'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--accent-gold)'; e.currentTarget.style.background = 'none'; }}
+                      title="Facebook"
+                    >
+                      <i className="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <a 
+                      href="https://www.instagram.com/emgrandspa/" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      style={{ color: 'var(--accent-gold)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', borderRadius: '50%', border: '1px solid var(--accent-gold)', textDecoration: 'none', transition: 'all 0.2s' }}
+                      onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'var(--accent-gold)'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--accent-gold)'; e.currentTarget.style.background = 'none'; }}
+                      title="Instagram"
+                    >
+                      <i className="fa-brands fa-instagram"></i>
+                    </a>
+                    <a 
+                      href="https://www.tiktok.com/@emgrand.spa" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      style={{ color: 'var(--accent-gold)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', borderRadius: '50%', border: '1px solid var(--accent-gold)', textDecoration: 'none', transition: 'all 0.2s' }}
+                      onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'var(--accent-gold)'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--accent-gold)'; e.currentTarget.style.background = 'none'; }}
+                      title="TikTok"
+                    >
+                      <i className="fa-brands fa-tiktok"></i>
+                    </a>
+                  </div>
+                )}
               </div>
             ))}
           </div>
