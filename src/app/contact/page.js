@@ -280,13 +280,22 @@ export default function Contact() {
                           padding: 0,
                           cursor: 'pointer',
                           fontSize: '1.8rem',
-                          color: isActive ? 'var(--accent-gold)' : 'rgba(255, 255, 255, 0.5)',
                           transition: 'all 0.15s ease',
                           transform: val === (hoverRating || rating) ? 'scale(1.2)' : 'scale(1)',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
                         }}
                         aria-label={`Rate ${val} stars`}
                       >
-                        <i className={isActive ? "fa-solid fa-star" : "fa-regular fa-star"}></i>
+                        <i 
+                          className="fa-solid fa-star"
+                          style={{
+                            color: isActive ? 'var(--accent-gold)' : 'transparent',
+                            WebkitTextStroke: isActive ? '1.5px var(--accent-gold)' : '1.5px rgba(255, 255, 255, 0.55)',
+                            transition: 'all 0.15s ease',
+                          }}
+                        ></i>
                       </button>
                     );
                   })}
