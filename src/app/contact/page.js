@@ -77,6 +77,7 @@ export default function Contact() {
               from_email: contactInfo || 'Not provided', // Alias to support {{from_email}} in your EmailJS template
               rating: rating,
               rating_stars: '⭐'.repeat(Number(rating) || 5), // Translates e.g. 5 into ⭐⭐⭐⭐⭐
+              time: new Date().toLocaleString(), // Populates the {{time}} field in your template
               message: message
             }
           })
