@@ -2452,6 +2452,49 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  // Auto-cancel bookings that are past 5 hours of their scheduled time and still pending
+  useEffect(() => {
+    if (!bookings || bookings.length === 0) return;
+
+    let hasUpdates = false;
+    const updatedBookings = bookings.map(book => {
+      const status = book.status || 'pending';
+      if (status === 'pending' && book.date && book.time) {
+        try {
+          const scheduledDate = new Date(`${book.date}T${book.time}`);
+          if (!isNaN(scheduledDate.getTime())) {
+            const now = new Date();
+            const elapsedHours = (now.getTime() - scheduledDate.getTime()) / (1000 * 60 * 60);
+            if (elapsedHours > 5) {
+              hasUpdates = true;
+              return { ...book, status: 'cancel' };
+            }
+          }
+        } catch (e) {
+          console.error("Failed check auto-cancel for booking", book.id, e);
+        }
+      }
+      return book;
+    });
+
+    if (hasUpdates) {
+      setBookings(updatedBookings);
+      updatedBookings.forEach(async (book) => {
+        const original = bookings.find(b => b.id === book.id);
+        const originalStatus = original?.status || 'pending';
+        if (book.status === 'cancel' && originalStatus === 'pending') {
+          if (dbActive && firebaseApp) {
+            await firebaseApp.firestore().collection('bookings').doc(book.id).update({ status: 'cancel' });
+            await addAuditLog(`Auto-cancelled expired reservation (5h past scheduled time): ${book.id}`);
+          } else {
+            localStorage.setItem('emgrand_offline_bookings', JSON.stringify(updatedBookings));
+            await addAuditLog(`Auto-cancelled expired reservation offline: ${book.id}`);
+          }
+        }
+      });
+    }
+  }, [bookings, dbActive, firebaseApp]);
+
   return (
     <AppContext.Provider value={{
       language,
