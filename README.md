@@ -74,9 +74,17 @@ Create a `.env.local` file in the root directory:
 NEXT_PUBLIC_GROQ_API_KEY=your_groq_api_key_here
 
 # EmailJS credentials for contact form submissions:
-NEXT_PUBLIC_EMAILJS_SERVICE_ID=service_iryaxhu
-NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=template_dgpuiqk
+NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_emailjs_service_id_here
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_emailjs_template_id_here
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_emailjs_public_key_here
+
+# Firebase Configurations:
+NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key_here
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain_here
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_firebase_project_id_here
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket_here
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id_here
+NEXT_PUBLIC_FIREBASE_APP_ID=your_firebase_app_id_here
 ```
 
 ### 3. Install Dependencies
