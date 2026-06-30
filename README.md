@@ -69,23 +69,8 @@ Welcome to the official repository of **Emgrand Spa Manila**, a premium wellness
 Ensure you have [Node.js](https://nodejs.org/) installed (v18+ recommended).
 
 ### 2. Environment Variables Setup
-Create a `.env.local` file in the root directory:
-```env
-NEXT_PUBLIC_GROQ_API_KEY=your_groq_api_key_here
+Configure your private `.env.local` file in the root directory with your Firebase, EmailJS, and Groq API keys. (This file is ignored by Git and should never be committed to GitHub).
 
-# EmailJS credentials for contact form submissions:
-NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_emailjs_service_id_here
-NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_emailjs_template_id_here
-NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_emailjs_public_key_here
-
-# Firebase Configurations:
-NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key_here
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain_here
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_firebase_project_id_here
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket_here
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id_here
-NEXT_PUBLIC_FIREBASE_APP_ID=your_firebase_app_id_here
-```
 
 ### 3. Install Dependencies
 ```bash
