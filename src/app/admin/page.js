@@ -1040,16 +1040,16 @@ export default function Admin() {
                                 {bookingStatusTab === 'pending' && (
                                   <>
                                     <button 
-                                      className="btn btn-primary btn-xs" 
+                                      className="btn btn-xs" 
                                       onClick={() => updateBookingStatus(book.id, 'done')}
-                                      style={{ padding: '4px 10px', fontSize: '0.75rem', background: '#2e7d32', borderColor: '#2e7d32', color: '#fff' }}
+                                      style={{ padding: '4px 10px', fontSize: '0.75rem', background: '#2e7d32', border: '1px solid #2e7d32', color: '#ffffff' }}
                                     >
                                       {language === 'zh' ? '完成' : (language === 'ko' ? '완료' : 'Done')}
                                     </button>
                                     <button 
-                                      className="btn btn-secondary btn-xs" 
+                                      className="btn btn-xs" 
                                       onClick={() => updateBookingStatus(book.id, 'cancel')}
-                                      style={{ padding: '4px 10px', fontSize: '0.75rem', background: '#c62828', borderColor: '#c62828', color: '#fff' }}
+                                      style={{ padding: '4px 10px', fontSize: '0.75rem', background: '#c62828', border: '1px solid #c62828', color: '#ffffff' }}
                                     >
                                       {language === 'zh' ? '取消' : (language === 'ko' ? '취소' : 'Cancel')}
                                     </button>
@@ -1064,13 +1064,6 @@ export default function Admin() {
                                     {language === 'zh' ? '设为待处理' : (language === 'ko' ? '대기 중으로 설정' : 'Revert to Pending')}
                                   </button>
                                 )}
-                                <button 
-                                  className="btn btn-danger btn-xs" 
-                                  onClick={() => removeBooking(book.id)}
-                                  style={{ padding: '4px 10px', fontSize: '0.75rem', background: 'transparent', border: '1px solid var(--accent-red)', color: 'var(--accent-red)' }}
-                                >
-                                  {language === 'zh' ? '删除记录' : (language === 'ko' ? '삭제' : 'Delete')}
-                                </button>
                               </div>
                             </td>
                           </tr>
