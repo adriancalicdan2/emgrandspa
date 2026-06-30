@@ -286,7 +286,7 @@ export default function Contact() {
                         }}
                         aria-label={`Rate ${val} stars`}
                       >
-                        <i className="fa-regular fa-star"></i>
+                        <i className={isActive ? "fa-solid fa-star" : "fa-regular fa-star"}></i>
                       </button>
                     );
                   })}
