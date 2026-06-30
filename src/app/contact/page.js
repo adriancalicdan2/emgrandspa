@@ -232,6 +232,44 @@ export default function Contact() {
                   <p>emgrandspa.official@gmail.com</p>
                 </div>
               </li>
+              <li>
+                <i className="fa-solid fa-share-nodes"></i>
+                <div>
+                  <strong>{language === 'zh' ? '社交媒体' : (language === 'ko' ? '소셜 미디어' : 'Social Media')}</strong>
+                  <div style={{ display: 'flex', gap: '15px', marginTop: '8px', flexWrap: 'wrap' }}>
+                    <a 
+                      href="https://www.facebook.com/emgrandspa88888888" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      style={{ color: 'var(--accent-gold)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.88rem', fontWeight: '600', transition: 'color 0.2s' }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-gold-hover)'}
+                      onMouseLeave={(e) => e.currentTarget.style.color = 'var(--accent-gold)'}
+                    >
+                      <i className="fa-brands fa-facebook" style={{ fontSize: '1rem' }}></i> Facebook
+                    </a>
+                    <a 
+                      href="https://www.instagram.com/emgrandspa/" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      style={{ color: 'var(--accent-gold)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.88rem', fontWeight: '600', transition: 'color 0.2s' }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-gold-hover)'}
+                      onMouseLeave={(e) => e.currentTarget.style.color = 'var(--accent-gold)'}
+                    >
+                      <i className="fa-brands fa-instagram" style={{ fontSize: '1rem' }}></i> Instagram
+                    </a>
+                    <a 
+                      href="https://www.tiktok.com/@emgrand.spa" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      style={{ color: 'var(--accent-gold)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.88rem', fontWeight: '600', transition: 'color 0.2s' }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-gold-hover)'}
+                      onMouseLeave={(e) => e.currentTarget.style.color = 'var(--accent-gold)'}
+                    >
+                      <i className="fa-brands fa-tiktok" style={{ fontSize: '1rem' }}></i> TikTok
+                    </a>
+                  </div>
+                </div>
+              </li>
             </ul>
 
             {/* Live Parking Space Tracker Widget */}
